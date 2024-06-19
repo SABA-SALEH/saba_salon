@@ -1,0 +1,128 @@
+html {
+    height: 100%;
+}
+
+
+
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.logo-font {
+    text-transform: uppercase;
+}
+
+.main-logo-link {
+    width: fit-content;
+}
+
+
+
+.btn-black {
+    background: #CA8787;
+    color: white;
+}
+
+
+.btn-black:hover,
+.btn-black:active,
+.btn-black:focus {
+    background:#CA8787;
+    color: white;
+}
+
+.text-black {
+    color: #000 !important;
+}
+
+.border-black {
+    border: 1px solid #CA8787 !important;
+}
+
+/* -------------------------------- Media Queries */
+
+/* Slightly larger container on xl screens */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 80%;
+  }
+}
+
+/* fixed top navbar only on medium and up */
+@media (min-width: 992px) {
+    .fixed-top-desktop-only {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
+    .header-container {
+        padding-top: 164px;
+    }
+}
+
+.hero-image {
+    background-image: url("../images/hero.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    height: calc(100vh - 100px);
+    margin: 10px;
+}
+
+.service-box img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.service-box h3 {
+    margin-top: 20px;
+}
+
+.service-box a {
+    margin-top: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.col-md-6 {
+   
+    background-color:#FFD0D0;
+    background-size: cover;
+    background-position: center;
+    color:black; 
+    text-align: center; 
+    padding: 0; 
+}
+
+.service-description {
+   padding: 10px;
+}
+
+.service-description p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    font-size: medium;
+    text-justify: auto;
+}
+
+.btn-book-now {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #A87676;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-book-now:hover {
+    background-color: #A87676;
+}
