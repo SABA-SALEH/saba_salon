@@ -1,0 +1,120 @@
+[
+    {
+      "model": "services.service",
+      "pk": 1,
+      "fields": {
+        "category": 1,
+        "name": "Haircut",
+        "description": "Professional haircut service.",
+        "price": "50.00",
+        "duration": "0:45:00",
+        "rating": "4.5",
+        "image": "haircut.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 2,
+      "fields": {
+        "category": 1,
+        "name": "Hair Coloring",
+        "description": "Expert hair coloring with premium products.",
+        "price": "80.00",
+        "duration": "1:30:00",
+        "rating": "4.7",
+        "image": "hair_coloring.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 3,
+      "fields": {
+        "category": 1,
+        "name": "Hair Styling",
+        "description": "Personalized hair styling for any occasion.",
+        "price": "60.00",
+        "duration": "1:00:00",
+        "rating": "4.4",
+        "image": "hair_styling.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 4,
+      "fields": {
+        "category": 2,
+        "name": "Manicure",
+        "description": "Classic manicure with nail polish.",
+        "price": "25.00",
+        "duration": "0:30:00",
+        "rating": "4.0",
+        "image": "manicure.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 5,
+      "fields": {
+        "category": 2,
+        "name": "Pedicure",
+        "description": "Relaxing pedicure with foot massage.",
+        "price": "35.00",
+        "duration": "0:45:00",
+        "rating": "4.2",
+        "image": "pedicure.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 6,
+      "fields": {
+        "category": 3,
+        "name": "Hydrating Facial",
+        "description": "Moisturizing facial treatment.",
+        "price": "80.00",
+        "duration": "1:00:00",
+        "rating": "4.8",
+        "image": "faciall.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 7,
+      "fields": {
+        "category": 3,
+        "name": "Anti-Aging Facial",
+        "description": "Revitalizing facial to reduce signs of aging.",
+        "price": "90.00",
+        "duration": "1:15:00",
+        "rating": "4.6",
+        "image": "anti_aging_facial.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 8,
+      "fields": {
+        "category": 4,
+        "name": "Bridal Makeup",
+        "description": "Professional bridal makeup application.",
+        "price": "120.00",
+        "duration": "1:30:00",
+        "rating": "4.9",
+        "image": "bridal_makeup.jpg"
+      }
+    },
+    {
+      "model": "services.service",
+      "pk": 9,
+      "fields": {
+        "category": 4,
+        "name": "Special Occasion Makeup",
+        "description": "Makeup for special events and occasions.",
+        "price": "80.00",
+        "duration": "1:00:00",
+        "rating": "4.3",
+        "image": "special_occasion_makeup.jpg"
+      }
+    }
+  ]
+  

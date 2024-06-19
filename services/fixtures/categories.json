@@ -1,0 +1,35 @@
+[
+    {
+      "model": "services.category",
+      "pk": 1,
+      "fields": {
+        "name": "Hair",
+        "friendly_name": "Hair Services"
+      }
+    },
+    {
+      "model": "services.category",
+      "pk": 2,
+      "fields": {
+        "name": "Nails",
+        "friendly_name": "Nail Services"
+      }
+    },
+    {
+      "model": "services.category",
+      "pk": 3,
+      "fields": {
+        "name": "Facial",
+        "friendly_name": "Facial Treatments"
+      }
+    },
+    {
+      "model": "services.category",
+      "pk": 4,
+      "fields": {
+        "name": "Makeup",
+        "friendly_name": "Makeup Services"
+      }
+    }
+  ]
+  
