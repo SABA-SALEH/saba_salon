@@ -1,20 +1,61 @@
-
 {% extends "base.html" %}
 {% load static %}
 
 {% block page_header %}
-    <div class="container header-container">
+    <div class="container header-container py-5">
         <div class="row">
-            <div class="col"></div>
+            <div class="col text-center">
+                <p class="lead">Discover the range of services we offer to help you look and feel your best.</p>
+            </div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="overlay"></div>
+    <div class="container my-5">
         <div class="row">
-            <div class="col">
-                {{ services }}
+            <div class="col text-center mt-3 mb-4">
+                <h2 class="logo-font">Services</h2>
+                <hr class="w-50 mx-auto mb-1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="service-container col-12">
+                <div class="row">
+                    {% for service in services %}
+                        <div class="col-sm-6 col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-m custom-card-bg">
+                                {% if service.image %}
+                                <a href="">
+                                    <img class="card-img-top img-fluid rounded" src="{{ service.image.url }}" alt="{{ service.name }}">
+                                </a>
+                                {% else %}
+                                <a href="">
+                                    <img class="card-img-top img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
+                                </a>
+                                {% endif %}
+                                <div class="card-body text-center">
+                                    <h5 class="card-title font-weight-bold">{{ service.name }}</h5>
+                                    <p class="card-text">Duration: {{ service.duration }}</p>
+                                </div>
+                                <div class="card-footer bg-white text-center">
+                                    <p class="lead mb-0 font-weight-bold">${{ service.price }}</p>
+                                    {% if service.rating %}
+                                        <small class="text-muted"><i class="fas fa-star mr-1"></i>{{ service.rating }} / 5</small>
+                                    {% else %}
+                                        <small class="text-muted">No Rating</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 %}
+                            <div class="col-12 mb-5">
+                                <hr>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

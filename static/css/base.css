@@ -3,7 +3,6 @@ html {
 }
 
 
-
 .icon {
     align-items: center;
     display: inline-flex;
@@ -126,3 +125,64 @@ html {
 .btn-book-now:hover {
     background-color: #A87676;
 }
+
+
+.custom-card-bg {
+    border-radius: 10px; 
+    transition: transform 0.3s ease; 
+
+}
+
+.custom-card-bg:hover {
+    transform: translateY(-5px); 
+}
+
+.custom-card-bg .card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+.card-body {
+    padding: 1.5rem;
+ 
+}
+
+.card-footer {
+    border-top: none;
+    background-color: #FFD0D0 !important;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    
+    
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #777;
+}
+
+
+.header-container {
+    background: linear-gradient(to right, #FFD0D0, #CA8787);
+    color: white;
+    padding: 4rem 0;
+    margin-top: 150px;
+}
+
+.header-container p {
+    font-size: 2rem;
+    max-width: 600px; 
+    margin: 0 auto; 
+    line-height: 1.6; 
+}
+
+hr {border-color: #CA8787;}
+
+.shadow-m {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 15px rgba(0, 0, 0, 0.1); 
+}
+
