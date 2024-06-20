@@ -5,12 +5,11 @@
                 All Services
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="all-services-link">
-                <a href="#" class="dropdown-item">Hair</a>
-                <a href="#" class="dropdown-item">Facial</a>
-                <a href="#" class="dropdown-item">Nails</a>
-                <a href="#" class="dropdown-item">Make Up</a>
-                <a href="{% url 'services:all_services' %}" class="dropdown-item">All Services</a>
-
+               <a href="{% url 'services:all_services' %}?category=Hair" class="dropdown-item">Hair</a>
+               <a href="{% url 'services:all_services' %}?category=Facial" class="dropdown-item">Facial</a>
+               <a href="{% url 'services:all_services' %}?category=Nails" class="dropdown-item">Nails</a>
+               <a href="{% url 'services:all_services' %}?category=Makeup" class="dropdown-item">Make Up</a>
+               <a href="{% url 'services:all_services' %}" class="dropdown-item">All Services</a>
             </div>
         </li>
 
