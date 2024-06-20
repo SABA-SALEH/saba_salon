@@ -186,3 +186,31 @@ hr {border-color: #CA8787;}
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 15px rgba(0, 0, 0, 0.1); 
 }
 
+.spacer {
+    height: 100px; 
+}
+.details{background-color: hwb(0 82% 0% / 0.97);
+padding: 10px; 
+border-radius: 5px;}
+
+.service-image {
+    text-align: center;
+}
+
+.service-details {
+    padding: 0 30px;
+   
+}
+
+.btn-primary {
+    background-color:#CA8787;
+    border-color: #CA8787
+}
+.btn-primary:hover {
+    background-color:#A87676;
+    border-color:#A87676;
+}
+
+.service-meta p {
+    margin-bottom: 5px;
+}

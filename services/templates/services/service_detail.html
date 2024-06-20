@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="spacer"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="service-image">
+                {% if service.image %}
+                    <img class="img-fluid rounded" src="{{ service.image.url }}" alt="{{ service.name }}">
+                {% else %}
+                    <img class="img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6 details ">
+            <div class="service-details">
+                <h2 class="font-weight-bold mb-4">{{ service.name }}</h2>
+                <hr>
+                <p class="text-muted">{{ service.description }}</p>
+                <div class="service-meta mt-4">
+                    <p><strong>Price:</strong> ${{ service.price }}</p>
+                    <p><strong>Duration:</strong> {{ service.duration }}</p>
+                    {% if service.rating %}
+                        <p><strong>Rating:</strong> {{ service.rating }}/5</p>
+                    {% else %}
+                        <p><strong>Rating:</strong> No Rating</p>
+                    {% endif %}
+                </div>
+                <a href="#" class="btn btn-primary mt-4">Book Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
