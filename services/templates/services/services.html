@@ -20,6 +20,16 @@
                 <hr class="w-50 mx-auto mb-1">
             </div>
         </div>
+        <div class="row mb-3">
+            <div class="col text-center">
+                <a href="?sort=price&direction=asc" class="btn btn-outline-secondary">Price Low to High</a>
+                <a href="?sort=price&direction=desc" class="btn btn-outline-secondary">Price High to Low</a>
+                <a href="?sort=name&direction=asc" class="btn btn-outline-secondary">Name A-Z</a>
+                <a href="?sort=name&direction=desc" class="btn btn-outline-secondary">Name Z-A</a>
+                <a href="?sort=rating&direction=desc" class="btn btn-outline-secondary">Highest Rating</a>
+                <a href="?sort=rating&direction=asc" class="btn btn-outline-secondary">Lowest Rating</a>
+            </div>
+        </div>
         <div class="row">
             <div class="service-container col-12">
                 <div class="row">
@@ -32,7 +42,6 @@
                                 </a>
                                 {% else %}
                                 <a href="{% url 'services:service_detail' service.id %}">
-
                                     <img class="card-img-top img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
                                 </a>
                                 {% endif %}
