@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Service, Category
-
-# Register your models here.
+from .models import Service, Category, Booking
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
@@ -11,6 +9,7 @@ class ServiceAdmin(admin.ModelAdmin):
         'duration',
         'rating',
         'image',
+        'available_times',
     )
     ordering = ('name',)
 
@@ -20,5 +19,20 @@ class CategoryAdmin(admin.ModelAdmin):
         'name',
     )
 
+class BookingAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'service',
+        'date',
+        'time',
+        'created_at',
+    )
+    list_filter = (
+        'date',
+        'time',
+        'service',
+    )
+
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Booking, BookingAdmin)

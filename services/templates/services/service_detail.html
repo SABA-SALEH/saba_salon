@@ -11,9 +11,9 @@
         <div class="col-lg-6">
             <div class="service-image">
                 {% if service.image %}
-                    <img class="img-fluid rounded" src="{{ service.image.url }}" alt="{{ service.name }}">
+                <img class="img-fluid rounded" src="{{ service.image.url }}" alt="{{ service.name }}">
                 {% else %}
-                    <img class="img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
+                <img class="img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
                 {% endif %}
             </div>
         </div>
@@ -26,14 +26,89 @@
                     <p><strong>Price:</strong> ${{ service.price }}</p>
                     <p><strong>Duration:</strong> {{ service.duration }}</p>
                     {% if service.rating %}
-                        <p><strong>Rating:</strong> {{ service.rating }}/5</p>
+                    <p><strong>Rating:</strong> {{ service.rating }}/5</p>
                     {% else %}
-                        <p><strong>Rating:</strong> No Rating</p>
+                    <p><strong>Rating:</strong> No Rating</p>
                     {% endif %}
                 </div>
-                <a href="#" class="btn btn-primary mt-4">Book Now</a>
+
+                <form id="bookingForm" method="POST" action="{% url 'services:book_service' service.id %}">
+                    {% csrf_token %}
+                    <div class="form-group mb-4">
+                        <label for="booking_date">Select Date:</label>
+                        <input type="date" id="booking_date" name="booking_date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking_time">Available Times:</label>
+                        <select id="booking_time" name="booking_time" class="form-control" required>
+                            <option value="" disabled selected>Select a time</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Book Now</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+
+    document.getElementById('booking_date').addEventListener('change', function (event) {
+        var bookingDate = event.target.value;
+
+        fetch("{% url 'services:get_available_times' service.id %}?booking_date=" + bookingDate)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Available Times Response:', data);
+
+                fetch("{% url 'services:get_booked_times' service.id %}?booking_date=" + bookingDate)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(bookedTimesData => {
+                        console.log('Booked Times Response:', bookedTimesData);
+
+                        var availableTimes = data.available_times;
+                        var bookedTimes = bookedTimesData.booked_times;
+
+                        console.log('Available Times:', availableTimes);
+                        console.log('Booked Times:', bookedTimes);
+
+                        var filteredTimes = availableTimes.filter(time => {
+                            return !bookedTimes.some(bookedTime => bookedTime.includes(time));
+                        });
+
+                        console.log('Filtered Times:', filteredTimes);
+
+                        var timesSelect = document.getElementById('booking_time');
+                        timesSelect.innerHTML = '<option value="" disabled selected>Select a time</option>';
+
+                        filteredTimes.forEach(function (timeSlot) {
+                            var option = document.createElement('option');
+                            option.value = timeSlot;
+                            option.textContent = timeSlot;
+                            timesSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching booked times:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Error fetching available times:', error);
+            });
+    });
+
+</script>
+
 {% endblock %}
