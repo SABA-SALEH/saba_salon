@@ -4,7 +4,10 @@ from django.db.models import Q
 from .models import Service, Category , Booking
 from django.http import JsonResponse
 from datetime import datetime
-from datetime import datetime
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 
 def all_services(request):
@@ -80,6 +83,7 @@ def service_detail(request, service_id):
     """ A view to show individual service details and handle booking """
 
     service = get_object_or_404(Service, pk=service_id)
+    additional_services = Service.objects.exclude(pk=service_id)
 
     if request.method == 'POST':
         booking_date = request.POST.get('booking_date')
@@ -96,27 +100,73 @@ def service_detail(request, service_id):
                 time=booking_time
             )
             messages.success(request, 'Your booking has been confirmed!')
-
             return redirect('service_detail', service_id=service_id)
 
     if request.method == 'GET':
         booking_date = request.GET.get('booking_date')  
-    if not booking_date:
-        booking_date = datetime.now().date()  
+        if not booking_date:
+            booking_date = datetime.now().date()  
 
     available_times = service.get_available_times(booking_date)
 
     context = {
         'service': service,
+        'additional_services': additional_services,
         'available_times': available_times,
     }
 
     return render(request, 'services/service_detail.html', context)
 
 
+
+class MockBooking:
+    def __init__(self, user, service, date, time):
+        self.user = user
+        self.service = service
+        self.date = date
+        self.time = time
+        self.created_at = timezone.now()
+
+@login_required
+@csrf_protect
 def book_service(request, service_id):
-    service = get_object_or_404(Service, pk=service_id)
-    return render(request, 'services/book_service.html')
+    if request.method == 'POST':
+        service_id = request.POST.get('service_id')
+        booking_date = request.POST.get('booking_date')
+        booking_time = request.POST.get('booking_time')
+
+        service = Service.objects.get(id=service_id)
+        user = request.user
+
+        booking = MockBooking(
+            user=user,
+            service=service,
+            date=booking_date,
+            time=booking_time,
+        )
+
+        additional_service_id = request.POST.get('additional_service')
+        additional_booking = None
+        if additional_service_id:
+            additional_booking_date = request.POST.get('additional_booking_date')
+            additional_booking_time = request.POST.get('additional_booking_time')
+            additional_service = Service.objects.get(id=additional_service_id)
+            additional_booking = MockBooking(
+                user=user,
+                service=additional_service,
+                date=additional_booking_date,
+                time=additional_booking_time,
+            )
+
+        context = {
+            'booking': booking,
+            'additional_booking': additional_booking,
+        }
+
+        
+        return render(request, 'services/book_service.html', context)
+    
+    return HttpResponse("Invalid request method.", status=405)
 
 
 def get_available_times(request, service_id):

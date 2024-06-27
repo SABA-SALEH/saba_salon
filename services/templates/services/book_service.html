@@ -1,11 +1,56 @@
-<!-- book_service.html -->
-
 {% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="spacer"></div>
+{% endblock %}
 
 {% block content %}
-<h1>helooooooooooooooooooooooooooooooooooo</h1>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">Client Information</h2>
+                    <hr>
+                    <p><strong>Name:</strong> {{ request.user.username }}</p>
+                    <p><strong>Email:</strong> {{ request.user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">Booking Details</h2>
+                    <hr>
+                    <p><strong>Service:</strong> {{ booking.service.name }}</p>
+                    <p><strong>Date:</strong> {{ booking.date }}</p>
+                    <p><strong>Time:</strong> {{ booking.time }}</p>
+                    <p><strong>Price:</strong> ${{ booking.service.price }}</p>
+                    <p><strong>Duration:</strong> {{ booking.service.duration }} minutes</p>
 
+                    {% if additional_booking %}
+                    <h3 class="card-title text-primary mt-4">Additional Service Booking</h3>
+                    <hr>
+                    <p><strong>Service:</strong> {{ additional_booking.service.name }}</p>
+                    <p><strong>Date:</strong> {{ additional_booking.date }}</p>
+                    <p><strong>Time:</strong> {{ additional_booking.time }}</p>
+                    <p><strong>Price:</strong> ${{ additional_booking.service.price }}</p>
+                    <p><strong>Duration:</strong> {{ additional_booking.service.duration }} minutes</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary btn mx-2 mb-4">Book Now</button>
+        <button class="btn btn-secondary btn mx-2 mb-4">Add to Cart</button>
+    </div>
+</div>
+{% endblock %}
 
-
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/book_service.css' %}">
 {% endblock %}
