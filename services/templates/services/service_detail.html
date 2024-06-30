@@ -20,7 +20,7 @@
         <div class="col-lg-6 details">
             <div class="service-details">
 
-                <form id="bookingForm" method="POST" action="{% url 'services:book_service' service.id %}">
+                <form id="bookingForm" method="POST" action="{% url 'cart:add_to_cart' service.id %}">
                     {% csrf_token %}
                     <input type="hidden" name="service_id" value="{{ service.id }}">
 
@@ -39,12 +39,12 @@
 
                     <div class="form-group mb-4">
                         <label for="booking_date">Select Date:</label>
-                        <input type="date" id="booking_date" name="booking_date" class="form-control" required>
+                        <input type="date" id="booking_date" name="date" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="booking_time">Available Times:</label>
-                        <select id="booking_time" name="booking_time" class="form-control" required>
+                        <select id="booking_time" name="time" class="form-control" required>
                             <option value="" disabled selected>Select a time</option>
                         </select>
                     </div>
@@ -84,8 +84,9 @@
 
                     <button type="button" id="toggleAdditionalService" class="btn btn-secondary mt-4">Add Another
                         Service</button>
-                    <button type="submit" class="btn btn-primary mt-4 ml-2">Next</button>
+                    <button type="submit" class="btn btn-primary mt-4 ml-2">Add to Cart</button>
                 </form>
+
             </div>
         </div>
     </div>

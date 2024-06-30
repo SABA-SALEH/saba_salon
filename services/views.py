@@ -127,47 +127,6 @@ class MockBooking:
         self.time = time
         self.created_at = timezone.now()
 
-@login_required
-@csrf_protect
-def book_service(request, service_id):
-    if request.method == 'POST':
-        service_id = request.POST.get('service_id')
-        booking_date = request.POST.get('booking_date')
-        booking_time = request.POST.get('booking_time')
-
-        service = Service.objects.get(id=service_id)
-        user = request.user
-
-        booking = MockBooking(
-            user=user,
-            service=service,
-            date=booking_date,
-            time=booking_time,
-        )
-
-        additional_service_id = request.POST.get('additional_service')
-        additional_booking = None
-        if additional_service_id:
-            additional_booking_date = request.POST.get('additional_booking_date')
-            additional_booking_time = request.POST.get('additional_booking_time')
-            additional_service = Service.objects.get(id=additional_service_id)
-            additional_booking = MockBooking(
-                user=user,
-                service=additional_service,
-                date=additional_booking_date,
-                time=additional_booking_time,
-            )
-
-        context = {
-            'booking': booking,
-            'additional_booking': additional_booking,
-        }
-
-        
-        return render(request, 'services/book_service.html', context)
-    
-    return HttpResponse("Invalid request method.", status=405)
-
 
 def get_available_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
