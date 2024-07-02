@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
-from services.models import Service
+from datetime import datetime
+from services.models import Service, Booking
+from datetime import datetime
+from django.http import JsonResponse
 
 @login_required
 def add_to_cart(request, service_id):
     """ Add a service booking to the cart """
     if request.method == 'POST':
         try:
-            service_id = str(service_id)  
+            service_id = str(service_id)
         except ValueError:
             messages.error(request, 'Invalid service ID.')
             return redirect('services:services')
@@ -35,7 +38,7 @@ def add_to_cart(request, service_id):
         additional_service_id = request.POST.get('additional_service')
         if additional_service_id:
             try:
-                additional_service_id = str(additional_service_id)  
+                additional_service_id = str(additional_service_id)
                 additional_service = get_object_or_404(Service, id=additional_service_id)
                 additional_booking_date = request.POST.get('additional_booking_date')
                 additional_booking_time = request.POST.get('additional_booking_time')
@@ -56,6 +59,7 @@ def add_to_cart(request, service_id):
                 messages.error(request, 'Invalid additional service ID.')
 
         request.session['cart'] = cart
+        request.session.modified = True  
         return redirect('cart:view_cart')
 
     return redirect('services:services')
@@ -149,3 +153,80 @@ def checkout(request):
         return redirect('services:services')
 
     return render(request, 'cart/checkout.html', context)
+
+
+@login_required
+def edit_cart_item(request, service_id):
+    cart = request.session.get('cart', {})
+    if str(service_id) not in cart:
+        messages.error(request, 'Service not found in cart.')
+        return redirect('cart:view_cart')
+
+    service = get_object_or_404(Service, id=int(service_id))
+    item = cart[str(service_id)]
+
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+
+        if not date or not time:
+            messages.error(request, 'Date or time cannot be empty.')
+            return redirect('cart:view_cart')
+
+        try:
+            date = datetime.strptime(date, '%Y-%m-%d').date()
+            time = datetime.strptime(time, '%H:%M').time()
+        except ValueError:
+            messages.error(request, 'Invalid date or time format.')
+            return redirect('cart:view_cart')
+
+        existing_bookings = Booking.objects.filter(service=service, date=date).values_list('time', flat=True)
+        if existing_bookings.exists() and not (date.isoformat() == item['date'] and time.strftime('%H:%M') == item['time']):
+            messages.error(request, f'The time slot {time.strftime("%H:%M")} on {date.strftime("%Y-%m-%d")} is already booked. Please choose another time.')
+            return redirect('cart:view_cart')
+
+        item['date'] = date.isoformat()
+        item['time'] = time.strftime('%H:%M')  
+
+        cart[str(service_id)] = item
+        request.session['cart'] = cart
+        messages.success(request, f'{service.name} updated in cart.')
+        return redirect('cart:view_cart')
+
+    available_times = service.get_available_times(datetime.now().date())  
+
+    context = {
+        'service': service,
+        'item': item,
+        'available_times': available_times,
+    }
+
+    return render(request, 'cart/edit_cart_item.html', context)
+
+
+@login_required
+def get_booked_times(request, service_id):
+    if request.method == 'GET' and 'booking_date' in request.GET:
+        service = get_object_or_404(Service, pk=service_id)
+        booking_date = request.GET['booking_date']
+        booked_times_qs = Booking.objects.filter(service=service, date=booking_date).values_list('time', flat=True)
+        booked_times = list(booked_times_qs)
+        data = {
+            'booked_times': booked_times
+        }
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def get_available_times(request, service_id):
+    if request.method == 'GET' and 'booking_date' in request.GET:
+        service = get_object_or_404(Service, pk=service_id)
+        booking_date = request.GET['booking_date']
+        available_times = service.get_available_times(booking_date)
+        data = {
+            'available_times': available_times
+        }
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)

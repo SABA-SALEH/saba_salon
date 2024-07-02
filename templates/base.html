@@ -108,9 +108,7 @@
     
   </header>
 
-    {% if messages %}
-        <div class="message-container"></div>
-    {% endif %}
+   
 
     {% block page_header %}
     {% endblock %}
@@ -119,6 +117,10 @@
     {% endblock %}
 
     {% block postloadjs %}
+    <script type="text/javascript">
+        $('.toast').toast('show');
+    </script>
+   
     {% endblock %}
 
 
