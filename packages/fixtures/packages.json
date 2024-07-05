@@ -1,0 +1,35 @@
+[
+    {
+        "model": "packages.package",
+        "pk": 11,
+        "fields": {
+            "name": "New Client Deal",
+            "description": "Special introductory package for new clients.",
+            "price": "150.00",
+            "saving_price": "100.00",
+            "services": [1, 2, 3]
+        }
+    },
+    {
+        "model": "packages.package",
+        "pk": 12,
+        "fields": {
+            "name": "Platinum Pamper Package",
+            "description": "A luxurious pamper package offering a comprehensive set of beauty services.",
+            "price": "300.00",
+            "saving_price": "200.00",
+            "services": [1, 2, 3, 4, 5, 6]
+        }
+    },
+    {
+        "model": "packages.package",
+        "pk": 13,
+        "fields": {
+            "name": "Unlimited Beauty Package",
+            "description": "Unlimited access to all beauty services with no restrictions.",
+            "price": "400.00",
+            "saving_price": "500.00",
+            "services": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+    }
+]

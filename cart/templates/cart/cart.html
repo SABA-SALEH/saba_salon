@@ -32,52 +32,101 @@
     <hr class="mb-4">
     {% if cart %}
     <div class="table-responsive">
+<h3>Services</h3>
         <table class="table table-bordered table-striped">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Date and Time</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-            {% for item in cart %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
-                <td>
-                    <form id="form_{{ item.service.id }}" method="POST"
-                        action="{% url 'cart:edit_cart_item' item.service.id %}">
-                        {% csrf_token %}
-                        <input id="date_{{ item.service.id }}" type="date" name="date" value="{{ item.date }}"
-                            class="form-control booking-date" required>
-                        <input type="hidden" name="service_id" value="{{ item.service.id }}">
-                        <select id="booking_time_{{ item.service.id }}" name="time" class="form-control booking-time"
-                            required>
-                            <option value="{{ item.time }}" selected>{{ item.time }}</option>
-                        </select>
-                <td>${{ item.price }}</td>
-                <td>
-                    <button type="submit" class="btn  btn-sm">Save Changes</button>
-                    <a href="{% url 'cart:remove_from_cart' item.service.id %}" class="btn  btn-sm">Remove</a>
-                </td>
-                </form>
-                </td>
-            </tr>
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Date and Time</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.services %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                        <form id="form_{{ item.service.id }}" method="POST"
+                            action="{% url 'cart:edit_cart_item' item.service.id %}">
+                            {% csrf_token %}
+                            <input id="date_{{ item.service.id }}" type="date" name="date" value="{{ item.date }}"
+                                class="form-control booking-date" required>
+                            <input type="hidden" name="service_id" value="{{ item.service.id }}">
+                            <select id="booking_time_{{ item.service.id }}" name="time"
+                                class="form-control booking-time" required>
+                                <option value="{{ item.time }}" selected>{{ item.time }}</option>
+                                
+                            </select>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <button type="submit" class="btn btn-sm">Save Changes</button>
+                        <a href="{% url 'cart:remove_from_cart' 'service' item.service.id %}"
+                            class="btn btn-sm">Remove</a>
+                    </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-    </div>
-    <div class="mt-4">
-        <h3 class="float-right">Total: ${{ total }}</h3>
-    </div>
-    <div class="clearfix"></div>
-    <div class="text-right mt-4">
-        <a href="{% url 'cart:checkout' %}" class="btn  btn-lg">Proceed to Checkout</a>
-    </div>
+    
     {% else %}
-    <div class="alert alert-warning" role="alert">
+    <div class="alert alert-warning mt-5" role="alert">
         Your cart is empty.
     </div>
     {% endif %}
+</div>
+
+{% if cart.packages %}
+<div class="table-responsive mt-5">
+    <h3>Packages</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.packages %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td>${{ item.price }}</td>
+                <td>
+                    <a href="{% url 'cart:remove_from_cart' 'package' item.package.id %}"
+                        class="btn btn-sm">Remove</a>
+                </td>
+            </tr>
+            {% for service in item.services %}
+            <tr>
+                <td colspan="4" class="pl-5">Included Service: {{ service.name }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if cart.services or cart.packages %}
+<div class="mt-4">
+    <h3 class="float-right">Total: ${{ total }}</h3>
+</div>
+<div class="clearfix"></div>
+<div class="text-right mt-4">
+    <a href="{% url 'cart:checkout' %}" class="btn btn-lg">Proceed to Checkout</a>
+</div>
+{% else %}
+<div class="alert alert-warning mt-5" role="alert">
+    Your cart is empty.
+</div>
+{% endif %}
 </div>
 {% endblock %}
 

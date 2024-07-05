@@ -12,9 +12,18 @@
             <div>
                 <h5>{{ item.name }}</h5>
                 <p>{{ item.description }}</p>
+                {% if item.type == 'service' %}
                 <p><strong>Date:</strong> {{ item.date }}</p>
                 <p><strong>Time:</strong> {{ item.time }}</p>
+                {% endif %}
                 <p><strong>Price:</strong> ${{ item.price }}</p>
+                {% if item.type == 'package' and item.services %}
+                <ul>
+                    {% for service in item.services %}
+                    <li>Included Service: {{ service.name }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </li>
         {% endfor %}
