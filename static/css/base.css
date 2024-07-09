@@ -91,15 +91,6 @@ html {
     font-weight: bold;
 }
 
-.col-md-6 {
-   
-    background-color:#FFD0D0;
-    background-size: cover;
-    background-position: center;
-    color:black; 
-    text-align: center; 
-    padding: 0; 
-}
 
 .service-description {
    padding: 10px;

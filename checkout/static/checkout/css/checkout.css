@@ -1,0 +1,137 @@
+body {
+    background-color: #ffd0d080;
+
+}
+
+
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.order-summary,
+.order-form {
+    border: 1px solid #ddd;
+    padding: 50px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary h2,
+.order-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #CA8787;
+    font-weight: bold;
+}
+
+.order-summary ul {
+    padding-left: 0;
+}
+
+.order-summary ul li {
+    list-style: none;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.order-summary ul li:last-child {
+    border-bottom: none;
+}
+
+.order-summary h3 {
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: right;
+    color: #CA8787;
+    font-weight: bold;
+}
+
+.order-form form {
+    margin-top: 20px;
+}
+
+.order-form p {
+    font-size: 14px;
+    color: #CA8787;
+    text-align: center;
+}
+
+.order-form .form-group {
+    margin-bottom: 1rem;
+}
+
+
+.bg-light {
+    background-color: #ffffff !important;
+}
+
+
+
+.submit-button .btn-outline-black:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.submit-button .btn-black {
+    background-color: #000;
+    color: #fff;
+    border: #000;
+}
+
+.submit-button .btn-black:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+
+
+.item-detail {
+    padding: 10px;
+    background-color: #ffd0d029;
+    border-radius: 5px;
+    flex: 1;
+}
+
+.item-price {
+    padding: 10px;
+    background-color: #ffd0d080;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+legend {
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+#card-element {
+    border: 1px solid #FFD0D0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#card-errors {
+    margin-top: 10px;
+}
+
+
+.col-md-6 {
+    text-align: left;
+}

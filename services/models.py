@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import time
+from checkout.models import Order
+import uuid
+from packages.models import Package 
+
 
 class Category(models.Model):
     class Meta:
@@ -34,14 +38,29 @@ class Service(models.Model):
         existing_bookings = Booking.objects.filter(service=self, date=date).values_list('time', flat=True)
         available_times = [time_slot for time_slot in self.available_times if time_slot not in existing_bookings]
         return available_times
-
+        
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    date = models.DateField()
-    time = models.TimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True) 
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True) 
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='bookings', null=True, blank=True)  
+
     def __str__(self):
-        return f'Booking for {self.service.name} by {self.user.username} on {self.date} at {self.time}'
+        if self.service:
+            return f'Booking for Service: {self.service.name} by {self.user.username} on {self.date} at {self.time}'
+        elif self.package:
+            return f'Booking for Package: {self.package.name} by {self.user.username}'
+        else:
+            return f'Invalid Booking'
+
+    def get_total_cost(self):
+        if self.service:
+            return self.service.price
+        elif self.package:
+            return self.package.price
+        else:
+            return 0

@@ -67,7 +67,7 @@ def add_to_cart(request, service_id):
         request.session.modified = True
         return redirect('cart:view_cart')
 
-    return redirect('services:services')
+    return redirect('services:all_services')
 
 
 @login_required
@@ -136,67 +136,6 @@ def view_cart(request):
         'total': total,
     }
     return render(request, 'cart/cart.html', context)
-
-
-
-@login_required
-def checkout(request):
-    """ View to handle checkout process """
-    cart = request.session.get('cart', {})
-    if not cart:
-        messages.error(request, 'Your cart is empty.')
-        return redirect('cart:view_cart')
-    
-    booking_items = []
-    total = Decimal('0.00')
-
-    for item_key, item in cart.items():
-        item_parts = item_key.split('_')
-        if len(item_parts) != 2:
-            continue
-
-        item_type, item_id = item_parts
-        item_id = int(item_id)
-
-        if item_type == 'service':
-            service = get_object_or_404(Service, id=item_id)
-            price = Decimal(item['price'])
-            total += price
-            booking_items.append({
-                'type': 'service',
-                'name': item['name'],
-                'description': item['description'],
-                'date': item['date'],
-                'time': item['time'],
-                'price': price,
-                'service': service
-            })
-        elif item_type == 'package':
-            package = get_object_or_404(Package, id=item_id)
-            price = Decimal(item['price'])
-            total += price
-            package_details = {
-                'type': 'package',
-                'name': item['name'],
-                'description': item['description'],
-                'price': price,
-                'package': package,
-                'services': []
-            }
-            
-            booking_items.append(package_details)
-
-    context = {
-        'cart': booking_items,
-        'total': total,
-    }
-
-    if request.method == 'POST':
-        messages.success(request, 'Checkout completed successfully.')
-        request.session['cart'] = {}  
-        return redirect('services:services')
-
-    return render(request, 'cart/checkout.html', context)
 
 
 @login_required

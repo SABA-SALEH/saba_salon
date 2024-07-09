@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="spacer"></div>
+<div class="container checkout-container my-5">
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+
+            <div class="order-summary p-4 bg-light rounded shadow-sm">
+                <h2 class="mb-4 text-center">Booking Details</h2>
+                <hr>
+                <ul class="list-unstyled">
+                    {% for item in cart %}
+                    <li class="mb-3 d-flex flex-column">
+                        <div class="item-detail">
+                            {% if item.type == "service" %}
+                            <strong> Service:</strong> {{ item.name }}<br>
+                            <strong>Description:</strong> {{ item.description }}<br>
+                            <strong>Date:</strong> {{ item.date }}<br>
+                            <strong>Time:</strong> {{ item.time }}<br>
+                            {% elif item.type == "package" %}
+                            <strong>Package:</strong> {{ item.name }}<br>
+                            <strong>Description:</strong> {{ item.description }}<br>
+                            {% endif %}
+                        </div>
+                        <div class="item-price align-self-end">
+                            <strong>Price:</strong> ${{ item.price }}
+                        </div>
+                    </li>
+                    <hr>
+                    {% endfor %}
+                </ul>
+                <h3 class="mt-4 text-right">Total: ${{ total }}</h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="order-form p-4 bg-light rounded shadow-sm">
+                <h2 class="mb-4 text-center">Client Details</h2>
+                <hr>
+                <p class="text-muted text-center">Please fill out the form below to complete your order</p>
+                <form method="post" action="{% url 'checkout:checkout' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ order_form.as_p }}
+                    </div>
+
+                    <fieldset class="px-3">
+                        <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+
+                        <div class="mb-3" id="card-element"></div>
+
+                        <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                    </fieldset>
+
+                    <div class="submit-button text-right mt-5 mb-2">
+                        <a href="{% url 'cart:view_cart' %}" class="btn btn-outline-black rounded-0">
+                            <span class="icon">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="font-weight-bold">Adjust Cart</span>
+                        </a>
+                        <button id="submit-button" class="btn btn-black rounded-0">
+                            <span class="font-weight-bold">Complete Order</span>
+                            <span class="icon">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </button>
+                        <p class="small text-danger my-0">
+                            <span class="icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </span>
+                            <span>Your card will be charged <strong>${{ total|floatformat:2 }}</strong></span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
