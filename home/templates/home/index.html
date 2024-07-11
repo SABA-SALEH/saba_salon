@@ -1,73 +1,65 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_header %}
-    <div class="container header-contianer ">
-        <div class="row">
-            <div class="col mb-2"></div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
-
-<div class="hero-image" >
-
+<div class="hero-image">
+    <div class="hero-text">
+        <h1>Welcome to Saba Salon</h1>
+        <p>Your one-stop destination for beauty and wellness</p>
+    </div>
 </div>
 
 <div class="container mt-5">
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <img src="{% static 'images/facial.jpg' %}" alt="Facials" class="img-fluid">
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="service-card">
+                <img src="{% static 'images/facial.jpg' %}" alt="Facials" class="img-fluid service-image">
+                <div class="service-details">
+                    <h3>FACIALS</h3>
+                    <p>Revitalize your skin with our luxurious facials. Whether you need hydration, anti-aging
+                        solutions, or deep cleansing, our estheticians tailor each treatment for a radiant complexion.
+                    </p>
+                    <a href="{% url 'services:all_services' %}?category=Facial" class="btn btn-book-now">BOOK NOW ></a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <h3>FACIALS</h3>
-            <div class="service-description">
-                <p>Revitalize your skin with our luxurious facials. Whether you need hydration, anti-aging solutions, or deep cleansing, our estheticians tailor each treatment for a radiant complexion.</p>
-                <p>Experience rejuvenation in a serene spa setting. Book your facial appointment to reveal your natural glow and enhance your skin's health and beauty.</p>
-            </div>            
-            <a href="{% url 'services:all_services' %}?category=Facial" class="btn btn-book-now mt-3">BOOK NOW ></a>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <img src="{% static 'images/makeup.jpg' %}" alt="Make Up" class="img-fluid">
-        </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <h3>MAKE UP</h3>
-            <div class="service-description">
-                <p>Enhance your beauty with our professional makeup services. Whether it's for a special occasion or everyday glam, our artists create looks that highlight your best features.</p>
-                <p>Choose from natural to glamorous styles. Book your makeup session today and step out with confidence and grace.</p>
-            </div>            
-            <a href="{% url 'services:all_services' %}?category=Makeup" class="btn btn-book-now mt-3">BOOK NOW ></a>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <img src="{% static 'images/nails.jpg' %}" alt="Nails" class="img-fluid">
-        </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <h3>NAILS</h3>
-            <div class="service-description">
-                <p>Elevate your style with our nail care services. From classic manicures to dazzling nail art, our skilled technicians ensure your nails are as polished as your look.</p>
-                <p>Experience pampering and flawless results with our relaxing nail treatments. Book today for beautiful hands and feet that match your personal style.</p>
-            </div>            
-            <a href="{% url 'services:all_services' %}?category=Nails" class="btn btn-book-now mt-3">BOOK NOW ></a>
+        <div class="col-md-6 mb-4">
+            <div class="service-card">
+                <img src="{% static 'images/makeup.jpg' %}" alt="Make Up" class="img-fluid service-image">
+                <div class="service-details">
+                    <h3>MAKE UP</h3>
+                    <p>Enhance your beauty with our professional makeup services. Whether it's for a special occasion or
+                        everyday glam, our artists create looks that highlight your best features.</p>
+                    <a href="{% url 'services:all_services' %}?category=Makeup" class="btn btn-book-now">BOOK NOW ></a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <img src="{% static 'images/hairstyling.jpg' %}" alt="Hair Styling" class="img-fluid">
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="service-card">
+                <img src="{% static 'images/nails.jpg' %}" alt="Nails" class="img-fluid service-image">
+                <div class="service-details">
+                    <h3>NAILS</h3>
+                    <p>Elevate your style with our nail care services. From classic manicures to dazzling nail art, our
+                        skilled technicians ensure your nails are as polished as your look.</p>
+                    <a href="{% url 'services:all_services' %}?category=Nails" class="btn btn-book-now">BOOK NOW ></a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <h3>HAIR STYLING</h3>
-            <div class="service-description">
-                <p>Transform your look with our expert hair styling. Whether you're seeking a trendy haircut, a stunning updo, or personalized color, our skilled stylists bring your hair dreams to life.</p>
-                <p>Experience precision cuts and professional color treatments in a relaxing salon environment. Book your appointment today and leave feeling confident and beautiful.</p>
-            </div>            
-            <a href="{% url 'services:all_services' %}?category=Hair" class="btn btn-book-now mt-3">BOOK NOW ></a>
+        <div class="col-md-6 mb-4">
+            <div class="service-card">
+                <img src="{% static 'images/hairstyling.jpg' %}" alt="Hair Styling" class="img-fluid service-image">
+                <div class="service-details">
+                    <h3>HAIR STYLING</h3>
+                    <p>Transform your look with our expert hair styling. Whether you're seeking a trendy haircut, a
+                        stunning updo, or personalized color, our skilled stylists bring your hair dreams to life.</p>
+                    <a href="{% url 'services:all_services' %}?category=Hair" class="btn btn-book-now">BOOK NOW ></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}

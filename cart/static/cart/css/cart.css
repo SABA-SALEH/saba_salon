@@ -2,7 +2,7 @@
     position: fixed;
     top: 90px;
     right: 15px;
-    z-index: 99999999999;
+    z-index: 1050;
 }
 
 .custom-toast {
@@ -10,14 +10,13 @@
 }
 
 .toast-capper {
-    height:5px;
+    height: 5px;
 }
 
 .table {
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
-    
 }
 
 .table th {
@@ -28,30 +27,69 @@
     padding: 10px;
     text-align: center;
 }
+
 .table th,
 .table td {
     padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #FFD0D0;
-   
+    vertical-align: middle;
+    border: 1px solid #FFD0D0;
 }
 
 .table td {
     padding: 10px;
-    vertical-align: top;
-    border: 1px solid #FFD0D0;
+    vertical-align: middle;
 }
 
-.btn {
-    background-color:#E1ACAC;
+.table button,
+.table a {
+    background-color: #E1ACAC;
     border-color: #E1ACAC;
     margin: 2px;
     color: #fff;
 }
-.btn:hover {
-    background-color:#A87676;
-    border-color:#A87676;
+
+.table button:hover,
+.table a:hover {
+    background-color: #A87676;
+    border-color: #A87676;
 }
 
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.card-header,
+.card-footer {
+    background-color: #f8f9fa;
+}
 
+.btn-custom {
+    background-color: #A87676;
+    color: #fff;
+}
+
+.btn-custom:hover {
+    background-color: #CA8787;
+}
+
+.total-price {
+    font-size: 1.5rem;
+    color: #A87676;
+    font-weight: bold;
+}
+
+.empty-cart-alert {
+    background-color: #A87676;
+    color: #fff;
+    border-color: #E1ACAC;
+}
+
+.btn {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+h4 {
+    color: #CA8787;
+}
