@@ -70,12 +70,17 @@
                         {{ order_form.as_p }}
                     </div>
 
+
+                    <input type="hidden" name="save_info" id="id_save_info">
+
                     <fieldset class="px-3">
                         <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
 
                         <div class="mb-3" id="card-element"></div>
 
                         <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+
+                        <input type="hidden" value="{{ client_secret }}" name="client_secret">
                     </fieldset>
 
                     <div class="submit-button text-right mt-5 mb-2">
@@ -113,8 +118,17 @@
 {% endblock %}
 
 {% block postloadjs %}
-    {{ block.super }}
-    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
-    {{ client_secret|json_script:"id_client_secret" }}
-    <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+{{ block.super }}
+{{ stripe_public_key|json_script:"id_stripe_public_key" }}
+{{ client_secret|json_script:"id_client_secret" }}
+<script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+
+<!-- JavaScript to set save_info field based on user interaction -->
+<script>
+    const saveInfoCheckbox = document.querySelector('#id_save_info');
+
+    if (saveInfoCheckbox) {
+        saveInfoCheckbox.value = 'save-info';
+    }
+</script>
 {% endblock %}
