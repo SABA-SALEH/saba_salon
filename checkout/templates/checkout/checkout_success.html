@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+{% if messages %}
+<div class="message-container mt-4">
+    {% for message in messages %}
+    {% with message.level as level %}
+    {% if level == 40 %}
+    {% include 'includes/toasts/toast_error.html' %}
+    {% elif level == 30 %}
+    {% include 'includes/toasts/toast_warning.html' %}
+    {% elif level == 25 %}
+    {% include 'includes/toasts/toast_success.html' %}
+    {% else %}
+    {% include 'includes/toasts/toast_info.html' %}
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="spacer"></div>
+<div class="container">
+    <div class="confirmation-container">
+        <div class="confirmation-header">
+            <h2 class="mb-4">Appointment Confirmation</h2>
+        </div>
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Thank you for your booking!</h4>
+            <p class="booking-details">Your appointment number is <strong>{{ order.order_number }}</strong>.</p>
+            <p class="booking-details">A confirmation email has been sent to <strong>{{ email }}</strong>.</p>
+        </div>
+        
+        <div class="summary">
+            <h3>Booking Summary</h3>
+            {% for booking in order.bookings.all %}
+            <div class="summary-item">
+                {% if booking.service %}
+                    <p><strong>Service:</strong> {{ booking.service.name }}</p>
+                    <p><strong>Description:</strong> {{ booking.service.description }}</p>
+                    <p><strong>Date:</strong> {{ booking.date }}</p>
+                    <p><strong>Time:</strong> {{ booking.time }}</p>
+                    <p><strong>Price:</strong> ${{ booking.get_total_cost }}</p>
+                {% elif booking.package %}
+                    <p><strong>Package:</strong> {{ booking.package.name }}</p>
+                    <p><strong>Description:</strong> {{ booking.package.description }}</p>
+                    <p><strong>Price:</strong> ${{ booking.get_total_cost }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="summary-total">
+                <p><strong>Total Paid:</strong> ${{ order.grand_total }}</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'services:all_services' %}" class="btn btn-lg btn-custom">Book Another Appointment</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

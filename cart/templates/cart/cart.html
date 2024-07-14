@@ -30,7 +30,7 @@
 <div class="container my-5">
     <h2 class="mb-4 text-center">YOUR CART</h2>
     <hr class="mb-4">
-    {% if cart %}
+    {% if cart.services or cart.packages %}
     {% if cart.services %}
     <div class="card mb-4">
         <div class="card-header">
@@ -56,8 +56,8 @@
                             <form id="form_{{ item.service.id }}" method="POST"
                                 action="{% url 'cart:edit_cart_item' item.service.id %}">
                                 {% csrf_token %}
-                                <input id="date_{{ item.service.id }}" type="date" name="date" value="{{ item.date }}"
-                                    class="form-control booking-date" required>
+                                <input id="date_{{ item.service.id }}" type="date" name="date"
+                                    value="{{ item.date }}" class="form-control booking-date" required>
                                 <input type="hidden" name="service_id" value="{{ item.service.id }}">
                                 <select id="booking_time_{{ item.service.id }}" name="time"
                                     class="form-control booking-time" required>
@@ -111,20 +111,17 @@
             </table>
         </div>
     </div>
-
-
+    {% endif %}
     <div class="text-right">
         <h3 class="total-price">Total: ${{ total }}</h3>
         <a href="{% url 'checkout:checkout' %}" class="btn btn-lg btn-custom">Proceed to Checkout</a>
     </div>
-
     {% else %}
     <div class="alert alert-warning empty-cart-alert mt-5" role="alert">
         Your cart is empty.
     </div>
     {% endif %}
 </div>
-{% endif %}
 {% endblock %}
 
 {% block postloadjs %}

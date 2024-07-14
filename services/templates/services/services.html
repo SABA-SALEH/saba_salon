@@ -2,6 +2,23 @@
 {% load static %}
 
 {% block page_header %}
+{% if messages %}
+<div class="message-container mt-4">
+    {% for message in messages %}
+    {% with message.level as level %}
+    {% if level == 40 %}
+    {% include 'includes/toasts/toast_error.html' %}
+    {% elif level == 30 %}
+    {% include 'includes/toasts/toast_warning.html' %}
+    {% elif level == 25 %}
+    {% include 'includes/toasts/toast_success.html' %}
+    {% else %}
+    {% include 'includes/toasts/toast_info.html' %}
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</div>
+{% endif %}
     <div class="container header-container py-5">
         <div class="row">
             <div class="col text-center">
@@ -9,6 +26,8 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 {% block content %}

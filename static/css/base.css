@@ -294,3 +294,20 @@ a .total {
     margin-top: 100px;
     font-weight: bold;
 }
+
+
+.message-container {
+    position: fixed;
+    top: 90px;
+    right: 15px;
+    z-index: 1050;
+}
+
+.custom-toast {
+    overflow: visible;
+}
+
+.toast-capper {
+    height: 5px;
+}
+
