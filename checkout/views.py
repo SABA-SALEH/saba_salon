@@ -7,6 +7,8 @@ from decimal import Decimal
 from .forms import OrderForm
 from services.models import Service, Booking
 from packages.models import Package
+from profiles.models import UserProfile
+from profiles.forms import UserProfileForm
 from .models import Order
 from django.conf import settings
 from cart.contexts import cart_contents
@@ -32,7 +34,7 @@ def cache_checkout_data(request):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-@login_required
+
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -92,10 +94,10 @@ def checkout(request):
             order = order_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             order.stripe_pid = pid
-            order.original_cart = json.dumps(cart)
-            order.save()
+            order.original_bag = json.dumps(cart)
             order.order_total = total
             order.grand_total = total
+            order.user_profile = UserProfile.objects.get(user=request.user)
             order.save()
 
             for item in booking_items:
@@ -115,11 +117,8 @@ def checkout(request):
                     )
                 booking.save()
 
-            order.update_totals()
-
             messages.success(request, 'Appointment booked successfully.')
             request.session['cart'] = {}
-
             request.session['save_info'] = 'save-info' in request.POST
 
             return redirect(reverse('checkout:checkout_success', kwargs={'order_number': order.order_number, 'email': order.email}))
@@ -134,7 +133,18 @@ def checkout(request):
         currency=settings.STRIPE_CURRENCY,
     )
 
-    order_form = OrderForm()
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            order_form = OrderForm(initial={
+                'full_name': profile.user.get_full_name(),
+                'email': profile.user.email,
+                'phone_number': profile.default_phone_number,
+            })
+        except UserProfile.DoesNotExist:
+            order_form = OrderForm()
+    else:
+        order_form = OrderForm()
 
     if not stripe_public_key:
         messages.warning(request, 'Stripe public key is missing. Did you forget to set it in your environment?')
@@ -149,10 +159,24 @@ def checkout(request):
 
     return render(request, 'checkout/checkout.html', context)
 
-@login_required
+
 def checkout_success(request, order_number, email):
     save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
+
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        order.user_profile = profile
+        order.save()
+
+        if save_info:
+            profile_data = {
+                'default_phone_number': order.phone_number,
+            }
+            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
+
     messages.success(request, f'Appointment successfully booked! A confirmation email has been sent to {email}.')
 
     context = {

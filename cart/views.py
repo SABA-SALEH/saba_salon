@@ -8,7 +8,6 @@ from packages.models import Package
 from datetime import datetime
 from django.http import JsonResponse
 
-@login_required
 def add_to_cart(request, service_id):
     """ Add a service booking to the cart """
     if request.method == 'POST':
@@ -70,7 +69,6 @@ def add_to_cart(request, service_id):
     return redirect('services:all_services')
 
 
-@login_required
 def remove_from_cart(request, item_type, item_id):
     """ Remove a service or package booking from the cart """
     item_key = f'{item_type}_{item_id}'  
@@ -87,10 +85,6 @@ def remove_from_cart(request, item_type, item_id):
     return redirect('cart:view_cart')
 
 
-
-
-
-@login_required
 def view_cart(request):
     cart = request.session.get('cart', {})
     services = []
@@ -138,7 +132,6 @@ def view_cart(request):
     return render(request, 'cart/cart.html', context)
 
 
-@login_required
 def edit_cart_item(request, service_id):
     cart = request.session.get('cart', {})
     item_key = f'service_{service_id}'
@@ -195,7 +188,6 @@ def edit_cart_item(request, service_id):
     return render(request, 'cart/cart.html', context) 
 
 
-@login_required
 def get_booked_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
@@ -210,7 +202,6 @@ def get_booked_times(request, service_id):
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-@login_required
 def get_available_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
@@ -224,9 +215,6 @@ def get_available_times(request, service_id):
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-
-
-@login_required
 def add_package_to_cart(request, item_id):
     try:
         item_id = int(item_id) 

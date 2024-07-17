@@ -1,0 +1,1 @@
+Saba Salon Booking Confirmation for Order Number {{ order.order_number }}

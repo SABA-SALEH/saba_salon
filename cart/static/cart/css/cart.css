@@ -42,8 +42,8 @@
 
 .table button,
 .table a {
-    background-color: #E1ACAC;
-    border-color: #E1ACAC;
+    background-color: #CA8787;
+    border-color: #CA8787;
     margin: 2px;
     color: #fff;
 }
@@ -52,6 +52,8 @@
 .table a:hover {
     background-color: #A87676;
     border-color: #A87676;
+    color: #fff;
+    
 }
 
 .card {
@@ -66,12 +68,13 @@
 }
 
 .btn-custom {
-    background-color: #A87676;
+    background-color: #CA8787;
     color: #fff;
 }
 
 .btn-custom:hover {
-    background-color: #CA8787;
+    background-color: #A87676;
+    color: #fff;
 }
 
 .total-price {

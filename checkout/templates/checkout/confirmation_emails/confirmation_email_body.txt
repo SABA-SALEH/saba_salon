@@ -1,0 +1,35 @@
+Hello {{ order.full_name }}!
+
+This is a confirmation of your booking at Saba Salon. Your booking information is below:
+
+**Booking Number:** {{ order.order_number }}
+**Booking Date:** {{ order.date }}
+
+**Order Total:** ${{ order.order_total }}
+**Grand Total:** ${{ order.grand_total }}
+
+Your booking includes the following items:
+
+{% for booking in order.bookings.all %}
+    {% if booking.service %}
+        - **Service:** {{ booking.service.name }}
+        - **Description:** {{ booking.service.description }}
+        - **Date:** {{ booking.date }}
+        - **Time:** {{ booking.time }}
+        - **Price:** ${{ booking.get_total_cost }}
+    {% elif booking.package %}
+        - **Package:** {{ booking.package.name }}
+        - **Description:** {{ booking.package.description }}
+        - **Price:** ${{ booking.get_total_cost }}
+    {% endif %}
+{% endfor %}
+
+We've got your phone number on file as {{ order.phone_number }}.
+
+If you have any questions or need to make changes to your booking, feel free to contact us at {{ contact_email }}.
+
+Thank you for choosing Saba Salon!
+
+Sincerely,
+
+The Saba Salon Team

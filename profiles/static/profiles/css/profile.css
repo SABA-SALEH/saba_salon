@@ -1,0 +1,57 @@
+#profile-update-form .form-control {
+    color: #000;
+    border-radius: 5px;
+}
+
+#profile-update-form input::placeholder {
+    color: #aab7c4;
+
+}
+
+
+.container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.text-muted {
+    font-size: 1.1rem;
+}
+
+.order-history table {
+    margin-top: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.order-history th {
+    background-color: #CA8787;
+    color: #fff;
+}
+
+.order-history td,
+.order-history th {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.order-history a {
+    color: #CA8787;
+    text-decoration: none;
+}
+
+.order-history a:hover {
+    text-decoration: underline;
+}
+
+.order-history ul {
+    margin-bottom: 0;
+}
+
+.spacer {
+    margin-top: 2rem;
+}

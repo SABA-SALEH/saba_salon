@@ -63,15 +63,30 @@
             <div class="order-form p-4 bg-light rounded shadow-sm">
                 <h2 class="mb-4 text-center">Client Details</h2>
                 <hr>
-                <p class="text-muted text-center">Please fill out the form below to complete your order</p>
+                <p class="text-muted text-center">Please fill out the form below to complete your booking</p>
                 <form id="payment-form" method="post" action="{% url 'checkout:checkout' %}">
                     {% csrf_token %}
-                    <div class="form-group">
-                        {{ order_form.as_p }}
+                    <fieldset class="rounded px-3 mb-5">
+                        {{ order_form.full_name | as_crispy_field }}
+                        {{ order_form.email | as_crispy_field }}
+                        {{ order_form.phone_number | as_crispy_field }}
+                    </fieldset>
+
+                    <div class="form-check form-check-inline float-right mr-0">
+                        {% if user.is_authenticated %}
+                        <label class="form-check-label text-muted save-info-label" for="id-save-info">Save this information for
+                            future bookings</label>
+                        <input class="form-check-input ml-2 mr-0 save-info-checkbox" type="checkbox" id="id-save-info"
+                            name="save-info" checked>
+                        {% else %}
+                        <label class="form-check-label">
+                            <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
+                            <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                        </label>
+                        {% endif %}
                     </div>
-
-
-                    <input type="hidden" name="save_info" id="id_save_info">
+                    <br>
+                    <input type="hidden" name="client_secret" value="{{ client_secret }}">
 
                     <fieldset class="px-3">
                         <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
@@ -79,19 +94,17 @@
                         <div class="mb-3" id="card-element"></div>
 
                         <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-
-                        <input type="hidden" value="{{ client_secret }}" name="client_secret">
                     </fieldset>
 
                     <div class="submit-button text-right mt-5 mb-2">
-                        <a href="{% url 'cart:view_cart' %}" class="btn btn-outline-black rounded-0">
+                        <a href="{% url 'cart:view_cart' %}" class="btn">
                             <span class="icon">
                                 <i class="fas fa-chevron-left"></i>
                             </span>
                             <span class="font-weight-bold">Adjust Cart</span>
                         </a>
-                        <button id="submit-button" class="btn btn-black rounded-0">
-                            <span class="font-weight-bold">Complete Order</span>
+                        <button id="submit-button" class="btn btn-black rounded">
+                            <span class="font-weight-bold">Complete Booking</span>
                             <span class="icon">
                                 <i class="fas fa-lock"></i>
                             </span>
@@ -125,10 +138,12 @@
 
 <!-- JavaScript to set save_info field based on user interaction -->
 <script>
-    const saveInfoCheckbox = document.querySelector('#id_save_info');
+    const saveInfoCheckbox = document.querySelector('#id-save-info');
 
     if (saveInfoCheckbox) {
-        saveInfoCheckbox.value = 'save-info';
+        saveInfoCheckbox.addEventListener('change', function () {
+            document.querySelector('#id_save_info').value = this.checked ? 'true' : 'false';
+        });
     }
 </script>
 {% endblock %}

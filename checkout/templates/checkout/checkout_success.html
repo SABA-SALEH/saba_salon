@@ -59,10 +59,20 @@
                 <p><strong>Total Paid:</strong> ${{ order.grand_total }}</p>
             </div>
         </div>
-        
-        <div class="text-center mt-4">
-            <a href="{% url 'services:all_services' %}" class="btn btn-lg btn-custom">Book Another Appointment</a>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-lg-7 text-center">
+                {% if from_profile %}
+                    <a href="{% url 'profiles:profile' %}" class="btn btn-lg btn-custom">
+                        Back to Profile
+                    </a>
+                {% else %}
+                    <a href="{% url 'services:all_services' %}" class="btn btn-lg btn-custom">Book Another Appointment</a>
+                {% endif %}
+            </div>
         </div>
+        
+    </div>
+    
     </div>
 </div>
 {% endblock %}
