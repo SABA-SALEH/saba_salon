@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from .forms import ServiceForm
+
 
 
 def all_services(request):
@@ -76,9 +78,6 @@ def all_services(request):
 
     return render(request, 'services/services.html', context)
 
-
-
-
 def service_detail(request, service_id):
     """ A view to show individual service details and handle booking """
 
@@ -117,8 +116,6 @@ def service_detail(request, service_id):
 
     return render(request, 'services/service_detail.html', context)
 
-
-
 class MockBooking:
     def __init__(self, user, service, date, time):
         self.user = user
@@ -126,7 +123,6 @@ class MockBooking:
         self.date = date
         self.time = time
         self.created_at = timezone.now()
-
 
 def get_available_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
@@ -152,3 +148,74 @@ def get_booked_times(request, service_id):
         return JsonResponse(data)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def add_service(request):
+    """ Add a service to the salon """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only salon owners can do that.')
+        return redirect(reverse('services:all_services'))
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            service = form.save()
+            messages.success(request, 'Successfully added service!')
+            return redirect(reverse('services:service_detail', args=[service.id]))
+        else:
+            messages.error(request, 'Failed to add service. Please ensure the form is valid.')
+    else:
+        form = ServiceForm()
+        
+    template = 'services/add_service.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
+
+@login_required
+def edit_service(request, service_id):
+    """ Edit a service in the salon """
+    print(f"User: {request.user}, Superuser: {request.user.is_superuser}")
+
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only salon owners can do that.')
+        return redirect(reverse('home:index'))
+
+    service = get_object_or_404(Service, pk=service_id)
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully updated service!')
+            return redirect(reverse('services:service_detail', args=[service.id]))
+        else:
+            messages.error(request, 'Failed to update service. Please ensure the form is valid.')
+    else:
+        form = ServiceForm(instance=service)
+        messages.info(request, f'You are editing {service.name}')
+
+    template = 'services/edit_service.html'
+    context = {
+        'form': form,
+        'service': service,
+    }
+
+    return render(request, template, context)
+
+@login_required
+def delete_service(request, service_id):
+    """ Delete a service from the salon """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only salon owners can do that.')
+        return redirect(reverse('home:index'))
+
+    service = get_object_or_404(Service, pk=service_id)
+    service.delete()
+    messages.success(request, 'Service deleted!')
+    return redirect(reverse('services:all_services'))
+
+
+
+

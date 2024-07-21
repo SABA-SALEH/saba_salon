@@ -1,0 +1,63 @@
+
+.text-muted {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+.logo-font {
+    text-transform: uppercase;
+    color:#CA8787;
+    font-weight: bold;
+}
+.form {
+    margin-top: 1rem;
+}
+.btn-black {
+    background: #CA8787;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+.btn-black:hover,
+.btn-black:active,
+.btn-black:focus {
+    background: #A87676;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.btn-outline-black {
+    border: 1px solid #CA8787;
+    color: #CA8787;
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+.btn-outline-black:hover,
+.btn-outline-black:active,
+.btn-outline-black:focus {
+    background: #CA8787;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.card {
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    background-color: #fff;
+    transition: box-shadow 0.3s;
+}
+.card:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+}
+.spacer {
+    margin-top: 2rem;
+}
+
+.section-divider {
+    width: 60px;
+    height: 4px;
+    background-color: #CA8787;
+    margin: 0.5rem auto 1.5rem;
+    border: none;
+}

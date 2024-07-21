@@ -362,3 +362,32 @@ h2 {
 .allauth-form-inner-content a {
 	color: #CA8787; 
 }
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.custom-checkbox .custom-control-label::before {
+    border-radius: 5px;
+    border-color: #CA8787;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+    background-color: #CA8787;
+    border-color: #CA8787;
+    border-radius: 0;
+}

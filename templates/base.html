@@ -69,7 +69,8 @@
                       <div class="dropdown-menu border-0" aria-labelledby="user-options">
                           {% if request.user.is_authenticated %}
                               {% if request.user.is_superuser %}
-                                  <a href="" class="dropdown-item">My services</a>
+                                  <a href="{% url 'services:add_service' %}" class="dropdown-item">Service Management</a>
+                                  <a href="{% url 'packages:add_package' %}" class="dropdown-item">Package Management</a>
                               {% endif %}
                               <a href="{% url 'profiles:profile' %}" class="dropdown-item">My Profile</a>
 

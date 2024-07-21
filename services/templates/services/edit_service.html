@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="spacer"></div>
+<div class="col text-center">
+    <h2 class="logo-font mt-4 mb-4">Service Management</h2>
+</div>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h5 class="section-heading">Edit a Service</h5>
+            <hr class="section-divider">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card">
+                <form method="POST" action="{% url 'services:edit_service' service.id %}" class="form mb-2"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    {% if field.name != 'image' %}
+                    {{ field|as_crispy_field }}
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
+                    {% endfor %}
+                    <div class="text-right mt-4">
+                        <a class="btn btn-outline-black mr-2" href="{% url 'services:all_services' %}">Cancel</a>
+                        <button class="btn btn-black" type="submit">Update Service</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+<script type="text/javascript">
+    $('#new-image').change(function () {
+        var file = $('#new-image')[0].files[0];
+        $('#filename').text(`Image will be set to: ${file.name}`);
+    });
+</script>
+{% endblock %}

@@ -6,6 +6,26 @@
 
 {% endblock %}
 
+{% block page_header %}
+{% if messages %}
+<div class="message-container mt-4">
+    {% for message in messages %}
+    {% with message.level as level %}
+    {% if level == 40 %}
+    {% include 'includes/toasts/toast_error.html' %}
+    {% elif level == 30 %}
+    {% include 'includes/toasts/toast_warning.html' %}
+    {% elif level == 25 %}
+    {% include 'includes/toasts/toast_success.html' %}
+    {% else %}
+    {% include 'includes/toasts/toast_info.html' %}
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <div class="container header-container py-5">
     <div class="row">
@@ -38,6 +58,12 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
                     </form>
+                    {% if request.user.is_superuser %}
+                    <small class="ml-3">
+                        <a href="{% url 'packages:edit_package' package.id %}">Edit</a> |
+                        <a class="text-danger" href="{% url 'packages:delete_package' package.id %}">Delete</a>
+                    </small>
+                    {% endif %}
                     <hr>
                     <h3 class="card-subtitle mb-2">Included Services:</h3>
                     <ul class="list-group list-group-flush">
@@ -45,7 +71,7 @@
                         <li class="list-group-item">{{ service.name }} - ${{ service.price }}</li>
                         {% endfor %}
                     </ul>
-
+                    
                 </div>
             </div>
         </div>

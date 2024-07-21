@@ -41,7 +41,16 @@
                     {% csrf_token %}
                     <input type="hidden" name="service_id" value="{{ service.id }}">
 
-                    <h2 class="font-weight-bold mb-4">{{ service.name }}</h2>
+                    <div class="d-flex align-items-center mb-4">
+                        <h2 class="font-weight-bold mb-0">{{ service.name }}</h2>
+                        {% if request.user.is_superuser %}
+                        <small class="ml-3">
+                            <a href="{% url 'services:edit_service' service.id %}">Edit</a> |
+                            <a class="text-danger" href="{% url 'services:delete_service' service.id %}">Delete</a>
+                        </small>
+                        {% endif %}
+                    </div>
+
                     <hr>
                     <p class="text-muted">{{ service.description }}</p>
                     <div class="service-meta mt-4">
@@ -64,6 +73,8 @@
                         <select id="booking_time" name="time" class="form-control" required>
                             <option value="" disabled selected>Select a time</option>
                         </select>
+
+
                     </div>
 
                     <div id="additionalServiceContainer" style="display: none;">
@@ -117,4 +128,3 @@
 {{ block.super }}
 <script src="{% static 'services/js/services.js' %}"></script>
 {% endblock %}
-
