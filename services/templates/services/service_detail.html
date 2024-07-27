@@ -43,6 +43,7 @@
 
                     <div class="d-flex align-items-center mb-4">
                         <h2 class="font-weight-bold mb-0">{{ service.name }}</h2>
+                        
                         {% if request.user.is_superuser %}
                         <small class="ml-3">
                             <a href="{% url 'services:edit_service' service.id %}">Edit</a> |
@@ -52,15 +53,24 @@
                     </div>
 
                     <hr>
+                    {% if average_rating %}
+                    <p>
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= rounded_rating %}
+                            <span class="star filled">★</span>
+                        {% else %}
+                            <span class="star empty">☆</span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% else %}
+                    <p><strong>Rating:</strong> No Rating</p>
+                    {% endif %}
                     <p class="text-muted">{{ service.description }}</p>
                     <div class="service-meta mt-4">
                         <p><strong>Price:</strong> ${{ service.price }}</p>
                         <p><strong>Duration:</strong> {{ service.duration }} minutes</p>
-                        {% if service.rating %}
-                        <p><strong>Rating:</strong> {{ service.rating }}/5</p>
-                        {% else %}
-                        <p><strong>Rating:</strong> No Rating</p>
-                        {% endif %}
+                       
                     </div>
 
                     <div class="form-group mb-4">
@@ -73,8 +83,6 @@
                         <select id="booking_time" name="time" class="form-control" required>
                             <option value="" disabled selected>Select a time</option>
                         </select>
-
-
                     </div>
 
                     <div id="additionalServiceContainer" style="display: none;">
@@ -110,18 +118,22 @@
                         </div>
                     </div>
 
-                    <button type="button" id="toggleAdditionalService" class="btn btn-secondary mt-4">Add Another
-                        Service</button>
+                    <button type="button" id="toggleAdditionalService" class="btn btn-secondary mt-4">Add Another Service</button>
                     <button type="submit" class="btn btn-primary mt-4 ml-2">Add to Cart</button>
                 </form>
-
+                {% if user.is_authenticated %}
+                <a class="btn btn-outline-black " href="{% url 'reviews:add_review' 'service' service.id %}">
+                    Add Review for This Service
+                </a>
+                {% else %}
+                <p class="login-prompt text-muted">
+                    Please <a class="login-link" href="{% url 'account_login' %}">log in</a> to add a review.
+                </p>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
 
 {% block postloadjs %}

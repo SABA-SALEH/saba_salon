@@ -9,12 +9,13 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .forms import ServiceForm
-
+from reviews.models import Review
+from django.db.models import Avg
 
 
 def all_services(request):
     """ A view to show all services, including sorting and search queries """
-
+    
     services = Service.objects.all()
     query = None
     sort = None
@@ -42,16 +43,19 @@ def all_services(request):
         if 'sort' in request.GET:
             sort = request.GET['sort']
             direction = request.GET.get('direction', 'asc')
+            if sort == 'rating':
+                services = services.annotate(avg_rating=Avg('review__rating'))
+                sort = 'avg_rating'
             if direction == 'desc':
                 sort = f'-{sort}'
             services = services.order_by(sort)
 
         if 'q' in request.GET:
             query = request.GET['q']
-            if not query.strip():  
+            if not query.strip():
                 messages.error(request, "You didn't enter any search criteria!")
                 return redirect(reverse('services:all_services'))
-            
+
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             services = services.filter(queries)
 
@@ -63,12 +67,21 @@ def all_services(request):
         selected_category = []
         categories = Category.objects.all()
 
-   
     if not selected_category:
         categories = Category.objects.all()
 
+    services_with_ratings = []
+    for service in services:
+        reviews = Review.objects.filter(service=service)
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        rounded_rating = round(average_rating) if average_rating is not None else None
+        services_with_ratings.append({
+            'service': service,
+            'rounded_rating': rounded_rating,
+        })
+
     context = {
-        'services': services,
+        'services_with_ratings': services_with_ratings,
         'search_term': query,
         'current_categories': categories,
         'current_sorting': current_sorting,
@@ -78,8 +91,11 @@ def all_services(request):
 
     return render(request, 'services/services.html', context)
 
+
+
+
 def service_detail(request, service_id):
-    """ A view to show individual service details and handle booking """
+    """A view to show individual service details and handle booking"""
 
     service = get_object_or_404(Service, pk=service_id)
     additional_services = Service.objects.exclude(pk=service_id)
@@ -99,7 +115,7 @@ def service_detail(request, service_id):
                 time=booking_time
             )
             messages.success(request, 'Your booking has been confirmed!')
-            return redirect('service_detail', service_id=service_id)
+            return redirect('services:service_detail', service_id=service_id)
 
     if request.method == 'GET':
         booking_date = request.GET.get('booking_date')  
@@ -108,13 +124,20 @@ def service_detail(request, service_id):
 
     available_times = service.get_available_times(booking_date)
 
+    reviews = Review.objects.filter(service=service)
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    rounded_rating = round(average_rating) if average_rating is not None else None
+
     context = {
         'service': service,
         'additional_services': additional_services,
         'available_times': available_times,
+        'average_rating': average_rating,
+        'rounded_rating': rounded_rating,
     }
 
     return render(request, 'services/service_detail.html', context)
+
 
 class MockBooking:
     def __init__(self, user, service, date, time):

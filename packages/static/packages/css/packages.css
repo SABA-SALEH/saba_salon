@@ -79,3 +79,57 @@
 .card {
     position: relative;
 }
+
+
+
+.btn-outline-black {
+  
+    color: #CA8787;
+   
+    text-decoration: underline;
+    margin-top: 1rem;
+   text-align: center;
+}
+
+.btn-outline-black:hover,
+.btn-outline-black:active,
+.btn-outline-black:focus {
+    color: #A87676;
+    outline: none;
+}
+
+
+.login-prompt {
+    font-size: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.login-link {
+    color: #CA8787;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-link:hover,
+.login-link:focus {
+    color: #A87676;
+    text-decoration: underline;
+}
+
+
+.star {
+    color: gold;
+    font-size: 1.5em;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: rgb(220, 187, 0);
+}
+
+.star.empty {
+    color: rgb(246, 244, 244);
+}

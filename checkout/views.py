@@ -14,6 +14,7 @@ from django.conf import settings
 from cart.contexts import cart_contents
 import stripe
 import json
+from django.contrib.auth.models import AnonymousUser
 
 @require_POST
 def cache_checkout_data(request):
@@ -35,6 +36,7 @@ def cache_checkout_data(request):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+@login_required
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -97,25 +99,43 @@ def checkout(request):
             order.original_bag = json.dumps(cart)
             order.order_total = total
             order.grand_total = total
-            order.user_profile = UserProfile.objects.get(user=request.user)
+
+            if request.user.is_authenticated:
+                try:
+                    order.user_profile = UserProfile.objects.get(user=request.user)
+                except UserProfile.DoesNotExist:
+                    order.user_profile = None
+                order.user = request.user
+            else:
+                order.user_profile = None
+                order.user = None  
+
             order.save()
 
             for item in booking_items:
-                if item['type'] == 'service':
-                    booking = Booking(
-                        user=request.user,
-                        service=item['service'],
-                        date=item['date'],
-                        time=item['time'],
-                        order=order
-                    )
-                elif item['type'] == 'package':
-                    booking = Booking(
-                        user=request.user,
-                        package=item['package'],
-                        order=order
-                    )
-                booking.save()
+                if request.user.is_authenticated:
+                    if item['type'] == 'service':
+                        booking = Booking(
+                            user=request.user,
+                            service=item['service'],
+                            date=item['date'],
+                            time=item['time'],
+                            order=order
+                        )
+                    elif item['type'] == 'package':
+                        booking = Booking(
+                            user=request.user,
+                            package=item['package'],
+                            order=order
+                        )
+                else:
+                    continue 
+
+                try:
+                    booking.save()
+                except ValidationError as e:
+                    messages.error(request, f'Error creating booking: {e}')
+                    return redirect('cart:view_cart')
 
             messages.success(request, 'Appointment booked successfully.')
             request.session['cart'] = {}

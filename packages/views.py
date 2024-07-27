@@ -11,11 +11,20 @@ def package_list(request):
     packages = Package.objects.all()
     best_deal_package = max(packages, key=lambda package: package.saving_price, default=None)
 
+    packages_with_ratings = []
+    for package in packages:
+        average_rating = package.get_average_rating()
+        packages_with_ratings.append({
+            'package': package,
+            'average_rating': average_rating,
+        })
+
     context = {
-        'packages': packages,
+        'packages_with_ratings': packages_with_ratings,
         'best_deal_package': best_deal_package,
     }
     return render(request, 'packages/package_list.html', context)
+
 
 @login_required
 def add_package(request):

@@ -1,0 +1,141 @@
+.section-bg {
+    background-image: url('/static/contact/images/package.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 0;
+    padding: 0;
+    min-height: auto;
+    overflow: hidden;
+}
+
+.overlay {
+    background:#ffd0d0d4;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: relative;
+    padding: 110px 0;
+}
+
+.contact-info {
+    padding: 0 25px;
+}
+
+.contact-title {
+    font-size: 30px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+
+.contact-info-list {
+    margin-top: 30px;
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info-list li {
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.info-left {
+    width: 10%;
+}
+
+.info-left i {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 30px;
+   
+}
+
+.opening-hours {
+    font-size: 18px; 
+   font-weight:bold;
+   
+}
+
+.info-right h4 {
+    font-size: 18px;
+}
+
+.info-right h4 a {
+    text-decoration: none;
+    color: #000;
+}
+
+.info-right h4 a:hover {
+    text-decoration: underline;
+}
+
+.contact-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.social-links li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.social-links li a {
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #000;
+}
+
+.social-links li a:hover {
+    color: #A87676;}
+
+.map-container {
+    position: relative;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 450px; 
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width: 767px) {
+    .map-container iframe {
+        height: 300px; 
+    }
+}
+
+h3 ,h2 {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 20px; 
+    color: #000; 
+}
+
+h3::before , h2::before{
+    content: '';
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    height: 100%; 
+    width: 10px; 
+    background-color: #CA8787; 
+    z-index: -1; 
+}
+

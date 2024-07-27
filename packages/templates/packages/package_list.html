@@ -3,7 +3,6 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'packages/css/packages.css' %}">
-
 {% endblock %}
 
 {% block page_header %}
@@ -39,39 +38,75 @@
     <h2 class="text-center mb-2 logo-font">Packages</h2>
     <hr class="w-50 mx-auto mb-5">
     <div class="row">
-        {% for package in packages %}
+        {% for package_info in packages_with_ratings %}
         <div class="col-md-4 mb-4">
             <div class="card package-card shadow-sm">
-                <img src="{% static 'packages/images/package.jpg' %}" class="card-img-top" alt="{{ package.name }}">
+                <img src="{% static 'packages/images/package.jpg' %}" class="card-img-top"
+                    alt="{{ package_info.package.name }}">
 
-                {% if package == best_deal_package %}
+                {% if package_info.package == best_deal_package %}
                 <div class="best-deal-tag">Best Deal</div>
                 {% endif %}
 
                 <div class="card-body">
-                    <h2 class="card-title">{{ package.name }}</h2>
+                    <h2 class="card-title">{{ package_info.package.name }}</h2>
                     <hr>
-                    <p class="card-text">{{ package.description }}</p>
-                    <p class="card-text"><strong>Price:</strong> ${{ package.price }}</p>
-                    <p class="card-text"><strong>Saving Price:</strong> ${{ package.saving_price }}</p>
-                    <form method="POST" action="{% url 'cart:add_package_to_cart' item_id=package.id %}" class="mt-3">
+                    {% if package_info.average_rating %}
+                    {% with package_info.average_rating|floatformat:0 as rounded_rating %}
+
+                    <p>
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= rounded_rating|add:"0" %} <span class="star filled">★</span>
+                            {% else %}
+                            <span class="star empty">☆</span>
+                            {% endif %}
+                            {% endfor %}
+                    </p>
+                    {% endwith %}
+                    {% else %}
+                    <p><strong>Rating:</strong> No Rating</p>
+                    {% endif %}
+
+
+                    <p class="card-text">{{ package_info.package.description }}</p>
+                    <p class="card-text"><strong>Price:</strong> ${{ package_info.package.price }}</p>
+                    <p class="card-text"><strong>Saving Price:</strong> ${{ package_info.package.saving_price }}</p>
+
+
+
+                    <form method="POST" action="{% url 'cart:add_package_to_cart' item_id=package_info.package.id %}"
+                        class="mt-3">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
                     </form>
+
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-outline-black"
+                        href="{% url 'reviews:add_review' 'package' package_info.package.id %}">
+                        Add Review for This Package
+                    </a>
+                    {% else %}
+                    <p class="login-prompt text-muted">
+                        Please <a class="login-link" href="{% url 'account_login' %}">log in</a> to add a review
+                    </p>
+                    {% endif %}
+
                     {% if request.user.is_superuser %}
                     <small class="ml-3">
-                        <a href="{% url 'packages:edit_package' package.id %}">Edit</a> |
-                        <a class="text-danger" href="{% url 'packages:delete_package' package.id %}">Delete</a>
+                        <a href="{% url 'packages:edit_package' package_info.package.id %}">Edit</a> |
+                        <a class="text-danger"
+                            href="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
                     </small>
                     {% endif %}
+
                     <hr>
                     <h3 class="card-subtitle mb-2">Included Services:</h3>
                     <ul class="list-group list-group-flush">
-                        {% for service in package.services.all %}
+                        {% for service in package_info.package.services.all %}
                         <li class="list-group-item">{{ service.name }} - ${{ service.price }}</li>
                         {% endfor %}
                     </ul>
-                    
+
                 </div>
             </div>
         </div>

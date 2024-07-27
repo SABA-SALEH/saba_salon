@@ -7,7 +7,6 @@ class ServiceAdmin(admin.ModelAdmin):
         'category',
         'price',
         'duration',
-        'rating',
         'image',
         'available_times',
     )

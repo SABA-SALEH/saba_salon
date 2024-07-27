@@ -4,6 +4,8 @@ from datetime import time
 from checkout.models import Order
 import uuid
 from packages.models import Package 
+from reviews.models import Review
+from django.apps import apps 
 
 
 class Category(models.Model):
@@ -19,14 +21,12 @@ class Category(models.Model):
     def get_friendly_name(self):
         return self.friendly_name
 
-
 class Service(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='services')
     name = models.CharField(max_length=254)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     duration = models.DurationField(null=True, blank=True)
-    rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image = models.ImageField(upload_to='services/', null=True, blank=True)
     available_times = models.JSONField(default=list)  
 
@@ -35,9 +35,17 @@ class Service(models.Model):
     
     def get_available_times(self, date):
         """ Returns available time slots for a given date """
+        Booking = apps.get_model('services', 'Booking') 
         existing_bookings = Booking.objects.filter(service=self, date=date).values_list('time', flat=True)
         available_times = [time_slot for time_slot in self.available_times if time_slot not in existing_bookings]
         return available_times
+
+    def get_average_rating(self):
+        """ Calculates and returns the average rating for this service """
+        Review = apps.get_model('reviews', 'Review') 
+        reviews = Review.objects.filter(service=self)
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        return round(average_rating) if average_rating is not None else None
         
 
 class Booking(models.Model):

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reviews/css/reviews.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container header-container py-5">
+    <div class="row">
+        <div class="col text-center">
+            <p class="lead font-weight-bold">SHARE YOUR EXPERIENCE WITH US</p>
+            <h1 class="lead">Read reviews from our clients or write your own</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center mb-2 logo-font">All Reviews</h2>
+    <hr class="w-50 mx-auto mb-5">
+    {% if reviews %}
+        <ul class="list-group">
+            {% for review in reviews %}
+                <li class="list-group-item mb-3 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="user-icon rounded-circle text-white d-flex justify-content-center align-items-center mr-2">
+                                {{ review.user.username|slice:":1"|upper }}
+                            </div>
+                            <h6 class="mb-0">{{ review.user.username }}</h6>
+                        </div>
+                        <small class="text-muted">Reviewed on: {{ review.created_at }}</small>
+                        <span class="badge p-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star empty">☆</span>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        
+                    </div>
+                    {% if review.service %}
+                        <p class="text-muted mt-2">Service: {{ review.service.name }}</p>
+                    {% elif review.package %}
+                        <p class="text-muted mt-2">Package: {{ review.package.name }}</p>
+                    {% endif %}
+                    <hr>
+                    <p class="mb-1">{{ review.comment }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No reviews found.
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="my-5 mb-5">
+        <h3 class="mb-4">Add a Review</h3>
+
+        <div class="accordion" id="reviewAccordion">
+            {% if services %}
+                <div class="card">
+                    <div class="card-header" id="servicesHeading">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#servicesCollapse" aria-expanded="true" aria-controls="servicesCollapse">
+                                Services
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="servicesCollapse" class="collapse show" aria-labelledby="servicesHeading" data-parent="#reviewAccordion">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for service in services %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'reviews:add_review' 'service' service.id %}">
+                                            {{ service.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if packages %}
+                <div class="card">
+                    <div class="card-header" id="packagesHeading">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#packagesCollapse" aria-expanded="false" aria-controls="packagesCollapse">
+                                Packages
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="packagesCollapse" class="collapse" aria-labelledby="packagesHeading" data-parent="#reviewAccordion">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for package in packages %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'reviews:add_review' 'package' package.id %}">
+                                            {{ package.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="my-5 mb-5">
+        <h3 class="mb-4">Add a Review</h3>
+        <p class="lead">You need to be logged in to add a review.</p>
+        <a href="{% url 'account_login' %}" class="btn btn-primary">Log In</a>
+        <p class="mt-3">If you don't have an account, <a href="{% url 'account_signup' %}">sign up here</a>.</p>
+    </div>
+{% endif %}
+
+</div>
+
+{% endblock %}

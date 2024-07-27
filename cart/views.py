@@ -152,7 +152,7 @@ def edit_cart_item(request, service_id):
         print("Received time:", time) 
 
         if not date or not time:
-            messages.error(request, 'Date or time cannot be empty.')
+            messages.error(request, 'Please select both a date and a time.')
             return redirect('cart:view_cart')
 
         try:
@@ -162,10 +162,6 @@ def edit_cart_item(request, service_id):
             messages.error(request, 'Invalid date or time format.')
             return redirect('cart:view_cart')
 
-        existing_bookings = Booking.objects.filter(service=service, date=date).values_list('time', flat=True)
-        if existing_bookings.exists() and not (date.isoformat() == item['date'] and time.strftime('%H:%M') == item['time']):
-            messages.error(request, f'The time slot {time.strftime("%H:%M")} on {date.strftime("%Y-%m-%d")} is already booked. Please choose another time.')
-            return redirect('cart:view_cart')
 
         item['date'] = date.isoformat()
         item['time'] = time.strftime('%H:%M')

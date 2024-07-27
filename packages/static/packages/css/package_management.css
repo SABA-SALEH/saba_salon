@@ -29,7 +29,6 @@
     border: 1px solid #CA8787;
     color: #CA8787;
     border-radius: 5px;
-    padding: 0.5rem 1.5rem;
     font-size: 1rem;
     transition: background 0.3s, box-shadow 0.3s;
 }
@@ -54,10 +53,21 @@
     margin-top: 2rem;
 }
 
-.section-divider {
-    width: 60px;
-    height: 4px;
-    background-color: #CA8787;
-    margin: 0.5rem auto 1.5rem;
-    border: none;
+
+h3 {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 20px; 
+    color: #000; 
+}
+
+h3::before {
+    content: '';
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    height: 100%; 
+    width: 10px; 
+    background-color: #CA8787; 
+    z-index: -1; 
 }
