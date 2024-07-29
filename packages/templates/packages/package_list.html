@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'packages/css/packages.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 {% endblock %}
 
 {% block page_header %}
@@ -53,7 +54,6 @@
                     <hr>
                     {% if package_info.average_rating %}
                     {% with package_info.average_rating|floatformat:0 as rounded_rating %}
-
                     <p>
                         {% for i in "12345" %}
                         {% if forloop.counter <= rounded_rating|add:"0" %} <span class="star filled">★</span>
@@ -67,12 +67,9 @@
                     <p><strong>Rating:</strong> No Rating</p>
                     {% endif %}
 
-
                     <p class="card-text">{{ package_info.package.description }}</p>
                     <p class="card-text"><strong>Price:</strong> ${{ package_info.package.price }}</p>
                     <p class="card-text"><strong>Saving Price:</strong> ${{ package_info.package.saving_price }}</p>
-
-
 
                     <form method="POST" action="{% url 'cart:add_package_to_cart' item_id=package_info.package.id %}"
                         class="mt-3">
@@ -94,8 +91,7 @@
                     {% if request.user.is_superuser %}
                     <small class="ml-3">
                         <a href="{% url 'packages:edit_package' package_info.package.id %}">Edit</a> |
-                        <a class="text-danger"
-                            href="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
+                        <a href="#" class="text-danger delete-link" data-url="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
                     </small>
                     {% endif %}
 
@@ -113,4 +109,33 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = this.getAttribute('data-url');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this package!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#CA8787',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}

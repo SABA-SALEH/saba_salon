@@ -31,6 +31,7 @@
     <h2 class="mb-4 text-center">YOUR CART</h2>
     <hr class="mb-4">
     {% if cart.services or cart.packages %}
+    
     {% if cart.services %}
     <div class="card mb-4">
         <div class="card-header">
@@ -62,14 +63,12 @@
                                 <select id="booking_time_{{ item.service.id }}" name="time"
                                     class="form-control booking-time" required>
                                     <option value="{{ item.time }}" selected>{{ item.time }}</option>
-
                                 </select>
                         </td>
                         <td>${{ item.price }}</td>
                         <td>
                             <button type="submit" class="btn btn-sm btn-custom">Save Changes</button>
-                            <a href="{% url 'cart:remove_from_cart' 'service' item.service.id %}"
-                                class="btn btn-sm btn-danger">Remove</a>
+                            <a href="#" class="btn btn-sm btn-danger remove-link" data-url="{% url 'cart:remove_from_cart' 'service' item.service.id %}">Remove</a>
                         </td>
                         </form>
                     </tr>
@@ -102,8 +101,7 @@
                         <td>{{ item.description }}</td>
                         <td>${{ item.price }}</td>
                         <td>
-                            <a href="{% url 'cart:remove_from_cart' 'package' item.package.id %}"
-                                class="btn btn-sm btn-danger">Remove</a>
+                            <a href="#" class="btn btn-sm btn-danger remove-link" data-url="{% url 'cart:remove_from_cart' 'package' item.package.id %}">Remove</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -112,10 +110,12 @@
         </div>
     </div>
     {% endif %}
+    
     <div class="text-right">
         <h3 class="total-price">Total: ${{ total }}</h3>
         <a href="{% url 'checkout:checkout' %}" class="btn btn-lg btn-custom">Proceed to Checkout</a>
     </div>
+    
     {% else %}
     <div class="alert alert-warning empty-cart-alert mt-5" role="alert">
         Your cart is empty.
@@ -126,5 +126,29 @@
 
 {% block postloadjs %}
 {{ block.super }}
-<script src="{% static 'cart/js/cart.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.remove-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = this.getAttribute('data-url');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You won’t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#CA8787',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}

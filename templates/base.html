@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     {% endblock %}
 
     {% block extra_css %}
@@ -71,6 +72,8 @@
                               {% if request.user.is_superuser %}
                                   <a href="{% url 'services:add_service' %}" class="dropdown-item">Service Management</a>
                                   <a href="{% url 'packages:add_package' %}" class="dropdown-item">Package Management</a>
+                                  <a href="{% url 'team:add_staff_member' %}" class="dropdown-item">Staff Management</a>
+                                  
                               {% endif %}
                               <a href="{% url 'profiles:profile' %}" class="dropdown-item">My Profile</a>
 

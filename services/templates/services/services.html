@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'packages/css/packages.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+{% endblock %}
+
 {% block page_header %}
 {% if messages %}
 <div class="message-container mt-4">
@@ -22,14 +27,11 @@
 <div class="container header-container py-5 mb-4">
     <div class="row">
         <div class="col text-center">
-            <p class="lead font-weight-bold">EXPERIENCE EXCEPTIONAL SERVICE !</p>
+            <p class="lead font-weight-bold">EXPERIENCE EXCEPTIONAL SERVICE!</p>
             <h1 class="lead">Explore Our Premium Services Tailored Just for You</h1>
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
 
 {% block content %}
@@ -88,11 +90,12 @@
                             {% if item.rounded_rating %}
                             <p>
                                 {% for i in "12345" %}
-                                {% if forloop.counter <= item.rounded_rating %} <span class="star filled">★</span>
-                                    {% else %}
+                                {% if forloop.counter <= item.rounded_rating %} 
+                                    <span class="star filled">★</span>
+                                {% else %}
                                     <span class="star empty">☆</span>
-                                    {% endif %}
-                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
                             </p>
                             {% else %}
                             <p><strong>Rating:</strong> No Rating</p>
@@ -100,8 +103,7 @@
                             {% if request.user.is_superuser %}
                             <small class="ml-3">
                                 <a href="{% url 'services:edit_service' item.service.id %}">Edit</a> |
-                                <a class="text-danger"
-                                    href="{% url 'services:delete_service' item.service.id %}">Delete</a>
+                                <a href="#" class="text-danger delete-link" data-url="{% url 'services:delete_service' item.service.id %}">Delete</a>
                             </small>
                             {% endif %}
                         </div>
@@ -117,4 +119,33 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = this.getAttribute('data-url');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You won’t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#CA8787',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}

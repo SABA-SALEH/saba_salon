@@ -1,36 +1,43 @@
 <div class="collapse navbar-collapse" id="main-nav">
     <ul class="navbar-nav w-auto mx-auto">
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="#" id="all-services-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Services
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="#" id="all-services-link"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Services
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="all-services-link">
-               <a href="{% url 'services:all_services' %}?category=Hair" class="dropdown-item">Hair</a>
-               <a href="{% url 'services:all_services' %}?category=Facial" class="dropdown-item">Facial</a>
-               <a href="{% url 'services:all_services' %}?category=Nails" class="dropdown-item">Nails</a>
-               <a href="{% url 'services:all_services' %}?category=Makeup" class="dropdown-item">Make Up</a>
-               <a href="{% url 'services:all_services' %}?category=All" class="dropdown-item">All Services</a>
+                <a href="{% url 'services:all_services' %}?category=Hair" class="dropdown-item">Hair</a>
+                <a href="{% url 'services:all_services' %}?category=Facial" class="dropdown-item">Facial</a>
+                <a href="{% url 'services:all_services' %}?category=Nails" class="dropdown-item">Nails</a>
+                <a href="{% url 'services:all_services' %}?category=Makeup" class="dropdown-item">Make Up</a>
+                <a href="{% url 'services:all_services' %}?category=All" class="dropdown-item">All Services</a>
             </div>
         </li>
 
         <li class="nav-item">
-    <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'packages:package_list' %}">
-        Packages
-    </a>
-</li>
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'packages:package_list' %}">
+                Packages
+            </a>
+        </li>
 
 
-<li class="nav-item">
-    <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'reviews:review_list' %}">
-        Reviews
-    </a>
-</li>
+        <li class="nav-item">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'reviews:review_list' %}">
+                Reviews
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'team:team_list' %}">
+                Our team
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'contact:contact_us' %}">
                 Contact
             </a>
         </li>
-    
+
     </ul>
 </div>

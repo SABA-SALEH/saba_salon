@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="spacer"></div>
+<div class="col text-center">
+    <h2 class="logo-font mt-4 mb-4">Add Staff Member</h2>
+    <hr class="w-50 mx-auto mb-5">
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="col-12 mb-4">
+                <h3 class="section-heading">Add a New Staff Member</h3>
+            </div>
+            <div class="card">
+                <form method="POST" action="{% url 'team:add_staff_member' %}" class="form mb-2" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="text-right mt-4">
+                        <a class="btn btn-outline-black mr-2" href="{% url 'team:team_list' %}">Cancel</a>
+                        <button class="btn btn-black" type="submit">Add Staff</button>
+                    </div>
+                </form>
+            </div>
+        </div>            
+    </div>
+</div>
+{% endblock %}
