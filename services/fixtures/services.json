@@ -8,7 +8,6 @@
             "description": "Professional haircut service.",
             "price": "50.00",
             "duration": "0:30:00",
-            "rating": "4.5",
             "image": "haircut.jpg",
             "available_times": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"]
         }
@@ -22,7 +21,6 @@
             "description": "Expert hair coloring with premium products.",
             "price": "80.00",
             "duration": "1:30:00",
-            "rating": "4.7",
             "image": "hair_coloring.jpg",
             "available_times": ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30"]
         }
@@ -36,7 +34,6 @@
             "description": "Personalized hair styling for any occasion.",
             "price": "60.00",
             "duration": "1:00:00",
-            "rating": "4.4",
             "image": "hair_styling.jpg",
             "available_times": ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
         }
@@ -50,7 +47,6 @@
             "description": "Classic manicure with nail polish.",
             "price": "25.00",
             "duration": "0:30:00",
-            "rating": "4.0",
             "image": "manicure.jpg",
             "available_times": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"]
         }
@@ -64,7 +60,6 @@
             "description": "Relaxing pedicure with foot massage.",
             "price": "35.00",
             "duration": "0:45:00",
-            "rating": "4.2",
             "image": "pedicure.jpg",
             "available_times": ["09:00", "09:45", "10:30", "11:15", "12:00", "12:45", "13:30", "14:15", "15:00", "15:45", "16:30", "17:15"]
         }
@@ -78,7 +73,6 @@
             "description": "Moisturizing facial treatment.",
             "price": "80.00",
             "duration": "1:00:00",
-            "rating": "4.8",
             "image": "faciall.jpg",
             "available_times": ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
         }
@@ -92,7 +86,6 @@
             "description": "Revitalizing facial to reduce signs of aging.",
             "price": "90.00",
             "duration": "1:15:00",
-            "rating": "4.6",
             "image": "anti_aging_facial.jpg",
             "available_times": ["09:00", "10:15", "11:30", "12:45", "14:00", "15:15", "16:30"]
         }
@@ -106,7 +99,6 @@
             "description": "Professional bridal makeup application.",
             "price": "120.00",
             "duration": "1:30:00",
-            "rating": "4.9",
             "image": "bridal_makeup.jpg",
             "available_times": ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30"]
         }
@@ -120,7 +112,6 @@
             "description": "Makeup for special events and occasions.",
             "price": "80.00",
             "duration": "1:00:00",
-            "rating": "4.3",
             "image": "special_occasion_makeup.jpg",
             "available_times": ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
         }

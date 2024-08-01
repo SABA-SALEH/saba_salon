@@ -220,7 +220,7 @@ legend {
 }
 
 .booking-details {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .summary {
@@ -317,6 +317,14 @@ legend {
     .btn-custom {
         width: 100%;
     }
+
+    .booking-details {
+        font-size: 0.9rem;
+    }
+
+    .order-number {
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -347,4 +355,13 @@ legend {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
+
+    .booking-details {
+        font-size: 0.85rem;
+    }
+
+    .order-number {
+        font-size: 0.8rem;
+    }
 }
+
