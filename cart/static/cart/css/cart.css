@@ -1,9 +1,15 @@
+@viewport {
+    width: device-width;
+}
+
+
 .message-container {
     position: fixed;
     top: 90px;
     right: 15px;
     z-index: 1050;
 }
+
 
 .custom-toast {
     overflow: visible;
@@ -12,6 +18,7 @@
 .toast-capper {
     height: 5px;
 }
+
 
 .table {
     width: 100%;
@@ -53,8 +60,8 @@
     background-color: #A87676;
     border-color: #A87676;
     color: #fff;
-    
 }
+
 
 .card {
     border: none;
@@ -66,6 +73,7 @@
 .card-footer {
     background-color: #f8f9fa;
 }
+
 
 .btn-custom {
     background-color: #CA8787;
@@ -81,6 +89,7 @@
     font-size: 1.5rem;
     color: #A87676;
     font-weight: bold;
+    text-align: right;
 }
 
 .empty-cart-alert {
@@ -95,4 +104,59 @@
 
 h4 {
     color: #CA8787;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.875rem;
+    }
+
+    .btn-custom,
+    .empty-cart-alert {
+        font-size: 1.25rem;
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: center;
+    }
+
+    .table button,
+    .table a {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+    }
+
+    .btn-custom,
+    .total-price,
+    .empty-cart-alert {
+        font-size: 1rem;
+    }
+
+    .card-header h4 {
+        font-size: 1rem;
+    }
+
+    .message-container {
+        top: 60px;
+        right: 10px;
+    }
 }

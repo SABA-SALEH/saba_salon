@@ -6,34 +6,35 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container header-container py-5 mb-4">
-        <div class="row">
-            <div class="col text-center">
-                <p class="lead font-weight-bold">YOUR FEEDBACK MATTERS!</p>
-                <h1 class="lead">Help Us Improve by Sharing Your Experience</h1>
-            </div>
+<div class="container header-container py-5 mb-4">
+    <div class="row custom-row ">
+        <div class="col text-center">
+            <p class="lead font-weight-bold">YOUR FEEDBACK MATTERS!</p>
+            <h1 class="lead">Help Us Improve by Sharing Your Experience</h1>
         </div>
     </div>
+</div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="col">
-                <h3 class="mb-4 mt-4">
-                    Add Review for <span class="entity-name">{{ entity_name }}</span>
-                </h3>
-            </div>
-            <form method="POST" action="" class="shadow p-4 rounded bg-white">
-                {% csrf_token %}
-                {% if entity_type == 'service' %}
-                    <input type="hidden" name="service" value="{{ entity.id }}">
-                {% elif entity_type == 'package' %}
-                    <input type="hidden" name="package" value="{{ entity.id }}">
-                {% endif %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-primary btn-block mt-3">Submit Review</button>
-                <a href="{% url 'reviews:review_list' %}" class="btn btn-outline-secondary btn-block mt-2">Back to Reviews</a>
-            </form>
+<div class="row justify-content-center mb-4 custom-row">
+    <div class="col-md-8">
+        <div class="col">
+            <h3 class="mb-4 mt-4">
+                Add Review for <span class="entity-name">{{ entity_name }}</span>
+            </h3>
         </div>
+        <form method="POST" action="" class="shadow p-4 rounded bg-white">
+            {% csrf_token %}
+            {% if entity_type == 'service' %}
+            <input type="hidden" name="service" value="{{ entity.id }}">
+            {% elif entity_type == 'package' %}
+            <input type="hidden" name="package" value="{{ entity.id }}">
+            {% endif %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary btn-block mt-3">Submit Review</button>
+            <a href="{% url 'reviews:review_list' %}" class="btn btn-outline-secondary btn-block mt-2">Back to
+                Reviews</a>
+        </form>
     </div>
+</div>
 
 {% endblock %}

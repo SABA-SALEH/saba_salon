@@ -1,8 +1,6 @@
 body {
     background-color: #ffd0d080;
-
 }
-
 
 .checkout-container {
     max-width: 1200px;
@@ -62,21 +60,16 @@ body {
     font-size: 14px;
     color: #CA8787;
     text-align: center;
-
 }
 
 .order-form .form-group {
     margin-bottom: 1rem;
     border-radius: 5px;
-
 }
-
 
 .bg-light {
     background-color: #ffffff !important;
 }
-
-
 
 .submit-button .btn-outline-black:hover {
     background-color: #000;
@@ -93,8 +86,6 @@ body {
     background-color: #333;
     color: #fff;
 }
-
-
 
 .item-detail {
     padding: 10px;
@@ -128,22 +119,11 @@ legend {
 #card-element {
     border: 1px solid #FFD0D0;
     padding: 10px;
-
 }
 
 #card-errors {
     margin-top: 10px;
 }
-
-
-.col-md-6 {
-    text-align: left;
-}
-
-.text-danger {
-    text-align: right !important;
-}
-
 
 .StripeElement,
 .stripe-style-input {
@@ -172,18 +152,11 @@ legend {
     color: #aab7c4;
 }
 
-.fieldset-label {
-    position: relative;
-    right: .5rem;
-}
-
 #payment-form .form-control,
 #card-element {
     color: #000;
     border: 1px solid #CA8787;
 }
-
-
 
 #loading-overlay {
     display: none;
@@ -235,7 +208,6 @@ legend {
     border-radius: 5px;
     transition: background-color 0.3s ease;
     text-decoration: none;
-
 }
 
 .btn-custom:hover {
@@ -282,13 +254,97 @@ legend {
     color: #CA8787;
 }
 
- .save-info-label {
-        display: inline-block;
-        font-size: 12px;
-        margin-bottom: 5px;
+.save-info-label {
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.save-info-checkbox {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+@media (max-width: 992px) {
+    .checkout-container {
+        padding: 15px;
     }
 
-    .save-info-checkbox {
-        margin-left: 10px;
-        vertical-align: middle;
+    .order-summary,
+    .order-form {
+        padding: 30px;
     }
+
+    .order-summary h2,
+    .order-form h2 {
+        font-size: 20px;
+    }
+
+    .item-detail,
+    .item-price {
+        padding: 8px;
+    }
+
+    .summary h3 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 10px;
+    }
+
+    .order-summary,
+    .order-form {
+        padding: 20px;
+    }
+
+    .order-summary h2,
+    .order-form h2 {
+        font-size: 18px;
+    }
+
+    .item-detail,
+    .item-price {
+        padding: 6px;
+    }
+
+    .summary h3 {
+        font-size: 1.125rem;
+    }
+
+    .btn-custom {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 5px;
+    }
+
+    .order-summary,
+    .order-form {
+        padding: 15px;
+    }
+
+    .order-summary h2,
+    .order-form h2 {
+        font-size: 16px;
+    }
+
+    .item-detail,
+    .item-price {
+        padding: 5px;
+    }
+
+    .summary h3 {
+        font-size: 1rem;
+    }
+
+    .btn-custom {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}

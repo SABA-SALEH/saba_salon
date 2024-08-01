@@ -40,35 +40,42 @@
     <hr class="w-50 mx-auto mb-5">
     <div class="row">
         {% for staff in staff_members %}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-lg border-0 rounded card-hover">
-                    <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="card-img-top staff-photo">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-3">{{ staff.name }}</h5>
-                        <hr>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ staff.position }}</h6>
-                        <p class="card-text mb-3">{{ staff.bio }}</p>
-                        <hr>
-                        <p class="mb-2"><strong>Email:</strong> <a href="mailto:{{ staff.email }}" class="text-decoration-none">{{ staff.email }}</a></p>
-                        {% if staff.phone_number %}
-                            <p><strong>Phone:</strong> {{ staff.phone_number }}</p>
-                        {% endif %}
-                        {% if user.is_superuser %}
-                            <div class="btn-group mt-4">
-                                <a href="{% url 'team:edit_staff_member' staff.pk %}" class="btn btn-primary btn-sm">Update</a>
-                                <form action="{% url 'team:delete_staff_member' staff.pk %}" method="post" class="delete-form" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </div>
-                        {% endif %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg border-0 rounded card-hover">
+                {% if staff.photo %}
+                <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="card-img-top staff-photo">
+                {% else %}
+                <img src="{% static 'images/noimage.png' %}" alt="No image available" class="card-img-top staff-photo">
+                {% endif %}
+
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-3">{{ staff.name }}</h5>
+                    <hr>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ staff.position }}</h6>
+                    <p class="card-text mb-3">{{ staff.bio }}</p>
+                    <hr>
+                    <p class="mb-2"><strong>Email:</strong> <a href="mailto:{{ staff.email }}"
+                            class="text-decoration-none">{{ staff.email }}</a></p>
+                    {% if staff.phone_number %}
+                    <p><strong>Phone:</strong> {{ staff.phone_number }}</p>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <div class="btn-group mt-4">
+                        <a href="{% url 'team:edit_staff_member' staff.pk %}" class="btn btn-primary btn-sm">Update</a>
+                        <form action="{% url 'team:delete_staff_member' staff.pk %}" method="post" class="delete-form"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
                     </div>
+                    {% endif %}
                 </div>
             </div>
+        </div>
         {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-muted">No staff members found.</p>
-            </div>
+        <div class="col-12 text-center">
+            <p class="text-muted">No staff members found.</p>
+        </div>
         {% endfor %}
     </div>
 </div>

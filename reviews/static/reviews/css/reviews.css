@@ -1,5 +1,3 @@
-
-
 .entity-name {
     color: #CA8787;
     font-weight: bold;
@@ -117,22 +115,28 @@ h3::before {
 
 .mt-3 a:hover {
     text-decoration: underline;
-    color: #b36969; 
+    color: #b36969;
 }
 
 .star {
     color: gold;
-    font-size: 2em; 
-    display: inline-block; 
-    margin-right: 2px; 
+    font-size: 2em;
+    display: inline-block;
+    margin-right: 2px;
 }
 
 .star.filled {
-    
-    color: gold; 
+
+    color: gold;
 }
 
 .star.empty {
     color: lightgray;
 }
 
+
+
+.custom-row {
+    margin-left: 0;
+    margin-right: 0;
+}

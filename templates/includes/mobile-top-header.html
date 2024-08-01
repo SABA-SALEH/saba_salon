@@ -33,6 +33,7 @@
               {% if request.user.is_superuser %}
                   <a href="{% url 'services:add_service' %}" class="dropdown-item">Service Management</a>
                   <a href="{% url 'packages:add_package' %}" class="dropdown-item">Package Management</a>
+                  <a href="{% url 'team:add_staff_member' %}" class="dropdown-item">Staff Management</a>
               {% endif %}
               <a href="{% url 'profiles:profile' %}" class="dropdown-item">My Profile</a>
               <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>

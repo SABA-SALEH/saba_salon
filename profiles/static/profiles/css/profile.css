@@ -5,23 +5,15 @@
 
 #profile-update-form input::placeholder {
     color: #aab7c4;
-
 }
 
 .card-header {
-    background-color: #ffd0d04e;
+    background-color: #ffd0d068;
     color: #CA8787;
     font-weight: bold;
     text-align: center;
 }
 
-.container {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
-}
 
 .text-muted {
     font-size: 1.1rem;
@@ -60,4 +52,44 @@
 
 .spacer {
     margin-top: 2rem;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        margin-top: 15px;
+    }
+
+    .card-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn-black {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .order-history table {
+        font-size: 0.9rem;
+    }
+}
+
+
+h2 {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-color: #CA8787;
+    z-index: -1;
 }

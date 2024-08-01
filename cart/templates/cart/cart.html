@@ -31,7 +31,7 @@
     <h2 class="mb-4 text-center">YOUR CART</h2>
     <hr class="mb-4">
     {% if cart.services or cart.packages %}
-    
+
     {% if cart.services %}
     <div class="card mb-4">
         <div class="card-header">
@@ -57,8 +57,8 @@
                             <form id="form_{{ item.service.id }}" method="POST"
                                 action="{% url 'cart:edit_cart_item' item.service.id %}">
                                 {% csrf_token %}
-                                <input id="date_{{ item.service.id }}" type="date" name="date"
-                                    value="{{ item.date }}" class="form-control booking-date" required>
+                                <input id="date_{{ item.service.id }}" type="date" name="date" value="{{ item.date }}"
+                                    class="form-control booking-date" required>
                                 <input type="hidden" name="service_id" value="{{ item.service.id }}">
                                 <select id="booking_time_{{ item.service.id }}" name="time"
                                     class="form-control booking-time" required>
@@ -68,7 +68,8 @@
                         <td>${{ item.price }}</td>
                         <td>
                             <button type="submit" class="btn btn-sm btn-custom">Save Changes</button>
-                            <a href="#" class="btn btn-sm btn-danger remove-link" data-url="{% url 'cart:remove_from_cart' 'service' item.service.id %}">Remove</a>
+                            <a href="#" class="btn btn-sm btn-danger remove-link"
+                                data-url="{% url 'cart:remove_from_cart' 'service' item.service.id %}">Remove</a>
                         </td>
                         </form>
                     </tr>
@@ -101,7 +102,8 @@
                         <td>{{ item.description }}</td>
                         <td>${{ item.price }}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-danger remove-link" data-url="{% url 'cart:remove_from_cart' 'package' item.package.id %}">Remove</a>
+                            <a href="#" class="btn btn-sm btn-danger remove-link"
+                                data-url="{% url 'cart:remove_from_cart' 'package' item.package.id %}">Remove</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -110,12 +112,12 @@
         </div>
     </div>
     {% endif %}
-    
+
     <div class="text-right">
         <h3 class="total-price">Total: ${{ total }}</h3>
         <a href="{% url 'checkout:checkout' %}" class="btn btn-lg btn-custom">Proceed to Checkout</a>
     </div>
-    
+
     {% else %}
     <div class="alert alert-warning empty-cart-alert mt-5" role="alert">
         Your cart is empty.
@@ -126,6 +128,7 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<script src="{% static 'cart/js/cart.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {

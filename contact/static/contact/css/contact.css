@@ -10,7 +10,7 @@
 }
 
 .overlay {
-    background:#ffd0d0d4;
+    background: #ffd0d0d4;
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -27,7 +27,6 @@
     margin-bottom: 30px;
     text-transform: uppercase;
 }
-
 
 .contact-info-list {
     margin-top: 30px;
@@ -50,13 +49,11 @@
     height: 30px;
     line-height: 30px;
     font-size: 30px;
-   
 }
 
 .opening-hours {
-    font-size: 18px; 
-   font-weight:bold;
-   
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .info-right h4 {
@@ -98,7 +95,8 @@
 }
 
 .social-links li a:hover {
-    color: #A87676;}
+    color: #A87676;
+}
 
 .map-container {
     position: relative;
@@ -109,33 +107,132 @@
 
 .map-container iframe {
     width: 100%;
-    height: 450px; 
+    height: 450px;
     border: 0;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 1199px) {
+    .contact-title {
+        font-size: 28px;
+    }
+
+    .contact-subtitle {
+        font-size: 22px;
+    }
+
     .map-container iframe {
-        height: 300px; 
+        height: 400px;
     }
 }
 
-h3 ,h2 {
+@media only screen and (max-width: 991px) {
+    .contact-info {
+        padding: 0 15px;
+    }
+
+    .contact-title {
+        font-size: 26px;
+    }
+
+    .info-left i {
+        font-size: 24px;
+    }
+
+    .opening-hours {
+        font-size: 16px;
+    }
+
+    .info-right h4 {
+        font-size: 16px;
+    }
+
+    .contact-subtitle {
+        font-size: 20px;
+    }
+
+    .map-container iframe {
+        height: 350px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .contact-title {
+        font-size: 24px;
+    }
+
+    .contact-subtitle {
+        font-size: 18px;
+    }
+
+    .info-left i {
+        font-size: 20px;
+    }
+
+    .opening-hours {
+        font-size: 14px;
+    }
+
+    .info-right h4 {
+        font-size: 14px;
+    }
+
+    .social-links li {
+        margin-right: 10px;
+    }
+
+    .map-container iframe {
+        height: 300px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .contact-title {
+        font-size: 22px;
+    }
+
+    .contact-subtitle {
+        font-size: 16px;
+    }
+
+    .info-left i {
+        font-size: 18px;
+    }
+
+    .opening-hours {
+        font-size: 12px;
+    }
+
+    .info-right h4 {
+        font-size: 12px;
+    }
+
+    .social-links li {
+        margin-right: 8px;
+    }
+
+    .map-container iframe {
+        height: 250px;
+    }
+}
+
+h3,
+h2 {
     position: relative;
     padding-left: 15px;
-    margin-bottom: 20px; 
-    color: #000; 
+    margin-bottom: 20px;
+    color: #000;
 }
 
-h3::before , h2::before{
+h3::before,
+h2::before {
     content: '';
-    position: absolute; 
-    left: 0; 
-    top: 0; 
-    height: 100%; 
-    width: 10px; 
-    background-color: #CA8787; 
-    z-index: -1; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-color: #CA8787;
+    z-index: -1;
 }
-

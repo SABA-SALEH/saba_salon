@@ -4,6 +4,7 @@ from .models import Review
 from .forms import ReviewForm
 from services.models import Service
 from packages.models import Package
+from django.contrib import messages
 
 def review_list(request):
     reviews = Review.objects.all().order_by('-created_at')
@@ -34,6 +35,7 @@ def add_review(request, entity_type, entity_id):
                 review.package = entity
 
             review.save()
+            messages.success(request, 'Your review has been added successfully.')
             return redirect('reviews:review_list')
 
     return render(request, 'reviews/add_review.html', {

@@ -7,28 +7,11 @@
 {% endblock %}
 
 {% block page_header %}
-{% if messages %}
-<div class="message-container mt-4">
-    {% for message in messages %}
-    {% with message.level as level %}
-    {% if level == 40 %}
-    {% include 'includes/toasts/toast_error.html' %}
-    {% elif level == 30 %}
-    {% include 'includes/toasts/toast_warning.html' %}
-    {% elif level == 25 %}
-    {% include 'includes/toasts/toast_success.html' %}
-    {% else %}
-    {% include 'includes/toasts/toast_info.html' %}
-    {% endif %}
-    {% endwith %}
-    {% endfor %}
-</div>
-{% endif %}
 <div class="container header-container py-5 mb-4">
-    <div class="row">
-        <div class="col text-center">
+    <div class="row text-center">
+        <div class="col-12">
             <p class="lead font-weight-bold">EXPERIENCE EXCEPTIONAL SERVICE!</p>
-            <h1 class="lead">Explore Our Premium Services Tailored Just for You</h1>
+            <h1 class="lead">Premium Services Crafted for You</h1>
         </div>
     </div>
 </div>
@@ -90,12 +73,11 @@
                             {% if item.rounded_rating %}
                             <p>
                                 {% for i in "12345" %}
-                                {% if forloop.counter <= item.rounded_rating %} 
-                                    <span class="star filled">★</span>
-                                {% else %}
+                                {% if forloop.counter <= item.rounded_rating %} <span class="star filled">★</span>
+                                    {% else %}
                                     <span class="star empty">☆</span>
-                                {% endif %}
-                                {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
                             </p>
                             {% else %}
                             <p><strong>Rating:</strong> No Rating</p>
@@ -103,7 +85,8 @@
                             {% if request.user.is_superuser %}
                             <small class="ml-3">
                                 <a href="{% url 'services:edit_service' item.service.id %}">Edit</a> |
-                                <a href="#" class="text-danger delete-link" data-url="{% url 'services:delete_service' item.service.id %}">Delete</a>
+                                <a href="#" class="text-danger delete-link"
+                                    data-url="{% url 'services:delete_service' item.service.id %}">Delete</a>
                             </small>
                             {% endif %}
                         </div>
