@@ -10,6 +10,9 @@ from profiles.models import UserProfile
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 class StripeWH_Handler:
     """Handle Stripe webhooks"""
@@ -51,13 +54,15 @@ class StripeWH_Handler:
         pid = intent.id
         cart = intent.metadata.cart
         save_info = intent.metadata.save_info
+        username = intent.metadata.username
+
+        logger.info(f"Received payment_intent.succeeded event: {event}")
+        logger.info(f"Metadata - cart: {cart}, save_info: {save_info}, username: {username}")
 
         billing_details = intent.charges.data[0].billing_details
         grand_total = round(intent.charges.data[0].amount / 100, 2)
-       
 
         profile = None
-        username = intent.metadata.username
         if username != 'AnonymousUser':
             profile = UserProfile.objects.get(user__username=username)
             if save_info:
@@ -81,12 +86,20 @@ class StripeWH_Handler:
             except Order.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
+            except Exception as e:
+                logger.error(f"Error retrieving order: {e}")
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                    status=500
+                )
+
         if order_exists:
             self._send_confirmation_email(order)
-            print('Confirmation email sent successfully.')
+            logger.info('Confirmation email sent successfully.')
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
-                status=200)
+                status=200
+            )
         else:
             order = None
             try:
@@ -123,14 +136,18 @@ class StripeWH_Handler:
             except Exception as e:
                 if order:
                     order.delete()
+                logger.error(f"Error creating order: {e}")
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
-                    status=500)
+                    status=500
+                )
+
         self._send_confirmation_email(order)
-        print('Confirmation email sent successfully.')
+        logger.info('Confirmation email sent successfully.')
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
-            status=200)
+            status=200
+        )
 
     def handle_payment_intent_payment_failed(self, event):
         """
