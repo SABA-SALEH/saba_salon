@@ -60,17 +60,17 @@ class StripeWH_Handler:
         logger.info(f"Received payment_intent.succeeded event: {event}")
         logger.info(f"Metadata - cart: {cart}, save_info: {save_info}, username: {username}")
 
-        
-        if hasattr(intent, 'charges') and intent.charges.data:
-            charges = intent.charges.data
-            billing_details = charges[0].billing_details
-            grand_total = round(charges[0].amount / 100, 2)
-        else:
+        if not hasattr(intent, 'charges') or not intent.charges.data:
             logger.error(f"Missing or empty charges for PaymentIntent ID: {pid}")
+            logger.debug(f"Complete event data: {json.dumps(event, indent=2)}")
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | ERROR: Missing or empty charges',
                 status=400
             )
+
+        charges = intent.charges.data
+        billing_details = charges[0].billing_details
+        grand_total = round(charges[0].amount / 100, 2)
 
         profile = None
         if username != 'AnonymousUser':
