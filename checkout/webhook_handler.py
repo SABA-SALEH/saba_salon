@@ -64,8 +64,10 @@ def handle_payment_intent_succeeded(self, event):
     save_info = intent.metadata.save_info
     username = intent.metadata.username
 
-    billing_details = intent.charges.data[0].billing_details
-    grand_total = round(intent.charges.data[0].amount / 100, 2)
+
+    charges = intent.charges.data
+    billing_details = charges[0].billing_details
+    grand_total = round(charges[0].amount / 100, 2)
     order_total = grand_total 
 
     profile = None
@@ -104,18 +106,11 @@ def handle_payment_intent_succeeded(self, event):
             )
 
     if order_exists:
-        try:
-            self._send_confirmation_email(order)
-            return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
-                status=200
-            )
-        except Exception as e:
-            logger.error(f"Error sending confirmation email for existing order: {e}")
-            return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order, but email sending failed',
-                status=200
-            )
+        self._send_confirmation_email(order)
+        return HttpResponse(
+            content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+            status=200
+        )
     else:
         try:
             order = Order.objects.create(
@@ -127,6 +122,7 @@ def handle_payment_intent_succeeded(self, event):
                 grand_total=grand_total,
                 original_cart=cart,
                 stripe_pid=pid,
+                
             )
             cart_items = json.loads(cart)
             for item_key, item in cart_items.items():
@@ -150,18 +146,11 @@ def handle_payment_intent_succeeded(self, event):
                     )
 
             order.update_totals()
-            try:
-                self._send_confirmation_email(order)
-                return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | SUCCESS: Created order and sent email',
-                    status=200
-                )
-            except Exception as e:
-                logger.error(f"Error sending confirmation email for new order: {e}")
-                return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | SUCCESS: Created order, but email sending failed',
-                    status=200
-                )
+            self._send_confirmation_email(order)
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
+                status=200
+            )
         except Exception as e:
             if order:
                 order.delete()
