@@ -44,7 +44,8 @@ class StripeWH_Handler:
         """
         return HttpResponse(
             content=f'Unhandled webhook received: {event["type"]}',
-            status=200)
+            status=200
+        )
 
     def handle_payment_intent_succeeded(self, event):
         """
@@ -59,15 +60,27 @@ class StripeWH_Handler:
         logger.info(f"Received payment_intent.succeeded event: {event}")
         logger.info(f"Metadata - cart: {cart}, save_info: {save_info}, username: {username}")
 
-        billing_details = intent.charges.data[0].billing_details
-        grand_total = round(intent.charges.data[0].amount / 100, 2)
+        
+        if hasattr(intent, 'charges') and intent.charges.data:
+            charges = intent.charges.data
+            billing_details = charges[0].billing_details
+            grand_total = round(charges[0].amount / 100, 2)
+        else:
+            logger.error(f"Missing or empty charges for PaymentIntent ID: {pid}")
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | ERROR: Missing or empty charges',
+                status=400
+            )
 
         profile = None
         if username != 'AnonymousUser':
-            profile = UserProfile.objects.get(user__username=username)
-            if save_info:
-                profile.default_phone_number = billing_details.phone
-                profile.save()
+            try:
+                profile = UserProfile.objects.get(user__username=username)
+                if save_info:
+                    profile.default_phone_number = billing_details.phone
+                    profile.save()
+            except UserProfile.DoesNotExist:
+                logger.error(f"UserProfile with username {username} does not exist")
 
         order_exists = False
         attempt = 1
@@ -116,7 +129,7 @@ class StripeWH_Handler:
                     if item['type'] == 'service':
                         service_id = item['service_id']
                         service = get_object_or_404(Service, id=service_id)
-                        booking = Booking.objects.create(
+                        Booking.objects.create(
                             user=profile.user if profile else None,
                             service=service,
                             date=item['date'],
@@ -126,7 +139,7 @@ class StripeWH_Handler:
                     elif item['type'] == 'package':
                         package_id = item['package_id']
                         package = get_object_or_404(Package, id=package_id)
-                        booking = Booking.objects.create(
+                        Booking.objects.create(
                             user=profile.user if profile else None,
                             package=package,
                             order=order
@@ -155,4 +168,5 @@ class StripeWH_Handler:
         """
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
-            status=200)
+            status=200
+        )
