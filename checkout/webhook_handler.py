@@ -4,7 +4,6 @@ from .models import Order
 from services.models import Service, Booking
 from packages.models import Package
 import json
-import time
 import stripe
 from profiles.models import UserProfile
 from django.core.mail import send_mail
@@ -64,7 +63,23 @@ class StripeWH_Handler:
         save_info = intent.metadata.save_info
         username = intent.metadata.username
 
-        charges = intent.charges.data
+      
+        try:
+            charges = intent.charges.data
+        except AttributeError as e:
+            logger.error(f"Error accessing charges: {e}")
+            return HttpResponse(
+                content='Charges data not found in payment intent',
+                status=400
+            )
+
+        if not charges:
+            logger.error("No charges found in payment intent")
+            return HttpResponse(
+                content='No charges found in payment intent',
+                status=400
+            )
+
         billing_details = charges[0].billing_details
         grand_total = round(charges[0].amount / 100, 2)
         order_total = grand_total
@@ -144,8 +159,6 @@ class StripeWH_Handler:
                 status=200
             )
         except Exception as e:
-            if 'order' in locals():
-                order.delete()
             logger.error(f"Error creating order: {e}")
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | ERROR: {e}',
@@ -156,8 +169,8 @@ class StripeWH_Handler:
         """
         Handle the payment_intent.payment_failed webhook from Stripe.
         """
-        logger.warning(f'PaymentIntent payment failed: {event}')
+        logger.warning(f'Payment intent payment failed: {event}')
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}',
+            content=f'Webhook received: {event["type"]} | Handled payment intent payment failed',
             status=200
         )
