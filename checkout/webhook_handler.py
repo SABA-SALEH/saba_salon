@@ -63,56 +63,50 @@ class StripeWH_Handler:
         save_info = intent.metadata.save_info
         username = intent.metadata.username
 
-      
         try:
-            charges = intent.charges.data
-        except AttributeError as e:
-            logger.error(f"Error accessing charges: {e}")
-            return HttpResponse(
-                content='Charges data not found in payment intent',
-                status=400
+            # Get the Charge object
+            stripe_charge = stripe.Charge.retrieve(
+                intent.latest_charge
             )
+            billing_details = stripe_charge.billing_details
+            grand_total = round(stripe_charge.amount / 100, 2)
+            order_total = grand_total
 
-        if not charges:
-            logger.error("No charges found in payment intent")
-            return HttpResponse(
-                content='No charges found in payment intent',
-                status=400
-            )
+            profile = None
+            if username != 'AnonymousUser':
+                try:
+                    profile = UserProfile.objects.get(user__username=username)
+                    if save_info:
+                        profile.default_phone_number = billing_details.phone
+                        profile.save()
+                except UserProfile.DoesNotExist:
+                    logger.error(f"UserProfile with username {username} does not exist")
 
-        billing_details = charges[0].billing_details
-        grand_total = round(charges[0].amount / 100, 2)
-        order_total = grand_total
-
-        profile = None
-        if username != 'AnonymousUser':
             try:
-                profile = UserProfile.objects.get(user__username=username)
-                if save_info:
-                    profile.default_phone_number = billing_details.phone
-                    profile.save()
-            except UserProfile.DoesNotExist:
-                logger.error(f"UserProfile with username {username} does not exist")
-
-        try:
-            order = Order.objects.get(
-                full_name__iexact=billing_details.name,
-                email__iexact=billing_details.email,
-                phone_number__iexact=billing_details.phone,
-                order_total=order_total,
-                grand_total=grand_total,
-                original_cart=cart,
-                stripe_pid=pid,
-            )
-            self._send_confirmation_email(order)
-            return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
-                status=200
-            )
-        except Order.DoesNotExist:
-            return self._create_order(intent, billing_details, cart, profile, order_total, grand_total, pid)
+                order = Order.objects.get(
+                    full_name__iexact=billing_details.name,
+                    email__iexact=billing_details.email,
+                    phone_number__iexact=billing_details.phone,
+                    order_total=order_total,
+                    grand_total=grand_total,
+                    original_cart=cart,
+                    stripe_pid=pid,
+                )
+                self._send_confirmation_email(order)
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+                    status=200
+                )
+            except Order.DoesNotExist:
+                return self._create_order(intent, billing_details, cart, profile, order_total, grand_total, pid)
+            except Exception as e:
+                logger.error(f"Error handling payment_intent.succeeded event: {e}")
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                    status=500
+                )
         except Exception as e:
-            logger.error(f"Error handling payment_intent.succeeded event: {e}")
+            logger.error(f"Error retrieving charge or processing payment intent: {e}")
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | ERROR: {e}',
                 status=500
