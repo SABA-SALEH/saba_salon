@@ -64,7 +64,6 @@ class StripeWH_Handler:
         username = intent.metadata.username
 
         try:
-            # Get the Charge object
             stripe_charge = stripe.Charge.retrieve(
                 intent.latest_charge
             )
