@@ -9,7 +9,7 @@ class BookingInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [BookingInline]
     readonly_fields = ('order_number', 'date', 'order_total', 'grand_total')
-    fields = ('order_number', 'date', 'full_name', 'email', 'phone_number', 'order_total', 'grand_total' 'original_bag', 'stripe_pid')
+    fields = ('order_number', 'date', 'full_name', 'email', 'phone_number', 'order_total', 'grand_total', 'original_cart', 'stripe_pid') 
     list_display = ('order_number', 'date', 'full_name', 'order_total', 'grand_total')
     ordering = ('-date',)
 
