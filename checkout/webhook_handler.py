@@ -21,151 +21,161 @@ class StripeWH_Handler:
         self.request = request
 
     def _send_confirmation_email(self, order):
-        """Send the user a confirmation email"""
+        """Send a confirmation email to the user."""
         cust_email = order.email
         subject = render_to_string(
             'checkout/confirmation_emails/confirmation_email_subject.txt',
-            {'order': order})
+            {'order': order}
+        ).strip()
         body = render_to_string(
             'checkout/confirmation_emails/confirmation_email_body.txt',
-            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL}
+        ).strip()
         
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [cust_email],
-            fail_silently=False
-        )        
+        try:
+            send_mail(
+                subject,
+                body,
+                settings.DEFAULT_FROM_EMAIL,
+                [cust_email],
+                fail_silently=False
+            )
+            logger.info(f'Confirmation email sent to {cust_email}.')
+        except Exception as e:
+            logger.error(f"Error sending confirmation email: {e}")
 
     def handle_event(self, event):
         """
-        Handle a generic/unknown/unexpected webhook event
+        Handle a generic/unknown/unexpected webhook event.
         """
+        logger.warning(f'Unhandled webhook received: {event["type"]}')
         return HttpResponse(
             content=f'Unhandled webhook received: {event["type"]}',
             status=200
         )
 
-    def handle_payment_intent_succeeded(self, event):
-        """
-        Handle the payment_intent.succeeded webhook from Stripe
-        """
-        intent = event.data.object
-        pid = intent.id
-        cart = intent.metadata.cart
-        save_info = intent.metadata.save_info
-        username = intent.metadata.username
+def handle_payment_intent_succeeded(self, event):
+    """
+    Handle the payment_intent.succeeded webhook from Stripe.
+    """
+    intent = event.data.object
+    pid = intent.id
+    cart = intent.metadata.cart
+    save_info = intent.metadata.save_info
+    username = intent.metadata.username
 
-        logger.info(f"Received payment_intent.succeeded event: {event}")
-        logger.info(f"Metadata - cart: {cart}, save_info: {save_info}, username: {username}")
+    billing_details = intent.charges.data[0].billing_details
+    grand_total = round(intent.charges.data[0].amount / 100, 2)
+    order_total = grand_total 
 
-        if not hasattr(intent, 'charges') or not intent.charges.data:
-            logger.error(f"Missing or empty charges for PaymentIntent ID: {pid}")
-            logger.debug(f"Complete event data: {json.dumps(event, indent=2)}")
+    profile = None
+    if username != 'AnonymousUser':
+        try:
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                profile.default_phone_number = billing_details.phone
+                profile.save()
+        except UserProfile.DoesNotExist:
+            logger.error(f"UserProfile with username {username} does not exist")
+
+    order_exists = False
+    attempt = 1
+    while attempt <= 5:
+        try:
+            order = Order.objects.get(
+                full_name__iexact=billing_details.name,
+                email__iexact=billing_details.email,
+                phone_number__iexact=billing_details.phone,
+                order_total=order_total, 
+                grand_total=grand_total,
+                original_cart=cart,
+                stripe_pid=pid,
+            )
+            order_exists = True
+            break
+        except Order.DoesNotExist:
+            attempt += 1
+            time.sleep(1)
+        except Exception as e:
+            logger.error(f"Error retrieving order: {e}")
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | ERROR: Missing or empty charges',
-                status=400
+                content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                status=500
             )
 
-        charges = intent.charges.data
-        billing_details = charges[0].billing_details
-        grand_total = round(charges[0].amount / 100, 2)
-
-        profile = None
-        if username != 'AnonymousUser':
-            try:
-                profile = UserProfile.objects.get(user__username=username)
-                if save_info:
-                    profile.default_phone_number = billing_details.phone
-                    profile.save()
-            except UserProfile.DoesNotExist:
-                logger.error(f"UserProfile with username {username} does not exist")
-
-        order_exists = False
-        attempt = 1
-        while attempt <= 5:
-            try:
-                order = Order.objects.get(
-                    full_name__iexact=billing_details.name,
-                    email__iexact=billing_details.email,
-                    phone_number__iexact=billing_details.phone,
-                    grand_total=grand_total,
-                    original_cart=cart,
-                    stripe_pid=pid,
-                )
-                order_exists = True
-                break
-            except Order.DoesNotExist:
-                attempt += 1
-                time.sleep(1)
-            except Exception as e:
-                logger.error(f"Error retrieving order: {e}")
-                return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
-                    status=500
-                )
-
-        if order_exists:
+    if order_exists:
+        try:
             self._send_confirmation_email(order)
-            logger.info('Confirmation email sent successfully.')
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
                 status=200
             )
-        else:
-            order = None
+        except Exception as e:
+            logger.error(f"Error sending confirmation email for existing order: {e}")
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order, but email sending failed',
+                status=200
+            )
+    else:
+        try:
+            order = Order.objects.create(
+                full_name=billing_details.name,
+                user_profile=profile,
+                email=billing_details.email,
+                phone_number=billing_details.phone,
+                order_total=order_total,  
+                grand_total=grand_total,
+                original_cart=cart,
+                stripe_pid=pid,
+            )
+            cart_items = json.loads(cart)
+            for item_key, item in cart_items.items():
+                if item['type'] == 'service':
+                    service_id = item['service_id']
+                    service = get_object_or_404(Service, id=service_id)
+                    Booking.objects.create(
+                        user=profile.user if profile else None,
+                        service=service,
+                        date=item['date'],
+                        time=item['time'],
+                        order=order
+                    )
+                elif item['type'] == 'package':
+                    package_id = item['package_id']
+                    package = get_object_or_404(Package, id=package_id)
+                    Booking.objects.create(
+                        user=profile.user if profile else None,
+                        package=package,
+                        order=order
+                    )
+
+            order.update_totals()
             try:
-                order = Order.objects.create(
-                    full_name=billing_details.name,
-                    user_profile=profile,
-                    email=billing_details.email,
-                    phone_number=billing_details.phone,
-                    original_cart=cart,
-                    stripe_pid=pid,
-                )
-                cart_items = json.loads(cart)
-                for item_key, item in cart_items.items():
-                    if item['type'] == 'service':
-                        service_id = item['service_id']
-                        service = get_object_or_404(Service, id=service_id)
-                        Booking.objects.create(
-                            user=profile.user if profile else None,
-                            service=service,
-                            date=item['date'],
-                            time=item['time'],
-                            order=order
-                        )
-                    elif item['type'] == 'package':
-                        package_id = item['package_id']
-                        package = get_object_or_404(Package, id=package_id)
-                        Booking.objects.create(
-                            user=profile.user if profile else None,
-                            package=package,
-                            order=order
-                        )
-
-                order.update_totals()
-            except Exception as e:
-                if order:
-                    order.delete()
-                logger.error(f"Error creating order: {e}")
+                self._send_confirmation_email(order)
                 return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
-                    status=500
+                    content=f'Webhook received: {event["type"]} | SUCCESS: Created order and sent email',
+                    status=200
                 )
-
-        self._send_confirmation_email(order)
-        logger.info('Confirmation email sent successfully.')
-        return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
-            status=200
-        )
+            except Exception as e:
+                logger.error(f"Error sending confirmation email for new order: {e}")
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | SUCCESS: Created order, but email sending failed',
+                    status=200
+                )
+        except Exception as e:
+            if order:
+                order.delete()
+            logger.error(f"Error creating order: {e}")
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                status=500
+            )
 
     def handle_payment_intent_payment_failed(self, event):
         """
-        Handle the payment_intent.payment_failed webhook from Stripe
+        Handle the payment_intent.payment_failed webhook from Stripe.
         """
+        logger.warning(f'PaymentIntent payment failed: {event}')
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200
