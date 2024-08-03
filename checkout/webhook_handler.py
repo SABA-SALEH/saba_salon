@@ -31,7 +31,7 @@ class StripeWH_Handler:
             'checkout/confirmation_emails/confirmation_email_body.txt',
             {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL}
         ).strip()
-        
+
         try:
             send_mail(
                 subject,
@@ -54,75 +54,67 @@ class StripeWH_Handler:
             status=200
         )
 
-def handle_payment_intent_succeeded(self, event):
-    """
-    Handle the payment_intent.succeeded webhook from Stripe.
-    """
-    intent = event.data.object
-    pid = intent.id
-    cart = intent.metadata.cart
-    save_info = intent.metadata.save_info
-    username = intent.metadata.username
+    def handle_payment_intent_succeeded(self, event):
+        """
+        Handle the payment_intent.succeeded webhook from Stripe.
+        """
+        intent = event.data.object
+        pid = intent.id
+        cart = intent.metadata.cart
+        save_info = intent.metadata.save_info
+        username = intent.metadata.username
 
+        charges = intent.charges.data
+        billing_details = charges[0].billing_details
+        grand_total = round(charges[0].amount / 100, 2)
+        order_total = grand_total
 
-    charges = intent.charges.data
-    billing_details = charges[0].billing_details
-    grand_total = round(charges[0].amount / 100, 2)
-    order_total = grand_total 
+        profile = None
+        if username != 'AnonymousUser':
+            try:
+                profile = UserProfile.objects.get(user__username=username)
+                if save_info:
+                    profile.default_phone_number = billing_details.phone
+                    profile.save()
+            except UserProfile.DoesNotExist:
+                logger.error(f"UserProfile with username {username} does not exist")
 
-    profile = None
-    if username != 'AnonymousUser':
-        try:
-            profile = UserProfile.objects.get(user__username=username)
-            if save_info:
-                profile.default_phone_number = billing_details.phone
-                profile.save()
-        except UserProfile.DoesNotExist:
-            logger.error(f"UserProfile with username {username} does not exist")
-
-    order_exists = False
-    attempt = 1
-    while attempt <= 5:
         try:
             order = Order.objects.get(
                 full_name__iexact=billing_details.name,
                 email__iexact=billing_details.email,
                 phone_number__iexact=billing_details.phone,
-                order_total=order_total, 
+                order_total=order_total,
                 grand_total=grand_total,
                 original_cart=cart,
                 stripe_pid=pid,
             )
-            order_exists = True
-            break
+            self._send_confirmation_email(order)
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+                status=200
+            )
         except Order.DoesNotExist:
-            attempt += 1
-            time.sleep(1)
+            return self._create_order(intent, billing_details, cart, profile, order_total, grand_total, pid)
         except Exception as e:
-            logger.error(f"Error retrieving order: {e}")
+            logger.error(f"Error handling payment_intent.succeeded event: {e}")
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | ERROR: {e}',
                 status=500
             )
 
-    if order_exists:
-        self._send_confirmation_email(order)
-        return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
-            status=200
-        )
-    else:
+    def _create_order(self, intent, billing_details, cart, profile, order_total, grand_total, pid):
+        """Create a new order and associated bookings"""
         try:
             order = Order.objects.create(
                 full_name=billing_details.name,
                 user_profile=profile,
                 email=billing_details.email,
                 phone_number=billing_details.phone,
-                order_total=order_total,  
+                order_total=order_total,
                 grand_total=grand_total,
                 original_cart=cart,
                 stripe_pid=pid,
-                
             )
             cart_items = json.loads(cart)
             for item_key, item in cart_items.items():
@@ -152,7 +144,7 @@ def handle_payment_intent_succeeded(self, event):
                 status=200
             )
         except Exception as e:
-            if order:
+            if 'order' in locals():
                 order.delete()
             logger.error(f"Error creating order: {e}")
             return HttpResponse(
