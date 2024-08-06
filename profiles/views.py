@@ -1,34 +1,84 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
-from .forms import UserProfileForm
+from .forms import UserProfileForm , ReviewForm
 from checkout.models import Order
+from reviews.models import Review
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+from .forms import UserProfileForm, ReviewForm
+from checkout.models import Order
+from reviews.models import Review
 
 @login_required
 def profile(request):
-    """ Display the user's profile. """
+    """ Display the user's profile and reviews. """
     profile = get_object_or_404(UserProfile, user=request.user)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile updated successfully')
-        else:
-            messages.error(request, 'Update failed. Please ensure the form is valid.')
+
+        if 'update_profile' in request.POST:
+            form = UserProfileForm(request.POST, instance=profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profile updated successfully.')
+            else:
+                messages.error(request, 'Profile update failed. Please ensure the form is valid.')
+
+        elif 'update_review' in request.POST:
+            review_id = request.POST.get('review_id')
+            if review_id:
+                try:
+                    review = get_object_or_404(Review, id=review_id, user=request.user)
+                    form = ReviewForm(request.POST, instance=review)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, 'Review updated successfully.')
+                    else:
+                        messages.error(request, 'Review update failed. Please ensure the form is valid.')
+                except ValueError:
+                    messages.error(request, 'Invalid review ID.')
+            else:
+                messages.error(request, 'Review ID is missing.')
+
+        elif 'delete_review' in request.POST:
+            review_id = request.POST.get('review_id')
+            if review_id:
+                try:
+                    review = get_object_or_404(Review, id=review_id, user=request.user)
+                    review.delete()
+                    messages.success(request, 'Review deleted successfully.')
+                except Exception as e:
+                    messages.error(request, f'Error deleting review: {str(e)}')
+            else:
+                messages.error(request, 'Review ID is missing.')
+
+        return redirect('profiles:profile') 
+
     else:
         form = UserProfileForm(instance=profile)
+        review_form = ReviewForm() 
+
+    reviews = Review.objects.filter(user=request.user).order_by('-created_at')  
     orders = profile.orders.all()
 
-    template = 'profiles/profile.html'
     context = {
         'form': form,
+        'review_form': review_form,
+        'reviews': reviews,
         'orders': orders,
-        'on_profile_page': True
+        'on_profile_page': True,
+        'username': request.user.username,
+        'email': request.user.email,
     }
 
-    return render(request, template, context)
+    return render(request, 'profiles/profile.html', context)
+
+
 
 def order_history(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
@@ -39,13 +89,10 @@ def order_history(request, order_number):
         f'A confirmation email was sent to {email} on the booking date.'
     ))
 
-    template = 'checkout/checkout_success.html'
     context = {
         'order': order,
-        'email': email,  
+        'email': email,
         'from_profile': True,
     }
 
-    return render(request, template, context)
-
-    return render(request, template, context)
+    return render(request, 'checkout/checkout_success.html', context)

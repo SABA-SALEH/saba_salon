@@ -134,6 +134,7 @@ def service_detail(request, service_id):
         'available_times': available_times,
         'average_rating': average_rating,
         'rounded_rating': rounded_rating,
+        'reviews': reviews,
     }
 
     return render(request, 'services/service_detail.html', context)

@@ -5,13 +5,42 @@ from .forms import ReviewForm
 from services.models import Service
 from packages.models import Package
 from django.contrib import messages
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 def review_list(request):
-    reviews = Review.objects.all().order_by('-created_at')
-    services = Service.objects.all()  
-    packages = Package.objects.all()  
-    return render(request, 'reviews/review_list.html', {'reviews': reviews, 'services': services, 'packages': packages})
+   
+    reviews = Review.objects.all()
 
+    service_id = request.GET.get('service')
+    package_id = request.GET.get('package')
+    min_rating = request.GET.get('min_rating')
+    max_rating = request.GET.get('max_rating')
+
+    if service_id:
+        reviews = reviews.filter(service_id=service_id)
+    if package_id:
+        reviews = reviews.filter(package_id=package_id)
+    if min_rating:
+        reviews = reviews.filter(rating__gte=min_rating)
+    if max_rating:
+        reviews = reviews.filter(rating__lte=max_rating)
+
+   
+    paginator = Paginator(reviews, 5) 
+    page_number = request.GET.get('page')
+    paged_reviews = paginator.get_page(page_number)
+
+    services = Service.objects.all()
+    packages = Package.objects.all()
+
+    return render(request, 'reviews/review_list.html', {
+        'reviews': paged_reviews,
+        'services': services,
+        'packages': packages,
+    })
+
+    
 @login_required
 def add_review(request, entity_type, entity_id):
     if entity_type not in ['service', 'package']:
