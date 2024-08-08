@@ -214,3 +214,361 @@ These future features are aimed at enhancing user experience, increasing engagem
 These wireframes were created using **Balsamiq** during the Scope Plane part of the design and planning process for this project. Wireframes are an essential tool in the design phase, helping to outline the structure and layout of the website before moving on to detailed design and development.
 
 
+## Information Architecture
+
+The application is structured around the following key components:
+
+- **Users:** Users can register, log in, and manage their accounts to access personalized features and interact with the platform.
+- **Orders:** Orders track user transactions, including details such as customer information, order total, and payment status.
+- **Services:** Services represent individual salon offerings, including their descriptions, pricing, and available times.
+- **Packages:** Packages bundle multiple services together, often at a discounted rate, and can be reviewed by users.
+- **Bookings:** Bookings manage the scheduling of services and packages for users, including date and time information.
+- **Reviews:** Reviews allow users to provide feedback on services and packages, including ratings and comments.
+- **Team:** The team section provides information about the staff members, including their roles, bios, and contact details.
+
+## Database Choice
+
+| **Database** | **Usage**        | **Reason**                                          |
+|--------------|------------------|-----------------------------------------------------|
+| PostgreSQL   | Production       | Robust, scalable, and feature-rich for production environments. |
+| SQLite       | Development      | Lightweight and easy to set up, suitable for development and testing. |
+
+## Data Models
+
+## Checkout App
+
+| **Model** | **Field**       | **Description**                           |
+|-----------|-----------------|-------------------------------------------|
+| **Order** | `order_number`  | Unique identifier for the order.          |
+|           | `user_profile`  | Linked user profile.                      |
+|           | `user`          | Linked user.                              |
+|           | `full_name`     | Customer’s full name.                     |
+|           | `email`         | Customer’s email address.                 |
+|           | `phone_number`  | Customer’s phone number.                  |
+|           | `date`          | Date and time when the order was created. |
+|           | `order_total`   | Total cost of the order before taxes.     |
+|           | `grand_total`   | Final amount including any taxes or discounts. |
+|           | `original_cart` | JSON field storing original cart data.    |
+|           | `stripe_pid`    | Payment identifier from Stripe.           |
+
+## Packages App
+
+| **Model** | **Field**       | **Description**                                |
+|-----------|-----------------|------------------------------------------------|
+| **Package** | `name`         | Name of the package.                          |
+|           | `description`   | Detailed description of the package.          |
+|           | `price`         | Regular price of the package.                 |
+|           | `saving_price`  | Discounted price if applicable.               |
+|           | `services`      | Many-to-many relationship with `Service`.     |
+
+## Profile App
+
+| **Model** | **Field**           | **Description**                    |
+|-----------|---------------------|------------------------------------|
+| **UserProfile** | `user`          | Linked user.                        |
+|           | `default_phone_number` | Default phone number for the user. |
+
+## Reviews App
+
+| **Model** | **Field**        | **Description**                                 |
+|-----------|------------------|-------------------------------------------------|
+| **Review** | `service`       | Foreign key linking to `Service`.               |
+|           | `package`       | Foreign key linking to `Package`.               |
+|           | `user`          | User who left the review.                      |
+|           | `rating`        | Rating given by the user (1-5).                |
+|           | `comment`       | Review comment.                               |
+|           | `created_at`    | Timestamp when the review was created.        |
+
+## Services App
+
+| **Model** | **Field**          | **Description**                                          |
+|-----------|--------------------|----------------------------------------------------------|
+| **Category** | `name`          | Name of the category.                                   |
+|           | `friendly_name`    | User-friendly name for display purposes.                |
+| **Service** | `category`       | Foreign key linking to `Category`.                      |
+|           | `name`            | Name of the service.                                   |
+|           | `description`     | Description of the service.                            |
+|           | `price`           | Cost of the service.                                  |
+|           | `duration`        | Duration of the service.                              |
+|           | `image`           | Image related to the service.                         |
+|           | `available_times` | JSON field for storing available time slots.          |
+| **Booking** | `user`          | Foreign key linking to `User`.                          |
+|           | `service`        | Foreign key linking to `Service`.                      |
+|           | `package`        | Foreign key linking to `Package`.                      |
+|           | `date`           | Date of the booking.                                  |
+|           | `time`           | Time of the booking.                                  |
+|           | `created_at`     | Timestamp when the booking was created.               |
+|           | `order`          | Foreign key linking to `Order`.                       |
+
+## Team App
+
+| **Model** | **Field**        | **Description**                                  |
+|-----------|------------------|--------------------------------------------------|
+| **StaffMember** | `name`      | Name of the staff member.                       |
+|           | `position`       | Position or role of the staff member.           |
+|           | `bio`            | Short biography.                                |
+|           | `photo`          | Image of the staff member.                      |
+|           | `email`          | Contact email.                                  |
+|           | `phone_number`   | Contact phone number.                           |
+
+
+# Getting Started
+
+To run this project locally, follow the instructions below:
+
+## Prerequisites
+
+Ensure you have the following tools installed:
+- An IDE such as Visual Studio Code
+- Python 3
+- PIP
+- Git
+
+Additionally, create free accounts with the following services:
+- [Stripe](https://stripe.com) for payment processing
+- [AWS](https://aws.amazon.com) and set up an S3 bucket for file storage
+
+Refer to the documentation linked above for setting up these services and retrieving the necessary environment variables.
+
+## Instructions
+
+1. **Clone the Repository**
+
+   Save a copy of the GitHub repository by clicking the "Download ZIP" button on the repository page and extract it to your chosen folder. Alternatively, if you have Git installed, you can clone the repository with the following command:
+
+   ```bash
+   git clone https://github.com/SABA-SALEH/saba_salon.git
+
+2.**Set Up a Virtual Environment**
+
+- Navigate to the project directory and create a virtual environment:
+
+ ```bash
+python -m venv venv
+ ```
+- Activate the virtual environment:
+
+  -On Windows:
+
+ ```bash
+.\venv\Scripts\activate
+ ```
+   -On macOS/Linux:
+ ```bash
+source venv/bin/activate
+ ```
+If you encounter issues with the **python** command, you may need to use python3 or py instead.
+
+3.**Upgrade Pip**
+
+Ensure you have the latest version of pip:
+
+ ```bash
+pip install --upgrade pip
+ ```
+
+4.**Install Required Modules**
+
+Install all required modules listed in requirements.txt:
+
+ ```bash
+pip install -r requirements.txt
+ ```
+
+5.**Set Up Environment Variables**
+
+Configure the following environment variables in your IDE. For VSCode, update the settings.json file within the .vscode directory:
+
+```json
+
+"terminal.integrated.env.windows": {
+    "HOSTNAME": "<enter hostname here>",
+    "AWS_ACCESS_KEY_ID": "<enter key here>",
+    "AWS_SECRET_ACCESS_KEY": "<enter key here>",
+    "DATABASE_URL": "<enter key here>",
+    "EMAIL_HOST_PASS": "<enter key here>",
+    "EMAIL_HOST_USER": "<enter url here>",
+    "SECRET_KEY": "<enter key here>",
+    "STRIPE_PUBLIC_KEY": "<enter key here>",
+    "STRIPE_SECRET_KEY": "<enter key here>",
+    "STRIPE_WH_SECRET": "<enter key here>",
+    "USE_AWS": "True",
+    "AWS_STORAGE_BUCKET_NAME": "<enter bucket name here>"
+}
+```
+Note: Replace placeholders with your actual environment values. Restart your IDE or machine to ensure the environment variables are active.
+
+6.**Apply Migrations**
+
+Create the database schema using Django’s migration system:
+
+```bash
+python manage.py migrate
+```
+
+7.**Create a Superuser**
+
+Create an admin user to access the Django admin panel:
+
+```bash
+python manage.py createsuperuser
+```
+Follow the prompts to enter your username, email, and password.
+
+8.**Run the Development Server**
+
+Start the Django development server:
+
+```bash
+python manage.py runserver
+```
+Open your browser and navigate to http://127.0.0.1:8000/ to view the application.
+
+# Deployment
+To deploy this project to Heroku, follow these steps:
+
+## Prerequisites
+Ensure you have the Heroku CLI installed.
+
+## Steps
+### Prepare for Deployment
+
+- Create a requirements.txt file:
+
+```bash
+pip freeze > requirements.txt
+```
+- Create a Procfile in the root directory with the following content:
+
+```makefile
+web: gunicorn saba_salon.wsgi:application
+```
+Replace saba_salon with the name of your Django project if it differs.
+
+### Push to GitHub
+
+Commit and push your changes to GitHub:
+
+```bash
+git add .
+git commit -m "Prepare for deployment"
+git push origin main
+```
+
+### Create a Heroku App
+
+Log in to Heroku and create a new app:
+
+```bash
+heroku create saba-salon
+``` 
+
+### Add PostgreSQL Add-on
+
+Add the Heroku Postgres add-on for database management:
+
+```bash
+heroku addons:create heroku-postgresql:hobby-dev
+```
+
+### Set Config Vars
+
+Set the necessary environment variables in Heroku:
+
+```bash
+heroku config:set AWS_ACCESS_KEY_ID=<enter key here>
+heroku config:set AWS_SECRET_ACCESS_KEY=<enter key here>
+heroku config:set DATABASE_URL=<enter db url here>
+heroku config:set EMAIL_HOST_PASS=<enter password here>
+heroku config:set EMAIL_HOST_USER=<enter user here>
+heroku config:set SECRET_KEY=<enter secret key here>
+heroku config:set STRIPE_PUBLIC_KEY=<enter public key here>
+heroku config:set STRIPE_SECRET_KEY=<enter secret key here>
+heroku config:set STRIPE_WH_SECRET=<enter webhook secret here>
+heroku config:set USE_AWS=True
+heroku config:set AWS_STORAGE_BUCKET_NAME=<enter bucket name here>
+```
+### Deploy to Heroku
+
+Deploy the application to Heroku:
+
+```bash
+git push heroku main
+```
+
+### Run Migrations on Heroku
+
+Apply database migrations:
+
+```bash
+heroku run python manage.py migrate
+```
+
+### Create a Superuser
+
+Create an admin user for the Heroku app:
+
+```bash
+heroku run python manage.py createsuperuser
+```
+### Open the App
+
+Open your deployed application in the browser:
+
+```bash
+heroku open
+```
+Alternatively, navigate to https://saba-salon-2875b1e9e4e8.herokuapp.com/ to view the live site.
+
+For more details, consult the Heroku DevCenter.
+
+
+
+## Credits
+
+- **Project Developed By**: SABA SALEH
+
+- **Images**: 
+  - Images on the home page and logo were sourced from [Freepik](https://www.freepik.com).
+
+- **Code Insights**: 
+  - Boutique Ado: Provided great insights into the project.
+
+- **Video Tutorials**: 
+  - [Python Django Web Framework - Full Course for Beginners](https://www.youtube.com/watch?v=F5mRW0jo-U4) by freeCodeCamp.org
+
+
+- **Helpful Resources**:
+  - [W3Schools](https://www.w3schools.com): Tutorials and resources for web development.
+  - [Stack Overflow](https://stackoverflow.com): Community for programming questions and answers.
+
+
+- **Favicon**: 
+  - [Favicon.io](https://favicon.io): Source of the favicon used in the project.
+
+- **Logo Design**: 
+  - Designed using [Canva](https://www.canva.com).
+
+
+## Contributing
+
+If you have ideas for improvements or new features, contributions are welcome! Please follow these steps:
+
+1. Fork the repository from [GitHub](https://github.com/SABA-SALEH/saba_salon.git).
+2. Make your changes in your forked repository.
+3. Submit a pull request detailing the changes you’ve made.
+
+Together, we can enhance the SABA Salon project and make it a more valuable tool for everyone. Thank you for your contributions!
+
+## Acknowledgements
+
+I would like to express my sincere gratitude to the following individuals and organizations who have contributed to this project:
+
+- **Oluwafemi Medale**: For their mentorship, guidance, and valuable suggestions throughout the development of this project.
+- **Code Institute**: For their support and resources provided during the development of this project.
+
+Lastly, a big thank you to all users and contributors who have provided feedback and helped improve this project. Your support is greatly appreciated!
+
+
+
+
