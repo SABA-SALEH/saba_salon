@@ -67,7 +67,7 @@ These user stories illustrate the various ways in which different types of users
 - **Introduction**: Provides an overview of Saba Salon, including highlights of our services.
 - **Quick Links**: Easy navigation to other important sections such as Services, Packages, Reviews, and Contact.
 - **Why Choose Us**: Learn why Saba Salon stands out with our commitment to exceptional service, luxurious environment, and experienced staff.
-- **Search Functionality**: Easily find specific services or packages using the search bar. Enter keywords to quickly locate what you need.
+- **Search Functionality**: Easily find specific services using the search bar. Enter keywords to quickly locate what you need.
 
 ### **Services**
 - **Detailed Service Information**: View a comprehensive list of all salon services with detailed descriptions and pricing.
@@ -79,13 +79,20 @@ These user stories illustrate the various ways in which different types of users
  
 ### **Packages**
 - **Package Listings**: Explore various packages designed to offer the best value and experience.
-- **Package Details**: Detailed descriptions of each package, including what is included pricing and rating.
-- **Comparison**: Compare different packages to choose the one that best suits your needs.
+- **Package Details**: Detailed descriptions of each package, including what is included, pricing, and rating.
+- **Best Deal**: Highlight packages that offer the greatest value for money based on savings. 
 
 ### **Cart Management**: 
 - **Easy Checkout**: Complete your booking or purchase seamlessly through a straightforward checkout process.
 - **Modify Appointments**: Change the date or time of your appointments directly from your cart before finalizing the booking.
 - **Delete from Cart**: Remove any unwanted items or appointments from your cart with a simple delete option.
+
+### **Checkout and Payment Process**
+- **Initiate Checkout:** Users can seamlessly proceed to checkout after adding items or services to their cart, ensuring a smooth transition from selection to payment.
+- **Enter Payment Information:** The checkout process includes a secure form for entering payment details, providing users with a safe and reliable way to complete their transactions.
+- **Confirm Payment:** Upon completion of payment, users are redirected to a confirmation page that confirms the success of the transaction and summarizes the details.
+- **Confirmation Message:** After a successful payment, a confirmation message is displayed to users, including key information about the transaction, such as service details and payment summary.
+- **Email Confirmation:** Users receive a detailed confirmation email with all relevant information regarding their booking or purchase. This email includes a summary of the services or items, the appointment date, and payment details, ensuring that users have all the information they need.
 
 ### **Reviews**
 - **Client Testimonials**: Read reviews from other clients about their experiences with Saba Salon.
@@ -521,6 +528,77 @@ heroku open
 Alternatively, navigate to https://saba-salon-2875b1e9e4e8.herokuapp.com/ to view the live site.
 
 For more details, consult the Heroku DevCenter.
+
+## Testing
+
+### Manual Testing
+
+For Saba Salon, manual testing was conducted to ensure all features and functionalities work as intended and provide a smooth user experience. The following scenarios were manually tested:
+
+1. **Home Page:**
+   - **Introduction:** Verified that the home page provides a clear overview of Saba Salon and highlights the key services.
+   - **Quick Links:** Tested that links to Services, Packages, Reviews, Our team and Contact sections navigate correctly.
+   - **Why Choose Us:** Ensured that the section detailing why Saba Salon stands out is informative and displays correctly.
+   - **Search Functionality:** Checked that the search bar allows users to find specific services by entering keywords.
+
+2. **Services:**
+   - **Detailed Service Information:** Verified that users can view a comprehensive list of salon services with accurate descriptions and pricing.
+   - **Service Categories:** Tested that users can browse services by categories and that each category displays relevant services.
+   - **Direct Booking:** Ensured users can book appointments directly from the service detail page.
+   - **Add Additional Services:** Checked that users can add extra services to their appointment during the booking process.
+   - **Service Reviews:** Verified that reviews for each service can be read . Checked that the All Reviews page displays correctly.
+   - **Sort Services:** Tested sorting options (popularity, price, alphabetical order) to ensure services are organized as expected.
+
+3. **Packages:**
+   - **Package Listings:** Verified that users can explore various packages designed to offer value and experience.
+   - **Package Details:** Checked that each package's details, including what is included, pricing, and ratings, are displayed correctly.
+   - **Best Deal:** Ensured that the system highlights the best deal based on savings.
+
+   
+4. **Cart Management:**
+   - **Easy Checkout:** Ensured the checkout process is seamless for bookings or purchases.
+   - **Modify Appointments:** Verified that users can change the date or time of their appointments from the cart.
+   - **Delete from Cart:** Checked that users can remove unwanted items or appointments from the cart.
+
+5. **Checkout and Payment Process:**
+   - **Initiate Checkout:** Verified that users can proceed to checkout after adding items or services to their cart.
+   - **Enter Payment Information:** Ensured that users can enter payment details securely.
+   - **Confirm Payment:** Tested that the payment process completes successfully and users are redirected to a confirmation page.
+   - **Confirmation Message:** Verified that a confirmation message is displayed upon successful payment, including details of the transaction.
+   - **Email Confirmation:** Ensured that users receive an email with all relevant information about their booking or purchase, including a summary of the services or items, the appointment date, and payment details.
+
+6. **Reviews:**
+   - **Client Testimonials:** Verified that client testimonials are displayed accurately.
+   - **Review Filtering:** Tested that reviews can be filtered by rating, service, or package to find relevant feedback.
+   - **Add a Review:** Checked that logged-in users can submit their own reviews.
+   
+7. **Our Team:**
+   - **Staff Profiles:** Ensured that detailed profiles of team members, including their expertise and specialties, are displayed correctly.
+
+8. **User Profile:**
+   - **Profile Management:** Verified that users can access and update personal details, including contact information.
+   - **Appointment History:** Checked that users can view their past appointments.
+   - **Review History:** Verified that users can access and manage their submitted reviews.
+
+9. **Contact:**
+   - **Contact Information:** Ensured that phone number, email, and physical address are displayed correctly.
+   - **Location Map:** Verified that the map showing the salon’s location is functional and accurate.
+
+10. **Admin Dashboard (for internal use):**
+    - **Manage Services:** Verified that administrators can add, edit, or remove services.
+    - **Manage Packages:** Checked that administrators can update package details, including pricing and descriptions.
+    - **Manage Staff:** Ensured that staff profiles can be updated by administrators.
+
+11. **SweetAlert and Messages Integration:**
+    - **Enhanced User Alerts:** Verified that SweetAlert is used for visually appealing alerts and confirmations.
+    - **Form Submissions:** Checked that stylish confirmation messages are displayed upon successful form submissions.
+    - **Error Handling:** Ensured clear and user-friendly error messages are shown for any issues related to forms or bookings.
+    - **Dynamic Messages:** Verified that dynamic messages for real-time updates and notifications are integrated effectively.
+
+12. **Responsive Design:**
+    - **Testing on Devices and Screen Sizes:** Verified that the application’s layout adapts to various devices and screen sizes, providing an optimal viewing experience.
+
+These tests ensure that all features of Saba Salon are functioning correctly and provide a seamless experience for users.
 
 
 

@@ -8,6 +8,7 @@ from packages.models import Package
 from datetime import datetime
 from django.http import JsonResponse
 
+
 def add_to_cart(request, service_id):
     """ Add a service booking to the cart """
     if request.method == 'POST':
@@ -21,9 +22,7 @@ def add_to_cart(request, service_id):
         date = request.POST.get('date')
         time = request.POST.get('time')
         cart = request.session.get('cart', {})
-
         item_key = f'service_{service_id}'
-        
         if item_key in cart:
             messages.info(request, 'Service already in cart.')
         else:
@@ -71,7 +70,7 @@ def add_to_cart(request, service_id):
 
 def remove_from_cart(request, item_type, item_id):
     """ Remove a service or package booking from the cart """
-    item_key = f'{item_type}_{item_id}'  
+    item_key = f'{item_type}_{item_id}'
     cart = request.session.get('cart', {})
 
     if item_key in cart:
@@ -95,7 +94,6 @@ def view_cart(request):
         item_parts = item_key.split('_')
         if len(item_parts) != 2:
             continue
-        
         item_type, item_id = item_parts
         item_id = int(item_id)
 
@@ -108,8 +106,8 @@ def view_cart(request):
                 'price': price,
                 'name': item['name'],
                 'description': item['description'],
-                'date': item.get('date'), 
-                'time': item.get('time'), 
+                'date': item.get('date'),
+                'time': item.get('time'),
             })
         elif item_type == 'package':
             package = get_object_or_404(Package, id=item_id)
@@ -135,7 +133,7 @@ def view_cart(request):
 def edit_cart_item(request, service_id):
     cart = request.session.get('cart', {})
     item_key = f'service_{service_id}'
-    print("Cart data at the start:", cart)  
+    print("Cart data at the start:", cart)
 
     if item_key not in cart:
         messages.error(request, 'Service not found in cart.')
@@ -143,13 +141,13 @@ def edit_cart_item(request, service_id):
 
     service = get_object_or_404(Service, id=int(service_id))
     item = cart[item_key]
-    print("Editing item:", item)  
+    print("Editing item:", item)
 
     if request.method == 'POST':
         date = request.POST.get('date')
         time = request.POST.get('time')
-        print("Received date:", date)  
-        print("Received time:", time) 
+        print("Received date:", date)
+        print("Received time:", time)
 
         if not date or not time:
             messages.error(request, 'Please select both a date and a time.')
@@ -162,14 +160,13 @@ def edit_cart_item(request, service_id):
             messages.error(request, 'Invalid date or time format.')
             return redirect('cart:view_cart')
 
-
         item['date'] = date.isoformat()
         item['time'] = time.strftime('%H:%M')
 
         cart[item_key] = item
         request.session['cart'] = cart
         request.session.modified = True
-        print("Updated cart data:", cart)  
+        print("Updated cart data:", cart)
         messages.success(request, f'{service.name} updated in cart.')
         return redirect('cart:view_cart')
 
@@ -181,7 +178,7 @@ def edit_cart_item(request, service_id):
         'available_times': available_times,
     }
 
-    return render(request, 'cart/cart.html', context) 
+    return render(request, 'cart/cart.html', context)
 
 
 def get_booked_times(request, service_id):
@@ -213,7 +210,7 @@ def get_available_times(request, service_id):
 
 def add_package_to_cart(request, item_id):
     try:
-        item_id = int(item_id) 
+        item_id = int(item_id)
     except ValueError:
         messages.error(request, 'Invalid package ID.')
         return redirect('packages:package_list')
@@ -232,7 +229,6 @@ def add_package_to_cart(request, item_id):
             'price': str(package.price),
             'description': package.description,
         }
-
 
         messages.success(request, f'{package.name} added to cart.')
 

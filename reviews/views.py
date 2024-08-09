@@ -8,10 +8,9 @@ from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-def review_list(request):
-   
-    reviews = Review.objects.all()
 
+def review_list(request):
+    reviews = Review.objects.all()
     service_id = request.GET.get('service')
     package_id = request.GET.get('package')
     min_rating = request.GET.get('min_rating')
@@ -25,9 +24,7 @@ def review_list(request):
         reviews = reviews.filter(rating__gte=min_rating)
     if max_rating:
         reviews = reviews.filter(rating__lte=max_rating)
-
-   
-    paginator = Paginator(reviews, 5) 
+    paginator = Paginator(reviews, 5)
     page_number = request.GET.get('page')
     paged_reviews = paginator.get_page(page_number)
 
@@ -40,7 +37,7 @@ def review_list(request):
         'packages': packages,
     })
 
-    
+
 @login_required
 def add_review(request, entity_type, entity_id):
     if entity_type not in ['service', 'package']:
@@ -71,5 +68,5 @@ def add_review(request, entity_type, entity_id):
         'form': form,
         'entity': entity,
         'entity_type': entity_type,
-        'entity_name': entity.name  
+        'entity_name': entity.name
     })

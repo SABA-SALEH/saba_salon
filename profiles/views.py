@@ -2,10 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
-from .forms import UserProfileForm , ReviewForm
+from .forms import UserProfileForm, ReviewForm
 from checkout.models import Order
 from reviews.models import Review
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,6 +12,7 @@ from .models import UserProfile
 from .forms import UserProfileForm, ReviewForm
 from checkout.models import Order
 from reviews.models import Review
+
 
 @login_required
 def profile(request):
@@ -57,13 +57,13 @@ def profile(request):
             else:
                 messages.error(request, 'Review ID is missing.')
 
-        return redirect('profiles:profile') 
+        return redirect('profiles:profile')
 
     else:
         form = UserProfileForm(instance=profile)
-        review_form = ReviewForm() 
+        review_form = ReviewForm()
 
-    reviews = Review.objects.filter(user=request.user).order_by('-created_at')  
+    reviews = Review.objects.filter(user=request.user).order_by('-created_at')
     orders = profile.orders.all()
 
     context = {
@@ -77,7 +77,6 @@ def profile(request):
     }
 
     return render(request, 'profiles/profile.html', context)
-
 
 
 def order_history(request, order_number):

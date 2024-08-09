@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Saba Salon offers premium beauty and wellness services including haircuts, styling, facials, and makeup. Experience top-notch care from our expert team in a relaxing environment. Book your appointment today!">
+
     {% endblock %}
 
     {% block extra_meta %}
@@ -59,7 +61,7 @@
                 <form method="GET" action="{% url 'services:all_services' %}">
                     <div class="input-group w-100">
                         <input class="form-control border border-black" type="text" name="q"
-                            placeholder="Search our site">
+                            placeholder="Search our services">
                         <div class="input-group-append">
                             <button class="form-control btn btn-black border border-black" type="submit">
                                 <span class="icon">
@@ -154,47 +156,49 @@
     </main>
 
     {% block postloadjs %}
-    <script type="text/javascript">
+    <script>
         $('.toast').toast('show');
     </script>
     {% endblock %}
 
     <footer class="bg-light text-dark py-4 mt-auto">
         <div class="container">
-            <section class="mb-4 text-center">
-
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.facebook.com/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://twitter.com/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://plus.google.com/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-google"></i>
-                </a>
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.instagram.com/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://github.com/yourprofile"
-                    role="button" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
+            <section class="mb-4 d-flex align-items-center justify-content-center">
+                <h6 class="h4 mb-0 mr-4">Follow Us</h6> 
+                <div class="social-icons d-flex">
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.facebook.com/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://twitter.com/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://plus.google.com/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.instagram.com/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://github.com/yourprofile"
+                        role="button" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
             </section>
-
+    
             <div class="text-center text-dark">
                 <p class="mb-0">&copy; 2024 Saba Salon. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
+    
 </body>
 
 </html>

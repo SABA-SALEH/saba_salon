@@ -7,6 +7,7 @@ from django.urls import reverse
 
 # Create your views here.
 
+
 def package_list(request):
     packages = Package.objects.all()
     best_deal_package = max(packages, key=lambda package: package.saving_price, default=None)
@@ -43,13 +44,13 @@ def add_package(request):
             messages.error(request, 'Failed to add package. Please ensure the form is valid.')
     else:
         form = PackageForm()
-        
     template = 'packages/add_package.html'
     context = {
         'form': form,
     }
 
     return render(request, template, context)
+
 
 @login_required
 def edit_package(request, package_id):
@@ -78,6 +79,7 @@ def edit_package(request, package_id):
     }
 
     return render(request, template, context)
+
 
 @login_required
 def delete_package(request, package_id):

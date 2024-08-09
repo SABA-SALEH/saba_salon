@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 def contact_us(request):
     return render(request, 'contact/contact_us.html', {
         'address': '37 Willows Ave, Cardiff CF24 2SU',

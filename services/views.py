@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
-from .models import Service, Category , Booking
+from .models import Service, Category, Booking
 from django.http import JsonResponse
 from datetime import datetime
 from django.http import HttpResponse
@@ -15,7 +15,6 @@ from django.db.models import Avg
 
 def all_services(request):
     """ A view to show all services, including sorting and search queries """
-    
     services = Service.objects.all()
     query = None
     sort = None
@@ -92,8 +91,6 @@ def all_services(request):
     return render(request, 'services/services.html', context)
 
 
-
-
 def service_detail(request, service_id):
     """A view to show individual service details and handle booking"""
 
@@ -109,7 +106,7 @@ def service_detail(request, service_id):
             messages.error(request, f'The time slot {booking_time} on {booking_date} is already booked. Please choose another time.')
         else:
             Booking.objects.create(
-                user=request.user, 
+                user=request.user,
                 service=service,
                 date=booking_date,
                 time=booking_time
@@ -118,9 +115,9 @@ def service_detail(request, service_id):
             return redirect('services:service_detail', service_id=service_id)
 
     if request.method == 'GET':
-        booking_date = request.GET.get('booking_date')  
+        booking_date = request.GET.get('booking_date')
         if not booking_date:
-            booking_date = datetime.now().date()  
+            booking_date = datetime.now().date()
 
     available_times = service.get_available_times(booking_date)
 
@@ -148,6 +145,7 @@ class MockBooking:
         self.time = time
         self.created_at = timezone.now()
 
+
 def get_available_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
@@ -159,6 +157,7 @@ def get_available_times(request, service_id):
         return JsonResponse(data)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 def get_booked_times(request, service_id):
     if request.method == 'GET' and 'booking_date' in request.GET:
@@ -172,6 +171,7 @@ def get_booked_times(request, service_id):
         return JsonResponse(data)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 @login_required
 def add_service(request):
@@ -190,13 +190,13 @@ def add_service(request):
             messages.error(request, 'Failed to add service. Please ensure the form is valid.')
     else:
         form = ServiceForm()
-        
     template = 'services/add_service.html'
     context = {
         'form': form,
     }
 
     return render(request, template, context)
+
 
 @login_required
 def edit_service(request, service_id):
@@ -228,6 +228,7 @@ def edit_service(request, service_id):
 
     return render(request, template, context)
 
+
 @login_required
 def delete_service(request, service_id):
     """ Delete a service from the salon """
@@ -239,7 +240,3 @@ def delete_service(request, service_id):
     service.delete()
     messages.success(request, 'Service deleted!')
     return redirect(reverse('services:all_services'))
-
-
-
-

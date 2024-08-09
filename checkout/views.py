@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.shortcuts import render, redirect, get_object_or_404 , HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -15,6 +15,7 @@ from cart.contexts import cart_contents
 import stripe
 import json
 from django.contrib.auth.models import AnonymousUser
+
 
 @require_POST
 def cache_checkout_data(request):
@@ -108,7 +109,7 @@ def checkout(request):
                 order.user = request.user
             else:
                 order.user_profile = None
-                order.user = None  
+                order.user = None
 
             order.save()
 
@@ -129,7 +130,7 @@ def checkout(request):
                             order=order
                         )
                 else:
-                    continue 
+                    continue
 
                 try:
                     booking.save()

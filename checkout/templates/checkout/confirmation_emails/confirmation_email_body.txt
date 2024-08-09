@@ -2,11 +2,13 @@ Hello {{ order.full_name }}!
 
 This is a confirmation of your booking at Saba Salon. Your booking information is below:
 
-**Booking Number:** {{ order.order_number }}
-**Booking Date:** {{ order.date }}
+BOOKING NUMBER: {{ order.order_number }}
 
-**Order Total:** ${{ order.order_total }}
-**Grand Total:** ${{ order.grand_total }}
+BOOKING DATE: {{ order.date }}
+
+ORDER TOTAL: ${{ order.order_total }}
+
+GRAND TOTAL: ${{ order.grand_total }}
 
 Your booking includes the following items:
 
