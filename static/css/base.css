@@ -826,3 +826,21 @@ h6 {
     display: flex;
     flex-wrap: wrap; 
 }
+
+
+
+.dropdown-menu {
+    max-height: 70vh; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+}
+
+@media (max-width: 576px) {
+    .dropdown-menu {
+        padding: 1rem; 
+    }
+
+    .dropdown-item {
+        font-size: 0.9em; 
+    }
+}

@@ -1,4 +1,6 @@
-
+html, body {
+    overflow-x: hidden; 
+}
 .entity-name {
     color: #CA8787;
     font-weight: bold;

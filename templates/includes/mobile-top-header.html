@@ -30,18 +30,19 @@
       </a>
       <div class="dropdown-menu border-0 w-100 p-3 rounded-0" aria-labelledby="user-options">
         {% if request.user.is_authenticated %}
-          {% if request.user.is_superuser %}
-            <a href="{% url 'services:add_service' %}" class="dropdown-item">Service Management</a>
-            <a href="{% url 'packages:add_package' %}" class="dropdown-item">Package Management</a>
-            <a href="{% url 'team:add_staff_member' %}" class="dropdown-item">Staff Management</a>
-          {% endif %}
-          <a href="{% url 'profiles:profile' %}" class="dropdown-item">My Profile</a>
-          <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+            {% if request.user.is_superuser %}
+                <a href="{% url 'services:add_service' %}" class="dropdown-item p-0">Service Management</a>
+                <a href="{% url 'packages:add_package' %}" class="dropdown-item p-0">Package Management</a>
+                <a href="{% url 'team:add_staff_member' %}" class="dropdown-item p-0">Staff Management</a>
+            {% endif %}
+            <a href="{% url 'profiles:profile' %}" class="dropdown-item p-0">My Profile</a>
+            <a href="{% url 'account_logout' %}" class="dropdown-item p-0">Logout</a>
         {% else %}
-          <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
-          <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+            <a href="{% url 'account_signup' %}" class="dropdown-item p-0">Register</a>
+            <a href="{% url 'account_login' %}" class="dropdown-item p-0">Login</a>
         {% endif %}
-      </div>
+    </div>
+    
     </li>
   
     <li class="list-inline-item">

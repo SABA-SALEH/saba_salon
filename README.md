@@ -1,3 +1,6 @@
+<img src="static/images/logo.png" alt="alt text" style="width:300px;height:300px;">
+
+
 ## Introduction
 
 Welcome to the **Saba Salon Website**!
@@ -88,6 +91,10 @@ These user stories illustrate the various ways in which different types of users
 - **Why Choose Us**: Learn why Saba Salon stands out with our commitment to exceptional service, luxurious environment, and experienced staff.
 - **Search Functionality**: Easily find specific services using the search bar. Enter keywords to quickly locate what you need.
 
+![Home](static/images/documentation/screenshots/home.png)
+![Home](static/images/documentation/screenshots/home1.png)
+![Home](static/images/documentation/screenshots/home2.png)
+
 ### **Services**
 - **Detailed Service Information**: View a comprehensive list of all salon services with detailed descriptions and pricing.
 - **Service Categories**: Browse services by categories to quickly find what you're looking for.
@@ -97,10 +104,20 @@ These user stories illustrate the various ways in which different types of users
 - **Sort Services**: Organize services by popularity, price, or alphabetical order to simplify your search.
 - **Search for a Service by Name:** Users can easily search for a service by name, enabling them to quickly find and book the specific service they are looking for.
  
+ ![services](static/images/documentation/screenshots/services.png)
+ ![services](static/images/documentation/screenshots/services1.png)
+ ![services](static/images/documentation/screenshots/services2.png)
+ ![services](static/images/documentation/screenshots/services3.png)
+ ![services](static/images/documentation/screenshots/services4.png)
+ ![services](static/images/documentation/screenshots/services5.png)
+
 ### **Packages**
 - **Package Listings**: Explore various packages designed to offer the best value and experience.
 - **Package Details**: Detailed descriptions of each package, including what is included, pricing, and rating.
 - **Best Deal**: Highlight packages that offer the greatest value for money based on savings. 
+
+![Packages](static/images/documentation/screenshots/packages.png)
+![Packages](static/images/documentation/screenshots/packages1.png)
 
 ### **Cart Management**
 - **Easy Checkout:** Complete your booking or purchase seamlessly through a straightforward checkout process.
@@ -109,6 +126,9 @@ These user stories illustrate the various ways in which different types of users
 - **View Services in Cart:** Users can view the services they have added to their cart, allowing them to book any time or make adjustments as needed.
 - **View Total of Booking:** Users can view the total cost of their booking at any time during the booking process, providing transparency and helping them make informed decisions.
 
+![Cart](static/images/documentation/screenshots/cart1.png)
+![Cart](static/images/documentation/screenshots/cart.png)
+
 ### **Checkout and Payment Process**
 - **Initiate Checkout:** Users can seamlessly proceed to checkout after adding items or services to their cart, ensuring a smooth transition from selection to payment.
 - **Enter Payment Information:** The checkout process includes a secure form for entering payment details, providing users with a safe and reliable way to complete their transactions.
@@ -116,30 +136,52 @@ These user stories illustrate the various ways in which different types of users
 - **Confirmation Message:** After a successful payment, a confirmation message is displayed to users, including key information about the transaction, such as service details and payment summary.
 - **Email Confirmation:** Users receive a detailed confirmation email with all relevant information regarding their booking or purchase. This email includes a summary of the services or items, the appointment date, and payment details, ensuring that users have all the information they need.
 
+![Checkout](static/images/documentation/screenshots/checkout.png)
+![Checkout](static/images/documentation/screenshots/checkout1.png)
+![Checkout](static/images/documentation/screenshots/checkout2.png)
 
 
 ### **Reviews**
 - **Client Testimonials**: Read reviews from other clients about their experiences with Saba Salon.
 - **Review Filtering**: Filter reviews based on rating, service, or package to find relevant feedback. This allows users to view reviews that specifically address the service or package they are interested in.
 - **Add a Review**: If logged in, you can submit your own review after a visit.
-- **Filter Reviews**: Filter reviews based on rating or service/package to find the most relevant experiences.
+
+![Reviews](static/images/documentation/screenshots/review.png)
+![Reviews](static/images/documentation/screenshots/review1.png)
+![Reviews](static/images/documentation/screenshots/review2.png)
+![Reviews](static/images/documentation/screenshots/review3.png)
 
 ### **Our Team**
 - **Staff Profiles**: View detailed profiles of our team members, including their expertise, experience, and specialties. Meet the professionals who provide exceptional services at Saba Salon.
+
+![Our Team](static/images/documentation/screenshots/team.png)
 
 ### **User Profile**
 - **Profile Management**: Access and update personal details, including contact information.
 - **Appointment History**: View a history of past appointments and upcoming bookings.
 - **Review History**: Access and manage reviews you have submitted.
 
+![User Profile](static/images/documentation/screenshots/profile.png)
+![User Profile](static/images/documentation/screenshots/profile1.png)
+![User Profile](static/images/documentation/screenshots/profile2.png)
+![User Profile](static/images/documentation/screenshots/profile3.png)
+
 ### **Contact**
 - **Contact Information**: Find our phone number, email, and physical address.
 - **Location Map**: View a map with our salon’s location for easy navigation.
+
+![Contact](static/images/documentation/screenshots/contact.png)
 
 ### **Admin Dashboard** *(for internal use)*
 - **Manage Services**: Add, edit, or remove services offered by the salon.
 - **Manage Packages**: Update package details, including pricing and descriptions.
 - **Manage Staff**: Update staff profiles and information.
+
+![Admin](static/images/documentation/screenshots/admin.png)
+![Admin](static/images/documentation/screenshots/admin1.png)
+![Admin](static/images/documentation/screenshots/admin2.png)
+![Admin](static/images/documentation/screenshots/admin3.png)
+
 
 ### **SweetAlert and Messages Integration**
 - **Enhanced User Alerts**: Utilize SweetAlert for visually appealing and customizable alerts and confirmations.
@@ -147,9 +189,14 @@ These user stories illustrate the various ways in which different types of users
 - **Error Handling**: Show clear and user-friendly error messages for any issues related to forms or bookings.
 - **Dynamic Messages**: Incorporate dynamic messages for real-time updates and notifications, enhancing overall user interaction.
 
+![SweetAlert and Messages](<static/images/documentation/screenshots/SweetAlert and Messages.png>)
+
+
 ### **Responsive Design:**
 - The web application is designed with a responsive layout, ensuring optimal viewing and interaction experiences across various devices and screen sizes.
 
+![Responsive Design](static/images/documentation/screenshots/responsive.png)
+![Responsive Design](static/images/documentation/screenshots/responsive1.png)
 
 These features are designed to provide a seamless and enjoyable experience for all users of the Saba Salon website, whether they are clients, potential clients, or administrators managing the site.
 
@@ -776,6 +823,30 @@ To ensure that the website meets administrative needs, the following scenarios w
 1.  Assess performance, accessibility, and best practices using Lighthouse.
 2.  Optimize performance and address any identified issues.
 
+
+### Compatibility and Responsive Testing
+#### Browser Testing:
+1.	Google Chrome:
+	- Test the application thoroughly on Google Chrome to ensure compatibility and functionality.
+![Google Chrome](static/images/documentation/screenshots/chrome.png)
+
+2.	Mozilla Firefox:
+	- Verify compatibility and functionality on Mozilla Firefox.
+![Mozilla Firefox](static/images/documentation/screenshots/firefox.png)
+
+3.	Microsoft Edge:
+	- Test on Microsoft Edge to ensure seamless user experience.
+![Microsoft Edge](static/images/documentation/screenshots/Microsoft%20Edge.png)    
+    
+#### Mobile Testing:
+1.	iPhone and Android Devices:
+	- Test the application on various mobile devices to ensure compatibility and responsiveness.
+	- Verify that all features work well on mobile browsers such as Chrome and Safari.
+    
+    - Iphone
+      ![Iphone](static/images/documentation/screenshots/ipone.png) 
+    - Samsung
+      ![Samsung](static/images/documentation/screenshots/samsung.png) 
 
 
 ## Bugs and Fixes for Saba Salon
