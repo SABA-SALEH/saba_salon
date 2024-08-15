@@ -828,6 +828,19 @@ To ensure that the website meets administrative needs, the following scenarios w
     ![HTML Validator](static/images/documentation/screenshots/HTML%20Validator.PNG)
     ![HTML Validator](static/images/documentation/screenshots/HTML%20Validator1.PNG)
     ![HTML Validator](static/images/documentation/screenshots/HTML%20Validator2.PNG)
+  
+  - Error: Duplicate ID user-options
+
+  - Details: The error indicates that the id attribute user-options has been used more than once in the HTML code. 
+  - Cause of the Error: The duplicate ID error occurred because the same id attribute value was assigned to 
+    multiple elements within the same page. Specifically, in the templates for different screen sizes (mobile and desktop), both elements used the id user-options:
+
+    - Mobile View: 
+    ``` html <a class="text-black nav-link d-block d-lg-none" href="#" id="user-options" ... >```
+
+    - Desktop View: ``` html <a class="text-black nav-link" href="#" id="user-options" ... > ```
+    
+    This duplication happens because the same id was used for elements that are conditionally rendered based on screen size.
 
 
 2.	**CSS Validator:**

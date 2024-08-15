@@ -133,7 +133,7 @@ def service_detail(request, service_id):
     available_times = service.get_available_times(booking_date)  # Get available times for the chosen date
 
     # Calculate average rating for the service
-    reviews = Review.objects.filter(service=service)
+    reviews = Review.objects.filter(service=service).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     rounded_rating = round(average_rating) if average_rating is not None else None
 

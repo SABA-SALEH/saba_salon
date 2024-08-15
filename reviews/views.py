@@ -10,9 +10,11 @@ from django.core.paginator import Paginator
 
 
 def review_list(request):
-    """ View to list all reviews with optional filters and pagination. """
+    """View to list all reviews with optional filters and pagination."""
+    
     # Get all reviews initially
     reviews = Review.objects.all()
+    
     # Get filter parameters from the GET request
     service_id = request.GET.get('service')
     package_id = request.GET.get('package')
@@ -28,6 +30,10 @@ def review_list(request):
         reviews = reviews.filter(rating__gte=min_rating)
     if max_rating:
         reviews = reviews.filter(rating__lte=max_rating)
+    
+    # Sort reviews from newest to oldest
+    reviews = reviews.order_by('-created_at')
+    
     # Paginate the reviews
     paginator = Paginator(reviews, 5)  # Show 5 reviews per page
     page_number = request.GET.get('page')
