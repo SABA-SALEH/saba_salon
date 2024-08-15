@@ -9,6 +9,38 @@ Saba Salon is a premier destination for beauty and wellness, committed to provid
 
 Discover our thoughtfully designed packages that offer exceptional value and a comprehensive salon experience, tailored to meet your beauty needs. Whether you're looking to refresh your look or indulge in a full pampering session, Saba Salon provides the perfect solutions for every occasion. 
 
+![Responsive](static/images/documentation/screenshots/responsive1.png)
+
+# Table of Contents
+
+1. [Introduction](#introduction)
+2. [User Experience Design (UX) and UI](#user-experience-design-ux-and-ui)
+   - [Key UX and UI Features](#key-ux-and-ui-features)
+3. [User Stories](#user-stories)
+4. [Features](#features)
+5. [Future Features](#future-features)
+6. [Presentation](#presentation)
+7. [Look and Feel](#look-and-feel)
+8. [Technologies Used](#technologies-used)
+9. [Wireframes](#wireframes)
+10. [Information Architecture](#information-architecture)
+11. [Database Choice](#database-choice)
+12. [Getting Started](#getting-started)
+13. [Deployment](#deployment)
+14. [Testing](#testing)
+    - [Manual Testing](#manual-testing)
+    - [Automated Testing](#automated-testing)
+    - [Compatibility and Responsive Testing](#compatibility-and-responsive-testing)
+15. [Bugs and Fixes for Saba Salon](#bugs-and-fixes-for-saba-salon)
+    - [Issue 1: Handling Available Dates and Times](#issue-1-handling-available-dates-and-times)
+    - [Issue 2: Adding Additional Services to a Booking](#issue-2-adding-additional-services-to-a-booking)
+    - [Issue 3: Updating Cart Items](#issue-3-updating-cart-items)
+    - [Issue 4: Webhook Handler Returning 500 Internal Server Error and No Confirmation Email Sent](#issue-4-webhook-handler-returning-500-internal-server-error-and-no-confirmation-email-sent)
+16. [Credits](#credits)
+17. [Contributing](#contributing)
+18. [Acknowledgements](#acknowledgements)
+
+
 
 ## User Experience Design (UX) and UI
 
@@ -237,6 +269,8 @@ These future features are aimed at enhancing user experience, increasing engagem
 ## Look and Feel
 
 - **Visual Design**: The website features a modern, elegant design that reflects Saba Salon’s commitment to luxury and relaxation. The color palette, typography, and imagery are carefully selected to create a cohesive and appealing aesthetic.
+
+![color palette](static/images/documentation/screenshots/webcolors.png)
 
 - **Brand Consistency**: All design elements are aligned with Saba Salon’s brand identity. This includes the use of consistent colors, fonts, and logo placements throughout the website to reinforce brand recognition and create a unified user experience.
 
@@ -787,7 +821,8 @@ To ensure that the website meets administrative needs, the following scenarios w
 
 ### Automated Testing
 #### Code Validation:
-1.	HTML Validator:
+
+1.	**HTML Validator:**
 	- Validate HTML code for all pages to ensure compliance with standards.
 
     ![HTML Validator](static/images/documentation/screenshots/HTML%20Validator.PNG)
@@ -795,7 +830,7 @@ To ensure that the website meets administrative needs, the following scenarios w
     ![HTML Validator](static/images/documentation/screenshots/HTML%20Validator2.PNG)
 
 
-2.	CSS Validator:
+2.	**CSS Validator:**
 	- Check stylesheets for compliance with CSS standards and fix any issues.
 
     ![CSS Validator](static/images/documentation/screenshots/CSS%20Validator.PNG)
@@ -803,13 +838,13 @@ To ensure that the website meets administrative needs, the following scenarios w
     ![CSS Validator](static/images/documentation/screenshots/CSS%20Validator2.PNG)
 
 
-3.	JS Validator:
+3.	**JS Validator:**
 	- Validate JavaScript code syntax and maintain code quality.
 
     ![JS Validato](static/images/documentation/screenshots/JS%20Validator.PNG)
      ![JS Validato](static/images/documentation/screenshots/JS%20Validator1.PNG)
 
-4. Python Linter:
+4. **Python Linter:**
    - Use a Python linter to validate Python code syntax and maintain code quality.
 
    ![Python Linter](static/images/documentation/screenshots/Python%20Linter.PNG)
@@ -817,14 +852,39 @@ To ensure that the website meets administrative needs, the following scenarios w
    ![Python Linter](static/images/documentation/screenshots/Python%20Linter2.PNG)
    ![Python Linter](static/images/documentation/screenshots/Python%20Linter3.PNG)
    
-   
+5. **flake8:**
+   - `flake8` is used to check the Python code for style guide enforcement and linting errors.
+   - Ensure code adheres to PEP 8 standards and identifies potential issues in the codebase.
+
+   ![flake8](static/images/documentation/screenshots/flake8.png)
+   ![flake8](static/images/documentation/screenshots/flake81.png)
+   ![flake8](static/images/documentation/screenshots/flake82.png)
+
+   - Errors:
+
+   1. **Line Too Long** (`E501`):
+     
+   2. **Imported but Unused** (`F401`):
+
+
 
 #### Lighthouse Audit:
 1.  Assess performance, accessibility, and best practices using Lighthouse.
 2.  Optimize performance and address any identified issues.
 
+![Lighthouse Audit](static/images/documentation/screenshots/lighthouse.png)
+
+   **Best Practices Score:**
+   - You may notice that the **Best Practices** score is lower than expected. This is primarily due to recent changes in browser privacy policies, specifically regarding third-party cookies.
+
+   **Reason for Low Best Practices Score:**
+   - As part of the Privacy Sandbox initiative, Chrome and other browsers are increasingly restricting third-party cookies to enhance user privacy. For instance, Stripe, which is used for payment processing on this site, relies on third-party cookies to function properly. 
+
+![Best Practices](static/images/documentation/screenshots/stripe.png)
+
 
 ### Compatibility and Responsive Testing
+
 #### Browser Testing:
 1.	Google Chrome:
 	- Test the application thoroughly on Google Chrome to ensure compatibility and functionality.

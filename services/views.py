@@ -4,7 +4,6 @@ from django.db.models import Q
 from .models import Service, Category, Booking
 from django.http import JsonResponse
 from datetime import datetime
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -14,14 +13,19 @@ from django.db.models import Avg
 
 
 def all_services(request):
-    """ A view to show all services, including sorting and search queries """
-    services = Service.objects.all()
+    """
+    View to display a list of all services with options to sort, filter by category,
+    and search by name or description.
+    """
+    services = Service.objects.all()  # Retrieve all services
     query = None
     sort = None
     direction = None
     categories = None
 
+    # Handle filtering and sorting based on GET parameters
     if request.GET:
+        # Filter by category
         if 'category' in request.GET:
             category_names = request.GET.getlist('category')
             if 'All' not in category_names:
@@ -32,6 +36,7 @@ def all_services(request):
                 request.session.pop('selected_category', None)
                 categories = Category.objects.all()
         else:
+            # Use previously selected categories from session if no category is specified in the request
             selected_category = request.session.get('selected_category', [])
             if selected_category:
                 services = services.filter(category__name__in=selected_category)
@@ -39,6 +44,7 @@ def all_services(request):
             else:
                 categories = Category.objects.all()
 
+        # Sort the services based on GET parameters
         if 'sort' in request.GET:
             sort = request.GET['sort']
             direction = request.GET.get('direction', 'asc')
@@ -49,9 +55,10 @@ def all_services(request):
                 sort = f'-{sort}'
             services = services.order_by(sort)
 
+        # Search services by name or description
         if 'q' in request.GET:
             query = request.GET['q']
-            if not query.strip():
+            if not query.strip():  # Check if query is empty
                 messages.error(request, "You didn't enter any search criteria!")
                 return redirect(reverse('services:all_services'))
 
@@ -62,6 +69,7 @@ def all_services(request):
 
     selected_category = request.session.get('selected_category', [])
 
+    # Reset categories if 'All' is selected
     if 'All' in request.GET.getlist('category', []):
         selected_category = []
         categories = Category.objects.all()
@@ -69,6 +77,7 @@ def all_services(request):
     if not selected_category:
         categories = Category.objects.all()
 
+    # Calculate ratings for services
     services_with_ratings = []
     for service in services:
         reviews = Review.objects.filter(service=service)
@@ -92,12 +101,14 @@ def all_services(request):
 
 
 def service_detail(request, service_id):
-    """A view to show individual service details and handle booking"""
-
-    service = get_object_or_404(Service, pk=service_id)
-    additional_services = Service.objects.exclude(pk=service_id)
+    """
+    View to show details for a specific service and handle booking.
+    """
+    service = get_object_or_404(Service, pk=service_id)  # Retrieve the service or 404 if not found
+    additional_services = Service.objects.exclude(pk=service_id)  # Retrieve other services
 
     if request.method == 'POST':
+        # Handle booking form submission
         booking_date = request.POST.get('booking_date')
         booking_time = request.POST.get('booking_time')
 
@@ -117,10 +128,11 @@ def service_detail(request, service_id):
     if request.method == 'GET':
         booking_date = request.GET.get('booking_date')
         if not booking_date:
-            booking_date = datetime.now().date()
+            booking_date = datetime.now().date()  # Default to today's date if no date provided
 
-    available_times = service.get_available_times(booking_date)
+    available_times = service.get_available_times(booking_date)  # Get available times for the chosen date
 
+    # Calculate average rating for the service
     reviews = Review.objects.filter(service=service)
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     rounded_rating = round(average_rating) if average_rating is not None else None
@@ -138,6 +150,9 @@ def service_detail(request, service_id):
 
 
 class MockBooking:
+    """
+    Mock class to simulate a booking object for testing purposes.
+    """
     def __init__(self, user, service, date, time):
         self.user = user
         self.service = service
@@ -147,6 +162,9 @@ class MockBooking:
 
 
 def get_available_times(request, service_id):
+    """
+    Returns available times for a given service and date in JSON format.
+    """
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
         booking_date = request.GET['booking_date']
@@ -160,6 +178,9 @@ def get_available_times(request, service_id):
 
 
 def get_booked_times(request, service_id):
+    """
+    Returns booked times for a given service and date in JSON format.
+    """
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
         booking_date = request.GET['booking_date']
@@ -175,7 +196,9 @@ def get_booked_times(request, service_id):
 
 @login_required
 def add_service(request):
-    """ Add a service to the salon """
+    """
+    Allows superusers to add a new service to the salon.
+    """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('services:all_services'))
@@ -200,9 +223,9 @@ def add_service(request):
 
 @login_required
 def edit_service(request, service_id):
-    """ Edit a service in the salon """
-    print(f"User: {request.user}, Superuser: {request.user.is_superuser}")
-
+    """
+    Allows superusers to edit an existing service.
+    """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('home:index'))
@@ -231,7 +254,9 @@ def edit_service(request, service_id):
 
 @login_required
 def delete_service(request, service_id):
-    """ Delete a service from the salon """
+    """
+    Allows superusers to delete a service from the salon.
+    """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('home:index'))

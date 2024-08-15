@@ -2,6 +2,7 @@ from django import forms
 from .models import Package
 from services.models import Service
 
+
 class PackageForm(forms.ModelForm):
     services = forms.ModelMultipleChoiceField(
         queryset=Service.objects.all(),

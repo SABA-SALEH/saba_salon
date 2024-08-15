@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Link to custom CSS for profile styling -->
 <link rel="stylesheet" href="{% static 'profiles/css/profile.css' %}">
 {% endblock %}
 
@@ -9,35 +10,38 @@
 <div class="spacer"></div>
 
 <div class="container mb-4 mt-4">
+    <!-- Profile Header -->
     <div>
         <h2 class="mb-2">My Profile</h2>
     </div>
     <div class="card">
-
         <div class="card-body">
+            <!-- Profile Information Section -->
             <div class="row mb-5">
-                <div class="col-12  align-items-center   profile-info">
+                <div class="col-12 align-items-center profile-info">
+                    <!-- Display username and email -->
                     <p><strong>Username:</strong> <span>{{ username }}</span></p>
                     <p><strong>Email:</strong> <span>{{ email }}</span></p>
 
+                    <!-- Form to update phone number -->
                     <form class="d-flex align-items-center" action="{% url 'profiles:profile' %}" method="POST"
                         id="profile-update-form">
                         {% csrf_token %}
                         <div class="form-group rounded mb-0 flex-grow-1">
                             <div class="d-flex align-items-center">
-                                <label class="mb-0 "><strong>Phone:</strong></label>
+                                <label class="mb-0"><strong>Phone:</strong></label>
                                 <div class="flex-grow-1 col-lg-4">
                                     &nbsp; {{ form|crispy }}
-
                                 </div>
                             </div>
+                            <!-- Submit button for phone number update -->
                             <button type="submit" class="btn btn-black ml-2">Update Phone Number</button>
                         </div>
-
                     </form>
                 </div>
             </div>
 
+            <!-- Booking History Section -->
             <div class="row">
                 <div class="col-12">
                     <p class="text-muted">Booking History</p>
@@ -52,9 +56,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- Loop through orders to display each booking -->
                                 {% for order in orders %}
                                 <tr>
                                     <td>
+                                        <!-- Link to detailed order history -->
                                         <a href="{% url 'profiles:order_history' order.order_number %}"
                                             title="{{ order.order_number }}">
                                             {{ order.order_number|truncatechars:6 }}
@@ -63,6 +69,7 @@
                                     <td>{{ order.date }}</td>
                                     <td>
                                         <ul class="list-unstyled">
+                                            <!-- Loop through bookings within an order -->
                                             {% for booking in order.bookings.all %}
                                             <li>
                                                 {% if booking.service %}
@@ -95,9 +102,11 @@
     </div>
 </div>
 
+<!-- My Reviews Section -->
 <div class="container mb-5">
     <h3 class="mb-4">My Reviews</h3>
     <ul class="list-group">
+        <!-- Loop through user's reviews -->
         {% for review in reviews %}
         <li class="list-group-item border-0 rounded shadow-sm mb-3">
             <div class="d-flex flex-column">
@@ -107,6 +116,7 @@
                     <p class="mb-0"><strong>Comment:</strong> {{ review.comment }}</p>
                 </div>
                 <div class="d-flex justify-content-end mt-2">
+                    <!-- Form to delete a review -->
                     <form method="POST" class="d-inline" action="{% url 'profiles:profile' %}">
                         {% csrf_token %}
                         <input type="hidden" name="review_id" value="{{ review.id }}">
@@ -116,6 +126,7 @@
                         </button>
                     </form>
 
+                    <!-- Button to edit a review (triggers modal) -->
                     <button type="button" class="btn btn-primary btn-sm rounded-pill shadow-sm ml-2" data-toggle="modal"
                         data-target="#editReviewModal" data-review-id="{{ review.id }}"
                         data-rating="{{ review.rating }}" data-comment="{{ review.comment }}">
@@ -130,8 +141,7 @@
     </ul>
 </div>
 
-
-
+<!-- Modal for editing a review -->
 <div class="modal fade" id="editReviewModal" tabindex="-1" role="dialog" aria-labelledby="editReviewModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -143,21 +153,22 @@
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Form inside the modal to edit a review -->
                 <form action="{% url 'profiles:profile' %}" method="POST">
                     {% csrf_token %}
-
                     {{ review_form|crispy }}
                     <input type="hidden" name="review_id" id="review_id" value="{{ review.id }}">
                     <button type="submit" name="update_review" class="btn btn-primary">Save changes</button>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
 
+{% block postloadjs %}
+{{ block.super }}
+<!-- JavaScript for handling modal data -->
 <script>
-
     $('#editReviewModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var reviewId = button.data('review-id');
@@ -169,9 +180,7 @@
         modal.find('select[name="rating"]').val(rating);
         modal.find('textarea[name="comment"]').val(comment);
     });
-
 </script>
 
-
-
+{% endblock %}
 {% endblock %}

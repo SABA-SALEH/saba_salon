@@ -15,13 +15,16 @@ logger = logging.getLogger(__name__)
 
 
 class StripeWH_Handler:
-    """Handle Stripe webhooks"""
+    """Handle Stripe webhooks for processing payment events."""
 
     def __init__(self, request):
         self.request = request
 
     def _send_confirmation_email(self, order):
-        """Send a confirmation email to the user."""
+        """
+        Send a confirmation email to the user upon successful payment.
+        Uses email templates to construct the subject and body.
+        """
         cust_email = order.email
         subject = render_to_string(
             'checkout/confirmation_emails/confirmation_email_subject.txt',
@@ -46,7 +49,8 @@ class StripeWH_Handler:
 
     def handle_event(self, event):
         """
-        Handle a generic/unknown/unexpected webhook event.
+        Handle a generic or unexpected webhook event.
+        Logs the event type and returns a 200 status response.
         """
         logger.warning(f'Unhandled webhook received: {event["type"]}')
         return HttpResponse(
@@ -57,6 +61,7 @@ class StripeWH_Handler:
     def handle_payment_intent_succeeded(self, event):
         """
         Handle the payment_intent.succeeded webhook from Stripe.
+        Creates an order if it doesn't already exist and sends a confirmation email.
         """
         intent = event.data.object
         pid = intent.id
@@ -65,6 +70,7 @@ class StripeWH_Handler:
         username = intent.metadata.username
 
         try:
+            # Retrieve charge details from Stripe
             stripe_charge = stripe.Charge.retrieve(
                 intent.latest_charge
             )
@@ -73,6 +79,7 @@ class StripeWH_Handler:
             order_total = grand_total
 
             profile = None
+            # Update user profile if necessary
             if username != 'AnonymousUser':
                 try:
                     profile = UserProfile.objects.get(user__username=username)
@@ -83,6 +90,7 @@ class StripeWH_Handler:
                     logger.error(f"UserProfile with username {username} does not exist")
 
             try:
+                # Check if the order already exists
                 order = Order.objects.get(
                     full_name__iexact=billing_details.name,
                     email__iexact=billing_details.email,
@@ -92,12 +100,14 @@ class StripeWH_Handler:
                     original_cart=cart,
                     stripe_pid=pid,
                 )
+                # Send confirmation email for existing order
                 self._send_confirmation_email(order)
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
                     status=200
                 )
             except Order.DoesNotExist:
+                # Create a new order if it does not exist
                 return self._create_order(intent, billing_details, cart, profile, order_total, grand_total, pid)
             except Exception as e:
                 logger.error(f"Error handling payment_intent.succeeded event: {e}")
@@ -113,8 +123,11 @@ class StripeWH_Handler:
             )
 
     def _create_order(self, intent, billing_details, cart, profile, order_total, grand_total, pid):
-        """Create a new order and associated bookings"""
+        """
+        Create a new order and associated bookings based on the Stripe event.
+        """
         try:
+            # Create the order
             order = Order.objects.create(
                 full_name=billing_details.name,
                 user_profile=profile,
@@ -126,6 +139,7 @@ class StripeWH_Handler:
                 stripe_pid=pid,
             )
             cart_items = json.loads(cart)
+            # Create bookings for each item in the cart
             for item_key, item in cart_items.items():
                 if item['type'] == 'service':
                     service_id = item['service_id']
@@ -146,6 +160,7 @@ class StripeWH_Handler:
                         order=order
                     )
 
+            # Update order totals and send confirmation email
             order.update_totals()
             self._send_confirmation_email(order)
             return HttpResponse(
@@ -162,6 +177,7 @@ class StripeWH_Handler:
     def handle_payment_intent_payment_failed(self, event):
         """
         Handle the payment_intent.payment_failed webhook from Stripe.
+        Logs the event and returns a 200 status response.
         """
         logger.warning(f'Payment intent payment failed: {event}')
         return HttpResponse(

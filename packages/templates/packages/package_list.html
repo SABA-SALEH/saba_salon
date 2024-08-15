@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Include custom CSS for the packages page -->
 <link rel="stylesheet" href="{% static 'packages/css/packages.css' %}">
+<!-- Include SweetAlert2 CSS for stylish alert dialogs -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 {% endblock %}
 
 {% block page_header %}
+<!-- Display messages if there are any -->
 {% if messages %}
 <div class="message-container mt-4">
     {% for message in messages %}
@@ -27,6 +30,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- Main content of the page -->
 <div class="container header-container py-5">
     <div class="row">
         <div class="col text-center">
@@ -35,60 +39,77 @@
         </div>
     </div>
 </div>
+
 <div class="container mt-5">
+    <!-- Page heading for packages section -->
     <h2 class="text-center mb-2 logo-font">Packages</h2>
     <hr class="w-50 mx-auto mb-5">
+
     <div class="row">
+        <!-- Loop through each package with ratings -->
         {% for package_info in packages_with_ratings %}
         <div class="col-md-4 mb-4">
             <div class="card package-card shadow-sm">
+                <!-- Display package image -->
                 <img src="{% static 'packages/images/package.jpg' %}" class="card-img-top"
                     alt="{{ package_info.package.name }}">
 
+                <!-- Show 'Best Deal' tag if this package is the best deal -->
                 {% if package_info.package == best_deal_package %}
                 <div class="best-deal-tag">Best Deal</div>
                 {% endif %}
 
                 <div class="card-body">
+                    <!-- Display package name -->
                     <h2 class="card-title">{{ package_info.package.name }}</h2>
                     <hr>
+                    
+                    <!-- Display package rating if available -->
                     {% if package_info.average_rating %}
                     {% with package_info.average_rating|floatformat:0 as rounded_rating %}
                     <p>
+                        <!-- Display stars for rating -->
                         {% for i in "12345" %}
-                        {% if forloop.counter <= rounded_rating|add:"0" %} <span class="star filled">★</span>
-                            {% else %}
+                        {% if forloop.counter <= rounded_rating|add:"0" %}
+                            <span class="star filled">★</span>
+                        {% else %}
                             <span class="star empty">☆</span>
-                            {% endif %}
-                            {% endfor %}
+                        {% endif %}
+                        {% endfor %}
                     </p>
                     {% endwith %}
                     {% else %}
                     <p><strong>Rating:</strong> No Rating</p>
                     {% endif %}
 
+                    <!-- Display package description and prices -->
                     <p class="card-text">{{ package_info.package.description }}</p>
                     <p class="card-text"><strong>Price:</strong> ${{ package_info.package.price }}</p>
                     <p class="card-text"><strong>Saving Price:</strong> ${{ package_info.package.saving_price }}</p>
 
+                    <!-- Form to add package to cart -->
                     <form method="POST" action="{% url 'cart:add_package_to_cart' item_id=package_info.package.id %}"
                         class="mt-3">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
                     </form>
 
+                    <!-- Display review link if user is authenticated -->
                     {% if user.is_authenticated %}
                     <a class="btn btn-outline-black"
                         href="{% url 'reviews:add_review' 'package' package_info.package.id %}">
                         Add Review for This Package
                     </a>
                     {% else %}
+                    <!-- Prompt for login if user is not authenticated -->
                     <p class="login-prompt text-muted">
                         Please <a class="login-link" href="{% url 'account_login' %}">log in</a> to add a review
                     </p>
                     {% endif %}
 
+                    <!-- Display edit and delete options for superusers -->
                     {% if request.user.is_superuser %}
+                    <br>
                     <small class="ml-3">
                         <a href="{% url 'packages:edit_package' package_info.package.id %}">Edit</a> |
                         <a href="#" class="text-danger delete-link" data-url="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
@@ -96,6 +117,7 @@
                     {% endif %}
 
                     <hr>
+                    <!-- Display included services -->
                     <h3 class="card-subtitle mb-2">Included Services:</h3>
                     <ul class="list-group list-group-flush">
                         {% for service in package_info.package.services.all %}
@@ -113,13 +135,15 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Include SweetAlert2 JavaScript for stylish alert dialogs -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Add click event listener to delete links
         document.querySelectorAll('.delete-link').forEach(link => {
             link.addEventListener('click', function (event) {
-                event.preventDefault();
-                const url = this.getAttribute('data-url');
+                event.preventDefault(); // Prevent default link action
+                const url = this.getAttribute('data-url'); // Get URL from data attribute
                 Swal.fire({
                     title: 'Are you sure?',
                     text: 'You will not be able to recover this package!',
@@ -131,7 +155,7 @@
                     cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = url;
+                        window.location.href = url; // Redirect to the delete URL
                     }
                 });
             });

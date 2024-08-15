@@ -5,11 +5,11 @@ from .forms import PackageForm
 from django.contrib import messages
 from django.urls import reverse
 
-# Create your views here.
 
-
+# View for listing all packages and identifying the best deal
 def package_list(request):
     packages = Package.objects.all()
+    # Determine the package with the highest saving price
     best_deal_package = max(packages, key=lambda package: package.saving_price, default=None)
 
     packages_with_ratings = []
@@ -29,7 +29,8 @@ def package_list(request):
 
 @login_required
 def add_package(request):
-    """ Add a package to the salon """
+    """Add a new package to the salon"""
+    # Check if the user is a superuser (salon owner)
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('home:index'))
@@ -44,22 +45,25 @@ def add_package(request):
             messages.error(request, 'Failed to add package. Please ensure the form is valid.')
     else:
         form = PackageForm()
-    template = 'packages/add_package.html'
+
     context = {
         'form': form,
     }
 
-    return render(request, template, context)
+    return render(request, 'packages/add_package.html', context)
 
 
 @login_required
 def edit_package(request, package_id):
-    """ Edit a package in the salon """
+    """Edit an existing package in the salon"""
+    # Check if the user is a superuser (salon owner)
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('home:index'))
 
+    # Get the package or return a 404 error if it doesn't exist
     package = get_object_or_404(Package, pk=package_id)
+
     if request.method == 'POST':
         form = PackageForm(request.POST, request.FILES, instance=package)
         if form.is_valid():
@@ -72,22 +76,23 @@ def edit_package(request, package_id):
         form = PackageForm(instance=package)
         messages.info(request, f'You are editing {package.name}')
 
-    template = 'packages/edit_package.html'
     context = {
         'form': form,
         'package': package,
     }
 
-    return render(request, template, context)
+    return render(request, 'packages/edit_package.html', context)
 
 
 @login_required
 def delete_package(request, package_id):
-    """ Delete a package from the salon"""
+    """Delete a package from the salon"""
+    # Check if the user is a superuser (salon owner)
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('home:index'))
 
+    # Get the package or return a 404 error if it doesn't exist
     package = get_object_or_404(Package, pk=package_id)
     package.delete()
     messages.success(request, 'Package deleted!')

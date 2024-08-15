@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -19,18 +20,23 @@ from django.contrib.auth.models import AnonymousUser
 
 @require_POST
 def cache_checkout_data(request):
+    """
+    Cache checkout data in Stripe metadata to use it later.
+    This function is called via a POST request from Stripe's client-side library.
+    """
     try:
+        # Extract the payment intent ID from the client secret
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Modify the PaymentIntent to include cart data and user info in metadata
         stripe.PaymentIntent.modify(pid, metadata={
             'cart': json.dumps(request.session.get('cart', {})),
             'save_info': request.POST.get('save_info'),
-            'username': request.user,
+            'username': request.user.username if request.user.is_authenticated else 'Anonymous',
         })
         return HttpResponse(status=200)
     except Exception as e:
-        messages.error(request, 'Sorry, your payment cannot be \
-            processed right now. Please try again later.')
+        messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
 
 
@@ -39,13 +45,18 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @login_required
 def checkout(request):
+    """
+    Handle the checkout process: validate the cart, create an order, and initiate payment.
+    """
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
+    # Check if the Stripe secret key is set
     if not stripe_secret_key:
         messages.error(request, 'Stripe secret key is missing. Please set it in your environment variables.')
         return redirect('cart:view_cart')
 
+    # Retrieve the cart from the session
     cart = request.session.get('cart', {})
     if not cart:
         messages.error(request, 'Your cart is empty.')
@@ -54,6 +65,7 @@ def checkout(request):
     booking_items = []
     total = Decimal('0.00')
 
+    # Process each item in the cart
     for item_key, item in cart.items():
         item_parts = item_key.split('_')
         if len(item_parts) != 2:
@@ -91,6 +103,7 @@ def checkout(request):
             })
 
     if request.method == 'POST':
+        # Handle form submission for creating an order
         order_form = OrderForm(request.POST)
 
         if order_form.is_valid():
@@ -101,6 +114,7 @@ def checkout(request):
             order.order_total = total
             order.grand_total = total
 
+            # Associate the order with the user profile if logged in
             if request.user.is_authenticated:
                 try:
                     order.user_profile = UserProfile.objects.get(user=request.user)
@@ -113,6 +127,7 @@ def checkout(request):
 
             order.save()
 
+            # Create booking records for each item in the cart
             for item in booking_items:
                 if request.user.is_authenticated:
                     if item['type'] == 'service':
@@ -142,13 +157,15 @@ def checkout(request):
             request.session['cart'] = {}
             request.session['save_info'] = 'save-info' in request.POST
 
+            # Redirect to the success page
             return redirect(reverse('checkout:checkout_success', kwargs={'order_number': order.order_number, 'email': order.email}))
         else:
             messages.error(request, 'There was an error with your form. Please double-check your information.')
 
+    # Prepare data for rendering the checkout page
     current_cart = cart_contents(request)
     total = current_cart['grand_total']
-    stripe_total = round(total * 100)
+    stripe_total = round(total * 100)  # Convert to cents for Stripe
     intent = stripe.PaymentIntent.create(
         amount=stripe_total,
         currency=settings.STRIPE_CURRENCY,
@@ -182,6 +199,9 @@ def checkout(request):
 
 
 def checkout_success(request, order_number, email):
+    """
+    Handle successful checkout by displaying a confirmation page and updating user profile if necessary.
+    """
     save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
 

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Service, Category, Booking
 
+
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -12,11 +13,13 @@ class ServiceAdmin(admin.ModelAdmin):
     )
     ordering = ('name',)
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'friendly_name',
         'name',
     )
+
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = (

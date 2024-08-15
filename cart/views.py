@@ -1,31 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from datetime import datetime
 from services.models import Service, Booking
 from packages.models import Package
-from datetime import datetime
 from django.http import JsonResponse
 
 
 def add_to_cart(request, service_id):
-    """ Add a service booking to the cart """
+    """
+    Add a service booking to the cart.
+    This function handles POST requests to add a specified service to the cart.
+    It also handles the addition of any additional services specified in the POST data.
+    """
     if request.method == 'POST':
         try:
-            service_id = str(service_id)
+            service_id = str(service_id)  # Ensure the service_id is in string format
         except ValueError:
             messages.error(request, 'Invalid service ID.')
             return redirect('services:services')
 
-        service = get_object_or_404(Service, id=service_id)
+        service = get_object_or_404(Service, id=service_id)  # Fetch the service object or raise 404
         date = request.POST.get('date')
         time = request.POST.get('time')
         cart = request.session.get('cart', {})
         item_key = f'service_{service_id}'
+
         if item_key in cart:
             messages.info(request, 'Service already in cart.')
         else:
+            # Add the service to the cart with details
             cart[item_key] = {
                 'service_id': service_id,
                 'name': service.name,
@@ -49,6 +53,7 @@ def add_to_cart(request, service_id):
                 if item_key_additional in cart:
                     messages.info(request, 'Additional service already in cart.')
                 else:
+                    # Add additional service details to the cart
                     cart[item_key_additional] = {
                         'service_id': additional_service_id,
                         'name': additional_service.name,
@@ -62,33 +67,40 @@ def add_to_cart(request, service_id):
                 messages.error(request, 'Invalid additional service ID.')
 
         request.session['cart'] = cart
-        request.session.modified = True
+        request.session.modified = True  # Mark the session as modified
         return redirect('cart:view_cart')
 
     return redirect('services:all_services')
 
 
 def remove_from_cart(request, item_type, item_id):
-    """ Remove a service or package booking from the cart """
+    """
+    Remove a service or package booking from the cart.
+    This function handles the removal of an item from the cart based on its type and ID.
+    """
     item_key = f'{item_type}_{item_id}'
     cart = request.session.get('cart', {})
 
     if item_key in cart:
-        del cart[item_key]
+        del cart[item_key]  # Remove the item from the cart
         request.session['cart'] = cart
         messages.success(request, f'{item_type.capitalize()} removed from cart.')
     else:
         messages.error(request, f'{item_type.capitalize()} not found in cart.')
 
-    request.session.modified = True
+    request.session.modified = True  # Mark the session as modified
     return redirect('cart:view_cart')
 
 
 def view_cart(request):
+    """
+    Display the contents of the cart.
+    This function aggregates the items in the cart and calculates the total cost.
+    """
     cart = request.session.get('cart', {})
     services = []
     packages = []
-    total = Decimal('0.00')
+    total = Decimal('0.00')  # Initialize total cost
 
     for item_key, item in cart.items():
         item_parts = item_key.split('_')
@@ -131,6 +143,10 @@ def view_cart(request):
 
 
 def edit_cart_item(request, service_id):
+    """
+    Edit a service item in the cart.
+    This function allows the user to update the date and time for a service in the cart.
+    """
     cart = request.session.get('cart', {})
     item_key = f'service_{service_id}'
     print("Cart data at the start:", cart)
@@ -182,6 +198,10 @@ def edit_cart_item(request, service_id):
 
 
 def get_booked_times(request, service_id):
+    """
+    Get the times that are already booked for a service on a specific date.
+    This function responds with a JSON list of booked times for a given date.
+    """
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
         booking_date = request.GET['booking_date']
@@ -196,6 +216,8 @@ def get_booked_times(request, service_id):
 
 
 def get_available_times(request, service_id):
+    """Get the available times for a service on a specific date.
+    This function responds with a JSON list of available times for a given date."""
     if request.method == 'GET' and 'booking_date' in request.GET:
         service = get_object_or_404(Service, pk=service_id)
         booking_date = request.GET['booking_date']
@@ -209,6 +231,8 @@ def get_available_times(request, service_id):
 
 
 def add_package_to_cart(request, item_id):
+    """Add a package to the cart.
+    This function handles POST requests to add a specified package to the cart."""
     try:
         item_id = int(item_id)
     except ValueError:

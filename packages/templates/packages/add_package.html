@@ -2,28 +2,40 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Include custom CSS for the package management page -->
 <link rel="stylesheet" href="{% static 'packages/css/package_management.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Spacer to adjust layout spacing -->
 <div class="spacer"></div>
+
+<!-- Centered title for the package management section -->
 <div class="col text-center">
     <h2 class="logo-font mt-4 mb-4">Package Management</h2>
     <hr class="w-50 mx-auto mb-5">
 </div>
+
 <div class="container">
+    <!-- Center the form within the container -->
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
+            <!-- Section heading for adding a package -->
             <div class="col-12 ">
                 <h3 class="section-heading">Add a Package</h3>
             </div>
+            <!-- Card container for the form -->
             <div class="card mb-4">
                 <form method="POST" action="{% url 'packages:add_package' %}" class="form mb-2"
                     enctype="multipart/form-data">
                     {% csrf_token %}
+                    <!-- Render the form using Crispy Forms for better styling -->
                     {{ form|crispy }}
+                    <!-- Buttons for form actions -->
                     <div class="text-right mt-4">
+                        <!-- Cancel button to return to the package list -->
                         <a class="btn btn-outline-black mr-2" href="{% url 'packages:package_list' %}">Cancel</a>
+                        <!-- Submit button to add the package -->
                         <button class="btn btn-black" type="submit">Add Package</button>
                     </div>
                 </form>

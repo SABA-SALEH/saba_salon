@@ -2,10 +2,12 @@
 {% load static %}
 
 {% block page_header %}
+<!-- Display messages such as errors or warnings at the top of the page -->
 {% if messages %}
 <div class="message-container mt-4">
     {% for message in messages %}
     {% with message.level as level %}
+    <!-- Include the appropriate toast message based on its level -->
     {% if level == 40 %}
     {% include 'includes/toasts/toast_error.html' %}
     {% elif level == 30 %}
@@ -22,26 +24,33 @@
 {% endblock %}
 
 {% block extra_css %}
+<!-- Additional CSS for styling the checkout confirmation page -->
 <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Main content of the confirmation page -->
 <div class="spacer"></div>
 <div class="container">
     <div class="confirmation-container">
+        <!-- Header for the confirmation section -->
         <div class="confirmation-header">
             <h2 class="mb-4">Appointment Confirmation</h2>
         </div>
+        
+        <!-- Success alert with booking confirmation details -->
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">Thank you for your booking!</h4>
             <p class="booking-details">Your appointment number is <strong class="order-number">{{ order.order_number }}</strong>.</p>
             <p class="booking-details">A confirmation email has been sent to <strong>{{ email }}</strong>.</p>
         </div>        
         
+        <!-- Booking summary section -->
         <div class="summary">
             <h3>Booking Summary</h3>
             {% for booking in order.bookings.all %}
             <div class="summary-item">
+                <!-- Display details based on whether the booking is for a service or package -->
                 {% if booking.service %}
                     <p><strong>Service:</strong> {{ booking.service.name }}</p>
                     <p><strong>Description:</strong> {{ booking.service.description }}</p>
@@ -55,10 +64,13 @@
                 {% endif %}
             </div>
             {% endfor %}
+            <!-- Display the total amount paid -->
             <div class="summary-total">
                 <p><strong>Total Paid:</strong> ${{ order.grand_total }}</p>
             </div>
         </div>
+
+        <!-- Buttons for navigating back to the profile or booking another appointment -->
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-lg-7 text-center">
                 {% if from_profile %}
@@ -70,9 +82,6 @@
                 {% endif %}
             </div>
         </div>
-        
-    </div>
-    
     </div>
 </div>
 {% endblock %}

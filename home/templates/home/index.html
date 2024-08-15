@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<!-- Hero Image Section -->
 <div class="hero-image">
     <div class="hero-text">
         <h1>Welcome to Saba Salon</h1>
@@ -9,75 +10,68 @@
     </div>
 </div>
 
+<!-- Why Choose Us Section -->
 <div class="why-us-section py-5">
     <div class="container">
         <h2 class="text-center mb-4">WHY CHOOSE US?</h2>
-
-
         <div class="row">
-
+            <!-- Exceptional Quality Card -->
             <div class="col-md-4 mb-4">
                 <div class="why-us-card text-center">
                     <img src="{% static 'images/quality.jpg' %}" alt="Quality" class="img-fluid mb-3">
                     <hr>
                     <h4>Exceptional Quality</h4>
                     <hr>
-                    <p>We use only the finest products and techniques to ensure that you receive top-notch services
-                        every time you visit.</p>
+                    <p>We use only the finest products and techniques to ensure that you receive top-notch services every time you visit.</p>
                 </div>
             </div>
-
+            <!-- Friendly & Professional Staff Card -->
             <div class="col-md-4 mb-4">
                 <div class="why-us-card text-center">
                     <img src="{% static 'images/friendly.jpg' %}" alt="Friendly Staff" class="img-fluid mb-3">
                     <hr>
                     <h4>Friendly & Professional Staff</h4>
                     <hr>
-                    <p>Our team is not only highly skilled but also dedicated to making you feel comfortable and valued
-                        throughout your visit.</p>
+                    <p>Our team is not only highly skilled but also dedicated to making you feel comfortable and valued throughout your visit.</p>
                 </div>
             </div>
-
+            <!-- Relaxing Ambiance Card -->
             <div class="col-md-4 mb-4">
                 <div class="why-us-card text-center">
                     <img src="{% static 'images/ambiance.jpg' %}" alt="Ambiance" class="img-fluid mb-3">
                     <hr>
                     <h4>Relaxing Ambiance</h4>
                     <hr>
-                    <p>Our salon provides a tranquil and inviting atmosphere that allows you to unwind and enjoy your
-                        beauty treatments.</p>
+                    <p>Our salon provides a tranquil and inviting atmosphere that allows you to unwind and enjoy your beauty treatments.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Featured Services Section -->
 <div class="container mt-5">
     <div class="row mb-5">
-
+        <!-- Facial Services Card -->
         <div class="col-md-6 mb-4">
             <div class="service-card">
                 <img src="{% static 'images/facial.jpg' %}" alt="Facials" class="img-fluid service-image">
                 <div class="service-details">
                     <h3>FACIALS</h3>
                     <hr>
-                    <p>Revitalize your skin with our luxurious facials. Whether you need hydration, anti-aging
-                        solutions, or deep cleansing, our estheticians tailor each treatment for a radiant complexion.
-                    </p>
+                    <p>Revitalize your skin with our luxurious facials. Whether you need hydration, anti-aging solutions, or deep cleansing, our estheticians tailor each treatment for a radiant complexion.</p>
                     <a href="{% url 'services:all_services' %}?category=Facial" class="btn btn-book-now">Book Now</a>
                 </div>
             </div>
         </div>
-
+        <!-- Makeup Services Card -->
         <div class="col-md-6 mb-4">
             <div class="service-card">
                 <img src="{% static 'images/makeup.jpg' %}" alt="Make Up" class="img-fluid service-image">
                 <div class="service-details">
                     <h3>MAKE UP</h3>
                     <hr>
-                    <p>Enhance your beauty with our professional makeup services. Whether it's for a special occasion or
-                        everyday glam, our artists create looks that highlight your best features.</p>
+                    <p>Enhance your beauty with our professional makeup services. Whether it's for a special occasion or everyday glam, our artists create looks that highlight your best features.</p>
                     <a href="{% url 'services:all_services' %}?category=Makeup" class="btn btn-book-now">Book Now</a>
                 </div>
             </div>
@@ -85,28 +79,26 @@
     </div>
 
     <div class="row mb-5">
-
+        <!-- Nails Services Card -->
         <div class="col-md-6 mb-4">
             <div class="service-card">
                 <img src="{% static 'images/nails.jpg' %}" alt="Nails" class="img-fluid service-image">
                 <div class="service-details">
                     <h3>NAILS</h3>
                     <hr>
-                    <p>Elevate your style with our nail care services. From classic manicures to dazzling nail art, our
-                        skilled technicians ensure your nails are as polished as your look.</p>
+                    <p>Elevate your style with our nail care services. From classic manicures to dazzling nail art, our skilled technicians ensure your nails are as polished as your look.</p>
                     <a href="{% url 'services:all_services' %}?category=Nails" class="btn btn-book-now">Book Now</a>
                 </div>
             </div>
         </div>
-
+        <!-- Hair Styling Services Card -->
         <div class="col-md-6 mb-4">
             <div class="service-card">
                 <img src="{% static 'images/hairstyling.jpg' %}" alt="Hair Styling" class="img-fluid service-image">
                 <div class="service-details">
                     <h3>HAIR STYLING</h3>
                     <hr>
-                    <p>Transform your look with our expert hair styling. Whether you're seeking a trendy haircut, a
-                        stunning updo, or personalized color, our skilled stylists bring your hair dreams to life.</p>
+                    <p>Transform your look with our expert hair styling. Whether you're seeking a trendy haircut, a stunning updo, or personalized color, our skilled stylists bring your hair dreams to life.</p>
                     <a href="{% url 'services:all_services' %}?category=Hair" class="btn btn-book-now">Book Now</a>
                 </div>
             </div>

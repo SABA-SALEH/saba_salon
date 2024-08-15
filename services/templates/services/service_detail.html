@@ -2,11 +2,15 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Link to custom CSS specific to the reviews page -->
 <link rel="stylesheet" href="{% static 'reviews/css/reviews.css' %}">
 {% endblock %}
 
 {% block page_header %}
+<!-- Spacer to separate header from the content -->
 <div class="spacer"></div>
+
+<!-- Display messages (errors, warnings, etc.) if any -->
 {% if messages %}
 <div class="message-container mt-4">
     {% for message in messages %}
@@ -27,124 +31,126 @@
 {% endblock %}
 
 {% block content %}
+<!-- Main content area for the service details and reviews -->
 <div class="container my-5">
     <div class="row">
-        <div class="col-lg-6">
-            <div class="service-image">
-                {% if service.image %}
-                <img class="img-fluid rounded" src="{{ service.image.url }}" alt="{{ service.name }}">
-                {% else %}
-                <img class="img-fluid rounded" src="{% static 'images/noimage.png' %}" alt="{{ service.name }}">
-                {% endif %}
+        <!-- Service image section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <img class="card-img-top img-fluid"
+                    src="{% if service.image %}{{ service.image.url }}{% else %}{% static 'images/noimage.png' %}{% endif %}"
+                    alt="{{ service.name }}">
             </div>
         </div>
-        <div class="col-lg-6 details">
-            <div class="service-details">
-                <form id="bookingForm" method="POST" action="{% url 'cart:add_to_cart' service.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="service_id" value="{{ service.id }}">
-
-                    <div class="d-flex flex-column flex-md-row align-items-start mb-4">
-                        <h2 class="font-weight-bold mb-2 mb-md-0">{{ service.name }}</h2>
-
-                        {% if request.user.is_superuser %}
+        <!-- Service details section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Service title with optional edit and delete links for superusers -->
+                    <h2 class="card-title">{{ service.name }} {% if request.user.is_superuser %}
                         <small class="ml-0 ml-md-3">
                             <a href="{% url 'services:edit_service' service.id %}">Edit</a> |
                             <a href="#" class="text-danger delete-link"
                                 data-url="{% url 'services:delete_service' service.id %}">Delete</a>
                         </small>
                         {% endif %}
-                    </div>
+                    </h2>
 
                     <hr>
+
+                    <!-- Display average rating using stars, or a message if no rating is available -->
                     {% if average_rating %}
-                    <p>
+                    <div class="mb-3">
                         {% for i in "12345" %}
                         {% if forloop.counter <= rounded_rating %} <span class="star filled">★</span>
-                            {% else %}
-                            <span class="star empty">☆</span>
+                            {% else %}<span class="star empty">☆</span>
                             {% endif %}
                             {% endfor %}
-                    </p>
+                    </div>
                     {% else %}
                     <p><strong>Rating:</strong> No Rating</p>
                     {% endif %}
-                    <p class="text-muted">{{ service.description }}</p>
-                    <div class="service-meta mt-4">
-                        <p><strong>Price:</strong> ${{ service.price }}</p>
-                        <p><strong>Duration:</strong> {{ service.duration }} minutes</p>
-                    </div>
 
-                    <div class="form-group mb-4">
-                        <label for="booking_date">Select Date:</label>
-                        <input type="date" id="booking_date" name="date" class="form-control" required>
-                    </div>
+                    <!-- Display service description, price, and duration -->
+                    <p class="card-text text-muted">{{ service.description }}</p>
+                    <p><strong>Price:</strong> ${{ service.price }}</p>
+                    <p><strong>Duration:</strong> {{ service.duration }} minutes</p>
 
-                    <div class="form-group">
-                        <label for="booking_time">Available Times:</label>
-                        <select id="booking_time" name="time" class="form-control" required>
-                            <option value="" disabled selected>Select a time</option>
-                        </select>
-                    </div>
+                    <!-- Booking form with date and time selection, and an option to add another service -->
+                    <form id="bookingForm" method="POST" action="{% url 'cart:add_to_cart' service.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="service_id" value="{{ service.id }}">
 
-                    <div id="additionalServiceContainer" style="display: none;">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="service-selection">
-                                    <div class="form-group mb-4">
-                                        <label for="service_select">Select Another Service:</label>
-                                        <select id="service_select" name="additional_service" class="form-control">
-                                            <option value="" disabled selected>Select a service</option>
-                                            {% for additional_service in additional_services %}
-                                            <option value="{{ additional_service.id }}">
-                                                {{ additional_service.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                        <div class="form-group mb-4">
+                            <label for="booking_date">Select Date:</label>
+                            <input type="date" id="booking_date" name="date" class="form-control" required>
+                        </div>
 
-                                    <div class="form-group mb-4">
-                                        <label for="additional_booking_date">Select Date:</label>
-                                        <input type="date" id="additional_booking_date" name="additional_booking_date"
-                                            class="form-control">
-                                    </div>
+                        <div class="form-group">
+                            <label for="booking_time">Available Times:</label>
+                            <select id="booking_time" name="time" class="form-control" required>
+                                <option value="" disabled selected>Select a time</option>
+                            </select>
+                        </div>
 
-                                    <div class="form-group">
-                                        <label for="additional_booking_time">Available Times:</label>
-                                        <select id="additional_booking_time" name="additional_booking_time"
-                                            class="form-control">
-                                            <option value="" disabled selected>Select a time</option>
-                                        </select>
-                                    </div>
-                                </div>
+                        <!-- Additional service options with date and time selection -->
+                        <div id="additionalServiceContainer" style="display: none;">
+                            <div class="form-group mb-4">
+                                <label for="service_select">Select Another Service:</label>
+                                <select id="service_select" name="additional_service" class="form-control">
+                                    <option value="" disabled selected>Select a service</option>
+                                    {% for additional_service in additional_services %}
+                                    <option value="{{ additional_service.id }}">{{ additional_service.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="additional_booking_date">Select Date:</label>
+                                <input type="date" id="additional_booking_date" name="additional_booking_date"
+                                    class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="additional_booking_time">Available Times:</label>
+                                <select id="additional_booking_time" name="additional_booking_time"
+                                    class="form-control">
+                                    <option value="" disabled selected>Select a time</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
 
-                    <button type="button" id="toggleAdditionalService" class="btn btn-secondary mt-4">Add Another
-                        Service</button>
-                    <button type="submit" class="btn btn-primary mt-4 ml-2">Add to Cart</button>
-                </form>
-                {% if user.is_authenticated %}
-                <a class="btn btn-outline-black" href="{% url 'reviews:add_review' 'service' service.id %}">
-                Add Review for This Service
-                </a>
-                {% else %}
-                <p class="login-prompt text-muted">
-                Please <a class="login-link" href="{% url 'account_login' %}">log in</a> to add a review.
-                </p>
-                {% endif %}
+                        <button type="button" id="toggleAdditionalService" class="btn btn-secondary mt-4">Add Another
+                            Service</button>
+                        <button type="submit" class="btn btn-primary mt-4 ml-2">Add to Cart</button>
+                    </form>
+
+                    <!-- Link to add a review if the user is authenticated, otherwise prompt to log in -->
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-outline-dark mt-3" href="{% url 'reviews:add_review' 'service' service.id %}">Add
+                        Review for This Service</a>
+                    {% else %}
+                    <p class="login-prompt text-muted mt-3">Please <a class="login-link"
+                            href="{% url 'account_login' %}">log in</a> to add a review.</p>
+                    {% endif %}
+
+                </div>
             </div>
         </div>
     </div>
+
     <div class="my-5">
+        <!-- Section for displaying service reviews -->
         <h3 class="mb-4 review">Service Reviews</h3>
         {% if reviews %}
         <ul class="list-group">
             {% for review in reviews %}
             <li class="list-group-item mb-3 shadow-sm">
                 <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                    <!-- Reviewer details and rating -->
                     <div class="d-flex align-items-center mb-3 mb-md-0">
-                        <div class="user-icon rounded-circle text-white d-flex justify-content-center align-items-center mr-2">
+                        <div
+                            class="user-icon rounded-circle text-white d-flex justify-content-center align-items-center mr-2">
                             {{ review.user.username|slice:":1"|upper }}
                         </div>
                         <div>
@@ -155,29 +161,29 @@
                     <div class="ml-md-auto">
                         <span class="badge p-2">
                             {% for i in "12345" %}
-                            {% if forloop.counter <= review.rating %}
-                                <span class="star filled">★</span>
-                            {% else %}
-                                <span class="star empty">☆</span>
-                            {% endif %}
-                            {% endfor %}
+                            {% if forloop.counter <= review.rating %} <span class="star filled">★</span>
+                        {% else %}
+                        <span class="star empty">☆</span>
+                        {% endif %}
+                        {% endfor %}
                         </span>
                     </div>
                 </div>
+                <!-- Service or package details if available -->
                 {% if review.service %}
                 <p class="mt-2 service-name">Service: {{ review.service.name }}</p>
                 {% elif review.package %}
                 <p class="mt-2 service-name">Package: {{ review.package.name }}</p>
                 {% endif %}
                 <hr>
+                <!-- Review comment -->
                 <p class="mb-1">{{ review.comment }}</p>
             </li>
             {% endfor %}
         </ul>
         {% else %}
-        <div class="alert alert-info" role="alert">
-            No reviews for this service yet.
-        </div>
+        <!-- Message if no reviews are present -->
+        <div class="alert alert-info" role="alert">No reviews for this service yet.</div>
         {% endif %}
     </div>
 </div>
@@ -185,6 +191,7 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Include additional JavaScript files for the page -->
 <script src="{% static 'services/js/services.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
@@ -204,7 +211,7 @@
                     cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = url;
+                        window.location.href = url;  // Redirect to the URL for deletion
                     }
                 });
             });

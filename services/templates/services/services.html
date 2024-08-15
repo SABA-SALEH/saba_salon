@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Add custom stylesheets and external libraries here -->
 <link rel="stylesheet" href="{% static 'packages/css/packages.css' %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 {% endblock %}
 
 {% block page_header %}
+<!-- Page header section with a welcoming message -->
 <div class="container header-container py-5 mb-4">
     <div class="row text-center">
         <div class="col-12">
@@ -18,10 +20,12 @@
 {% endblock %}
 
 {% block content %}
+<!-- Main content of the page -->
 <div class="overlay"></div>
 <div class="container my-5">
     <div class="row">
         <div class="col text-center mt-3 mb-4">
+            <!-- Display currently selected categories or 'All' if none selected -->
             <h2 class="logo-font">
                 {% if selected_category_names %}
                 {% for category in selected_category_names %}
@@ -38,6 +42,7 @@
     </div>
     <div class="row mb-3">
         <div class="col text-center">
+            <!-- Sorting buttons for services -->
             <a href="?sort=price&direction=asc" class="btn btn-outline-secondary mb-1">Price Low to High</a>
             <a href="?sort=price&direction=desc" class="btn btn-outline-secondary mb-1">Price High to Low</a>
             <a href="?sort=name&direction=asc" class="btn btn-outline-secondary mb-1">Name A-Z</a>
@@ -50,27 +55,33 @@
     <div class="row">
         <div class="service-container col-12">
             <div class="row">
+                <!-- Loop through services and display each with its rating -->
                 {% for item in services_with_ratings %}
                 <div class="col-sm-6 col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-m custom-card-bg">
                         {% if item.service.image %}
+                        <!-- Display service image if available -->
                         <a href="{% url 'services:service_detail' item.service.id %}">
                             <img class="card-img-top img-fluid rounded" src="{{ item.service.image.url }}"
                                 alt="{{ item.service.name }}">
                         </a>
                         {% else %}
+                        <!-- Fallback image if service image is not available -->
                         <a href="{% url 'services:service_detail' item.service.id %}">
                             <img class="card-img-top img-fluid rounded" src="{% static 'images/noimage.png' %}"
                                 alt="{{ item.service.name }}">
                         </a>
                         {% endif %}
                         <div class="card-body text-center">
+                            <!-- Display service name and duration -->
                             <h5 class="card-title font-weight-bold">{{ item.service.name }}</h5>
                             <p class="card-text">Duration: {{ item.service.duration }}</p>
                         </div>
                         <div class="card-footer bg-white text-center">
+                            <!-- Display service price -->
                             <p class="lead mb-0 font-weight-bold">${{ item.service.price }}</p>
                             {% if item.rounded_rating %}
+                            <!-- Display star rating if available -->
                             <p>
                                 {% for i in "12345" %}
                                 {% if forloop.counter <= item.rounded_rating %} <span class="star filled">★</span>
@@ -80,9 +91,11 @@
                                     {% endfor %}
                             </p>
                             {% else %}
+                            <!-- Display message if no rating is available -->
                             <p><strong>Rating:</strong> No Rating</p>
                             {% endif %}
                             {% if request.user.is_superuser %}
+                            <!-- Show edit and delete options if user is a superuser -->
                             <small class="ml-3">
                                 <a href="{% url 'services:edit_service' item.service.id %}">Edit</a> |
                                 <a href="#" class="text-danger delete-link"
@@ -106,6 +119,7 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Load SweetAlert2 JavaScript for delete confirmation dialog -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -124,7 +138,7 @@
                     cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = url;
+                        window.location.href = url;  // Redirect to the URL for deletion
                     }
                 });
             });

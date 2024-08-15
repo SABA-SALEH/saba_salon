@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block page_header %}
+<!-- Header section of the page where messages (errors, warnings, etc.) are displayed -->
 <div class="spacer"></div>
 {% if messages %}
 <div class="message-container mt-4">
     {% for message in messages %}
     {% with message.level as level %}
+    <!-- Display different types of messages based on their level -->
     {% if level == 40 %}
     {% include 'includes/toasts/toast_error.html' %}
     {% elif level == 30 %}
@@ -23,16 +25,19 @@
 {% endblock %}
 
 {% block extra_css %}
+<!-- Additional CSS specific to the cart page -->
 <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Main content of the cart page -->
 <div class="container my-5">
     <h2 class="mb-4 text-center">YOUR CART</h2>
     <hr class="mb-4">
     {% if cart.services or cart.packages %}
 
     {% if cart.services %}
+    <!-- Display services in a table if there are any -->
     <div class="card mb-4">
         <div class="card-header">
             <h4 class="mb-0">SERVICES</h4>
@@ -54,6 +59,7 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.description }}</td>
                         <td>
+                            <!-- Form for editing service details, including date and time -->
                             <form id="form_{{ item.service.id }}" method="POST"
                                 action="{% url 'cart:edit_cart_item' item.service.id %}">
                                 {% csrf_token %}
@@ -67,6 +73,7 @@
                         </td>
                         <td>${{ item.price }}</td>
                         <td>
+                            <!-- Buttons for saving changes or removing the item from the cart -->
                             <button type="submit" class="btn btn-sm btn-custom">Save Changes</button>
                             <a href="#" class="btn btn-sm btn-danger remove-link"
                                 data-url="{% url 'cart:remove_from_cart' 'service' item.service.id %}">Remove</a>
@@ -81,6 +88,7 @@
     {% endif %}
 
     {% if cart.packages %}
+    <!-- Display packages in a table if there are any -->
     <div class="card mb-4">
         <div class="card-header">
             <h4 class="mb-0">PACKAGES</h4>
@@ -102,6 +110,7 @@
                         <td>{{ item.description }}</td>
                         <td>${{ item.price }}</td>
                         <td>
+                            <!-- Button for removing the package from the cart -->
                             <a href="#" class="btn btn-sm btn-danger remove-link"
                                 data-url="{% url 'cart:remove_from_cart' 'package' item.package.id %}">Remove</a>
                         </td>
@@ -113,12 +122,14 @@
     </div>
     {% endif %}
 
+    <!-- Display total price and checkout button if the cart is not empty -->
     <div class="text-right">
         <h3 class="total-price">Total: ${{ total }}</h3>
         <a href="{% url 'checkout:checkout' %}" class="btn btn-lg btn-custom">Proceed to Checkout</a>
     </div>
 
     {% else %}
+    <!-- Message shown when the cart is empty -->
     <div class="alert alert-warning empty-cart-alert mt-5" role="alert">
         Your cart is empty.
     </div>
@@ -128,10 +139,12 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Include JavaScript for cart functionality and SweetAlert2 for confirmation dialogs -->
 <script src="{% static 'cart/js/cart.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Add click event listeners to remove links for confirming the removal action
         document.querySelectorAll('.remove-link').forEach(link => {
             link.addEventListener('click', function (event) {
                 event.preventDefault();

@@ -2,10 +2,12 @@
 {% load static %}
 
 {% block page_header %}
+<!-- Display messages such as errors or warnings at the top of the page -->
 {% if messages %}
 <div class="message-container mt-4">
     {% for message in messages %}
     {% with message.level as level %}
+    <!-- Include the appropriate toast message based on its level -->
     {% if level == 40 %}
     {% include 'includes/toasts/toast_error.html' %}
     {% elif level == 30 %}
@@ -22,15 +24,17 @@
 {% endblock %}
 
 {% block extra_css %}
+<!-- Additional CSS for styling the checkout page -->
 <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Main content of the checkout page -->
 <div class="spacer"></div>
 <div class="container checkout-container my-5">
     <div class="row">
+        <!-- Order summary section on the left -->
         <div class="col-md-6 mb-4 mb-md-0">
-
             <div class="order-summary p-4 bg-light rounded shadow-sm">
                 <h2 class="mb-4 text-center">Booking Details</h2>
                 <hr>
@@ -38,8 +42,9 @@
                     {% for item in cart %}
                     <li class="mb-3 d-flex flex-column">
                         <div class="item-detail">
+                            <!-- Display details based on item type (service or package) -->
                             {% if item.type == "service" %}
-                            <strong> Service:</strong> {{ item.name }}<br>
+                            <strong>Service:</strong> {{ item.name }}<br>
                             <strong>Description:</strong> {{ item.description }}<br>
                             <strong>Date:</strong> {{ item.date }}<br>
                             <strong>Time:</strong> {{ item.time }}<br>
@@ -55,11 +60,13 @@
                     <hr>
                     {% endfor %}
                 </ul>
+                <!-- Display the total price of the cart items -->
                 <h3 class="mt-4 text-right">Total: ${{ total }}</h3>
             </div>
         </div>
-        <div class="col-md-6">
 
+        <!-- Order form section on the right -->
+        <div class="col-md-6">
             <div class="order-form p-4 bg-light rounded shadow-sm">
                 <h2 class="mb-4 text-center">Client Details</h2>
                 <hr>
@@ -67,6 +74,7 @@
                 <form id="payment-form" method="post" action="{% url 'checkout:checkout' %}">
                     {% csrf_token %}
                     <fieldset class="rounded px-3 mb-5">
+                        <!-- Render order form fields with crispy-forms -->
                         {{ order_form.full_name | as_crispy_field }}
                         {{ order_form.email | as_crispy_field }}
                         {{ order_form.phone_number | as_crispy_field }}
@@ -74,11 +82,13 @@
 
                     <div class="form-check form-check-inline float-right mr-0">
                         {% if user.is_authenticated %}
+                        <!-- Checkbox for saving client information for future bookings if the user is authenticated -->
                         <label class="form-check-label text-muted save-info-label" for="id-save-info">Save this information for
                             future bookings</label>
                         <input class="form-check-input ml-2 mr-0 save-info-checkbox" type="checkbox" id="id-save-info"
                             name="save-info" checked>
                         {% else %}
+                        <!-- Message to prompt the user to create an account or log in if not authenticated -->
                         <label class="form-check-label">
                             <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
                             <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
@@ -86,16 +96,20 @@
                         {% endif %}
                     </div>
                     <br>
+                    <!-- Hidden input to store the client secret for Stripe -->
                     <input type="hidden" name="client_secret" value="{{ client_secret }}">
 
                     <fieldset class="px-3">
                         <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
 
+                        <!-- Stripe's card element for payment -->
                         <div class="mb-3" id="card-element"></div>
 
+                        <!-- Display any card errors here -->
                         <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
                     </fieldset>
 
+                    <!-- Submit button for completing the booking -->
                     <div class="submit-button text-right mt-5 mb-2">
                         <a href="{% url 'cart:view_cart' %}" class="btn">
                             <span class="icon">
@@ -109,6 +123,7 @@
                                 <i class="fas fa-lock"></i>
                             </span>
                         </button>
+                        <!-- Warning message about the amount to be charged -->
                         <p class="small text-danger my-0">
                             <span class="icon">
                                 <i class="fas fa-exclamation-circle"></i>
@@ -121,6 +136,8 @@
         </div>
     </div>
 </div>
+
+<!-- Loading overlay to be shown during processing -->
 <div id="loading-overlay">
     <h1 class="text-light logo-font loading-spinner">
         <span class="icon">
@@ -132,11 +149,13 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Inject Stripe public key and client secret into the page -->
 {{ stripe_public_key|json_script:"id_stripe_public_key" }}
 {{ client_secret|json_script:"id_client_secret" }}
+<!-- JavaScript for handling Stripe Elements -->
 <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
 
-<!-- JavaScript to set save_info field based on user interaction -->
+<!-- JavaScript to synchronize the save_info checkbox value -->
 <script>
     const saveInfoCheckbox = document.querySelector('#id-save-info');
 

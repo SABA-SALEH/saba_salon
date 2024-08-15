@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from django.apps import apps  
+from django.apps import apps
+
 
 class Review(models.Model):
     RATINGS = [(i, str(i)) for i in range(1, 6)]

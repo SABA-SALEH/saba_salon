@@ -2,11 +2,15 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Link to additional CSS for styling the review pages -->
 <link rel="stylesheet" href="{% static 'reviews/css/reviews.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Main content block -->
+
 <div class="container header-container py-5 mb-4">
+    <!-- Header section for the add review page -->
     <div class="row custom-row ">
         <div class="col text-center">
             <p class="lead font-weight-bold">YOUR FEEDBACK MATTERS!</p>
@@ -16,22 +20,29 @@
 </div>
 
 <div class="container my-4">
+    <!-- Container for the review form -->
     <div class="row justify-content-center mb-4 custom-row">
         <div class="col-12 col-md-8">
+            <!-- Title of the form, dynamically showing the name of the entity (service/package) -->
             <h3 class="mb-4 mt-4">
                 Add Review for <span class="entity-name">{{ entity_name }}</span>
             </h3>
             <div class="card shadow p-4 rounded">
+                <!-- Card for the review form -->
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
+                        <!-- Include hidden input to differentiate between service and package -->
                         {% if entity_type == 'service' %}
                         <input type="hidden" name="service" value="{{ entity.id }}">
                         {% elif entity_type == 'package' %}
                         <input type="hidden" name="package" value="{{ entity.id }}">
                         {% endif %}
+                        <!-- Render the review form using Crispy Forms for better styling -->
                         {{ form|crispy }}
+                        <!-- Submit button for the form -->
                         <button type="submit" class="btn btn-primary btn-block mt-3">Submit Review</button>
+                        <!-- Link back to the list of reviews -->
                         <a href="{% url 'reviews:review_list' %}" class="btn btn-outline-secondary btn-block mt-2">Back to Reviews</a>
                     </form>
                 </div>
@@ -39,6 +50,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

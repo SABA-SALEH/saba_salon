@@ -2,25 +2,35 @@
 {% load static %}
 
 {% block extra_css %}
+<!-- Link to custom CSS for service management -->
 <link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Spacer to separate header from the content -->
 <div class="spacer"></div>
+
+<!-- Title and separator for the page -->
 <div class="col text-center">
     <h2 class="logo-font mt-4 mb-4">Service Management</h2>
     <hr class="w-50 mx-auto mb-5">
 </div>
+
+<!-- Container for the form to edit a service -->
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
-            <div class="col-12 ">
+            <!-- Heading for the edit section -->
+            <div class="col-12">
                 <h3 class="section-heading">Edit a Service</h3>
             </div>
+
+            <!-- Card containing the form to edit service details -->
             <div class="card mb-4">
-                <form method="POST" action="{% url 'services:edit_service' service.id %}" class="form mb-2"
-                    enctype="multipart/form-data">
+                <form method="POST" action="{% url 'services:edit_service' service.id %}" class="form mb-2" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <!-- Render form fields, except for the 'image' field -->
                     {% for field in form %}
                     {% if field.name != 'image' %}
                     {{ field|as_crispy_field }}
@@ -28,6 +38,8 @@
                     {{ field }}
                     {% endif %}
                     {% endfor %}
+
+                    <!-- Buttons for cancelling or submitting the form -->
                     <div class="text-right mt-4">
                         <a class="btn btn-outline-black mr-2" href="{% url 'services:all_services' %}">Cancel</a>
                         <button class="btn btn-black" type="submit">Update Service</button>
@@ -41,6 +53,7 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- JavaScript to handle file input and display the file name -->
 <script type="text/javascript">
     $('#new-image').change(function () {
         var file = $('#new-image')[0].files[0];

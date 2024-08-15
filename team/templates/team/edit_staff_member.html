@@ -2,56 +2,71 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
+    <!-- Link to additional CSS specific to the service management page -->
+    <link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="spacer"></div>
-<div class="col text-center">
-    <h2 class="logo-font mt-4 mb-4">Edit Staff Member</h2>
-    <hr class="w-50 mx-auto mb-5">
-</div>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="col-12">
-                <h3 class="section-heading">Edit {{ staff_member.name }}</h3>
-            </div>
-            <div class="card">
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        {% if field.name != 'photo' %}
-                            {{ field|as_crispy_field }}
-                        {% else %}
-                            {{ field }}
-                        {% endif %}
-                    {% endfor %}
-                    <div class="text-right mt-4">
-                        <a class="btn btn-outline-black mr-2" href="{% url 'team:team_list' %}">Cancel</a>
-                        <button class="btn btn-black" type="submit">Save Changes</button>
-                    </div>
-                </form>
+    <!-- Spacer for visual spacing -->
+    <div class="spacer"></div>
+    <div class="col text-center">
+        <!-- Main heading for the page -->
+        <h2 class="logo-font mt-4 mb-4">Edit Staff Member</h2>
+        <hr class="w-50 mx-auto mb-5">
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <!-- Section heading for the staff member edit form -->
+                <div class="col-12">
+                    <h3 class="section-heading">Edit {{ staff_member.name }}</h3>
+                </div>
+                <div class="card">
+                    <!-- Form for editing staff member details -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Loop through form fields and render them -->
+                        {% for field in form %}
+                            <!-- Render all fields except 'photo' using crispy form styling -->
+                            {% if field.name != 'photo' %}
+                                {{ field|as_crispy_field }}
+                            {% else %}
+                                <!-- Render 'photo' field separately to handle file input -->
+                                {{ field }}
+                            {% endif %}
+                        {% endfor %}
+                        <!-- Form submission buttons -->
+                        <div class="text-right mt-4">
+                            <!-- Link to cancel the edit operation and go back to the team list -->
+                            <a class="btn btn-outline-black mr-2" href="{% url 'team:team_list' %}">Cancel</a>
+                            <!-- Button to save changes -->
+                            <button class="btn btn-black" type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block postloadjs %}
-{{ block.super }}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        console.log('jQuery is ready');
-        $('#new-image').change(function () {
-            var file = this.files[0];
-            if (file) {
-                $('#filename').text(`Image will be set to: ${file.name}`);
-            } else {
-                $('#filename').text('No file chosen');
-            }
+    {{ block.super }}
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log('jQuery is ready');
+            // Event handler for file input change
+            $('#new-image').change(function () {
+                var file = this.files[0];
+                if (file) {
+                    // Display the name of the chosen file
+                    $('#filename').text(`Image will be set to: ${file.name}`);
+                } else {
+                    // Notify user if no file is chosen
+                    $('#filename').text('No file chosen');
+                }
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}

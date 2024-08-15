@@ -2,110 +2,125 @@
 {% load static %}
 
 {% block page_header %}
-{% if messages %}
-<div class="message-container mt-4">
-    {% for message in messages %}
-    {% with message.level as level %}
-    {% if level == 40 %}
-    {% include 'includes/toasts/toast_error.html' %}
-    {% elif level == 30 %}
-    {% include 'includes/toasts/toast_warning.html' %}
-    {% elif level == 25 %}
-    {% include 'includes/toasts/toast_success.html' %}
-    {% else %}
-    {% include 'includes/toasts/toast_info.html' %}
+    <!-- Check if there are any messages to display -->
+    {% if messages %}
+    <div class="message-container mt-4">
+        <!-- Iterate through all messages -->
+        {% for message in messages %}
+        {% with message.level as level %}
+            <!-- Display different toast notifications based on message level -->
+            {% if level == 40 %}
+                {% include 'includes/toasts/toast_error.html' %}
+            {% elif level == 30 %}
+                {% include 'includes/toasts/toast_warning.html' %}
+            {% elif level == 25 %}
+                {% include 'includes/toasts/toast_success.html' %}
+            {% else %}
+                {% include 'includes/toasts/toast_info.html' %}
+            {% endif %}
+        {% endwith %}
+        {% endfor %}
+    </div>
     {% endif %}
-    {% endwith %}
-    {% endfor %}
-</div>
-{% endif %}
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+    <!-- Link to the additional CSS specific to the team page -->
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
 {% endblock %}
 
 {% block content %}
-
-<div class="container header-container py-5">
-    <div class="row">
-        <div class="col text-center">
-            <p class="lead font-weight-bold text-uppercase">GET TO KNOW OUR TEAM</p>
-            <h1 class="lead">Discover the talent and dedication of our salon professionals</h1>
-        </div>
-    </div>
-</div>
-<div class="container my-5">
-    <h2 class="text-center mb-2 logo-font">Meet Our Team</h2>
-    <hr class="w-50 mx-auto mb-5">
-    <div class="row">
-        {% for staff in staff_members %}
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-lg border-0 rounded card-hover">
-                {% if staff.photo %}
-                <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="card-img-top staff-photo">
-                {% else %}
-                <img src="{% static 'images/noimage.png' %}" alt="No image available" class="card-img-top staff-photo">
-                {% endif %}
-
-                <div class="card-body text-center">
-                    <h5 class="card-title mb-3">{{ staff.name }}</h5>
-                    <hr>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ staff.position }}</h6>
-                    <p class="card-text mb-3">{{ staff.bio }}</p>
-                    <hr>
-                    <p class="mb-2"><strong>Email:</strong> <a href="mailto:{{ staff.email }}"
-                            class="text-decoration-none">{{ staff.email }}</a></p>
-                    {% if staff.phone_number %}
-                    <p><strong>Phone:</strong> {{ staff.phone_number }}</p>
-                    {% endif %}
-                    {% if user.is_superuser %}
-                    <div class="btn-group mt-4">
-                        <a href="{% url 'team:edit_staff_member' staff.pk %}" class="btn btn-primary btn-sm">Update</a>
-                        <form action="{% url 'team:delete_staff_member' staff.pk %}" method="post" class="delete-form"
-                            style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </div>
-                    {% endif %}
-                </div>
+    <!-- Main content area of the page -->
+    <div class="container header-container py-5">
+        <div class="row">
+            <div class="col text-center">
+                <!-- Main heading and subtitle for the team page -->
+                <p class="lead font-weight-bold text-uppercase">GET TO KNOW OUR TEAM</p>
+                <h1 class="lead">Discover the talent and dedication of our salon professionals</h1>
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center">
-            <p class="text-muted">No staff members found.</p>
-        </div>
-        {% endfor %}
     </div>
-</div>
 
-{% block postloadjs %}
-{{ block.super }}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.delete-form').forEach(form => {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const form = this;
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You won’t be able to revert this!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#CA8787',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+    <div class="container my-5">
+        <!-- Section heading for the staff list -->
+        <h2 class="text-center mb-2 logo-font">Meet Our Team</h2>
+        <hr class="w-50 mx-auto mb-5">
+        <div class="row">
+            <!-- Iterate over each staff member -->
+            {% for staff in staff_members %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 rounded card-hover">
+                    <!-- Display staff photo or a placeholder if none is available -->
+                    {% if staff.photo %}
+                        <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="card-img-top staff-photo">
+                    {% else %}
+                        <img src="{% static 'images/noimage.png' %}" alt="No image available" class="card-img-top staff-photo">
+                    {% endif %}
+
+                    <div class="card-body text-center">
+                        <!-- Staff member's name and position -->
+                        <h5 class="card-title mb-3">{{ staff.name }}</h5>
+                        <hr>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ staff.position }}</h6>
+                        <!-- Staff member's bio -->
+                        <p class="card-text mb-3">{{ staff.bio }}</p>
+                        <hr>
+                        <!-- Staff member's contact details -->
+                        <p class="mb-2"><strong>Email:</strong> <a href="mailto:{{ staff.email }}" class="text-decoration-none">{{ staff.email }}</a></p>
+                        {% if staff.phone_number %}
+                            <p><strong>Phone:</strong> {{ staff.phone_number }}</p>
+                        {% endif %}
+                        <!-- Display admin controls if the user is a superuser -->
+                        {% if user.is_superuser %}
+                        <div class="btn-group mt-4">
+                            <a href="{% url 'team:edit_staff_member' staff.pk %}" class="btn btn-primary btn-sm">Update</a>
+                            <form action="{% url 'team:delete_staff_member' staff.pk %}" method="post" class="delete-form" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Message to display if there are no staff members -->
+            <div class="col-12 text-center">
+                <p class="text-muted">No staff members found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% block postloadjs %}
+    {{ block.super }}
+    <!-- Include SweetAlert2 for custom alert dialogs -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listeners to all delete forms
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const form = this;
+                    // Show confirmation dialog before deleting
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You won’t be able to revert this!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#CA8787',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}
 {% endblock %}

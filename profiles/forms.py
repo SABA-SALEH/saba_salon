@@ -28,13 +28,16 @@ class UserProfileForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'border-black  profile-form-input'
             self.fields[field].label = False
 
+
 class ReviewForm(forms.ModelForm):
     review_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Review
-        fields = ['rating', 'comment']  
+        fields = ['rating', 'comment']
         widgets = {
             'comment': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your review here...'}),
-            'rating': forms.Select(choices=Review.RATINGS) 
+            'rating': forms.Select(choices=Review.RATINGS)
         }
+
+
