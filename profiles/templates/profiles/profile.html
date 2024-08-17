@@ -24,7 +24,8 @@
                     <p><strong>Email:</strong> <span>{{ email }}</span></p>
 
                     <!-- Form to update phone number -->
-                    <form class="d-flex align-items-center" action="{% url 'profiles:profile' %}" method="POST" id="profile-update-form">
+                    <form class="d-flex align-items-center" action="{% url 'profiles:profile' %}" method="POST"
+                        id="profile-update-form">
                         {% csrf_token %}
                         <div class="form-group rounded mb-0 flex-grow-1">
                             <div class="d-flex align-items-center">
@@ -34,7 +35,8 @@
                                 </div>
                             </div>
                             <!-- Submit button for phone number update -->
-                            <button type="submit" name="update_profile" class="btn btn-black ml-2">Update Phone Number</button>
+                            <button type="submit" name="update_profile" class="btn btn-black ml-2">Update Phone
+                                Number</button>
                         </div>
                     </form>
                 </div>
@@ -110,7 +112,13 @@
         <li class="list-group-item border-0 rounded shadow-sm mb-3">
             <div class="d-flex flex-column">
                 <div class="mb-3">
+                    <!-- Check if the review is for a service or a package -->
+                    {% if review.service %}
                     <p class="mb-1"><strong>Service:</strong> {{ review.service.name }}</p>
+                    {% elif review.package %}
+                    <p class="mb-1"><strong>Package:</strong> {{ review.package.name }}</p>
+                    {% endif %}
+
                     <p class="mb-1"><strong>Rating:</strong> {{ review.rating }}</p>
                     <p class="mb-0"><strong>Comment:</strong> {{ review.comment }}</p>
                 </div>
