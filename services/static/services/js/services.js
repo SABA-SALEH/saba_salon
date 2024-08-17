@@ -43,7 +43,7 @@ function fetchAvailableAndBookedTimes(serviceId, date, timeSelectElement) {
                     // Update the select element with filtered available times
                     timeSelectElement.innerHTML = '<option value="" disabled selected>Select a time</option>';
 
-                    filteredTimes.forEach(function(timeSlot) {
+                    filteredTimes.forEach(function (timeSlot) {
                         // Create a new option element for each available time slot
                         var option = document.createElement('option');
                         option.value = timeSlot;
@@ -64,7 +64,7 @@ function fetchAvailableAndBookedTimes(serviceId, date, timeSelectElement) {
 }
 
 // Event listener for changes in the main booking date
-document.getElementById('booking_date').addEventListener('change', function(event) {
+document.getElementById('booking_date').addEventListener('change', function (event) {
     // Get the selected booking date
     var bookingDate = event.target.value;
     // Get the service ID from the hidden input field
@@ -76,7 +76,7 @@ document.getElementById('booking_date').addEventListener('change', function(even
 });
 
 // Event listener for changes in the additional booking date
-document.getElementById('additional_booking_date').addEventListener('change', function(event) {
+document.getElementById('additional_booking_date').addEventListener('change', function (event) {
     // Get the selected booking date
     var bookingDate = event.target.value;
     // Get the selected additional service ID
@@ -88,7 +88,7 @@ document.getElementById('additional_booking_date').addEventListener('change', fu
 });
 
 // Event listener for changes in the additional service select
-document.getElementById('service_select').addEventListener('change', function(event) {
+document.getElementById('service_select').addEventListener('change', function (event) {
     // Get the selected booking date
     var bookingDate = document.getElementById('additional_booking_date').value;
     if (bookingDate) {
@@ -102,7 +102,7 @@ document.getElementById('service_select').addEventListener('change', function(ev
 });
 
 // Event listener for toggling the additional service container visibility
-document.getElementById('toggleAdditionalService').addEventListener('click', function(event) {
+document.getElementById('toggleAdditionalService').addEventListener('click', function (event) {
     // Get the additional service container element
     var additionalServiceContainer = document.getElementById('additionalServiceContainer');
     if (additionalServiceContainer.style.display === 'none') {
@@ -115,3 +115,29 @@ document.getElementById('toggleAdditionalService').addEventListener('click', fun
         event.target.textContent = 'Add Another Service';
     }
 });
+
+
+// Handle SweetAlert2 delete confirmation
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const url = this.getAttribute('data-url');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won’t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#CA8787',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;  // Redirect to the URL for deletion
+                }
+            });
+        });
+    });
+});
+

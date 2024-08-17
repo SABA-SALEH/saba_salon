@@ -108,7 +108,7 @@ class StripeWH_Handler:
                 )
             except Order.DoesNotExist:
                 # Create a new order if it does not exist
-                return self._create_order(intent, billing_details, cart, profile, order_total, grand_total, pid)
+                return self._create_order(event, intent, billing_details, cart, profile, order_total, grand_total, pid)
             except Exception as e:
                 logger.error(f"Error handling payment_intent.succeeded event: {e}")
                 return HttpResponse(
@@ -122,7 +122,7 @@ class StripeWH_Handler:
                 status=500
             )
 
-    def _create_order(self, intent, billing_details, cart, profile, order_total, grand_total, pid):
+    def _create_order(self, event, intent, billing_details, cart, profile, order_total, grand_total, pid):
         """
         Create a new order and associated bookings based on the Stripe event.
         """

@@ -1,11 +1,11 @@
 // When the document has fully loaded, execute the following function
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Select all input elements with the class 'booking-date'
     var dateInputs = document.querySelectorAll('.booking-date');
 
     // For each date input element, add an event listener for the 'change' event
-    dateInputs.forEach(function(dateInput) {
-        dateInput.addEventListener('change', function(event) {
+    dateInputs.forEach(function (dateInput) {
+        dateInput.addEventListener('change', function (event) {
             handleDateChange(event);  // Call the function to handle changes in the date input
         });
 
@@ -83,14 +83,14 @@ function fetchAvailableAndBookedTimes(serviceId, date, timeSelectElement) {
                     timeSelectElement.innerHTML = '';
                     // Create and add an option for the previously selected time
                     var initialOption = document.createElement('option');
-                    initialOption.value = selectedTime; 
-                    initialOption.textContent = selectedTime; 
+                    initialOption.value = selectedTime;
+                    initialOption.textContent = selectedTime;
                     initialOption.disabled = true;
                     initialOption.selected = true;
                     timeSelectElement.appendChild(initialOption);
 
                     // Add available times as new options in the times select element
-                    filteredTimes.forEach(function(timeSlot) {
+                    filteredTimes.forEach(function (timeSlot) {
                         var option = document.createElement('option');
                         option.value = timeSlot;
                         option.textContent = timeSlot;
@@ -98,7 +98,7 @@ function fetchAvailableAndBookedTimes(serviceId, date, timeSelectElement) {
                     });
 
                     // Re-select the previously selected time
-                    timeSelectElement.value = selectedTime;  
+                    timeSelectElement.value = selectedTime;
 
                 })
                 .catch(error => {
@@ -109,3 +109,28 @@ function fetchAvailableAndBookedTimes(serviceId, date, timeSelectElement) {
             console.error('Error fetching available times:', error);  // Log any errors that occur during fetching available times
         });
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Add click event listeners to remove links for confirming the removal action
+    document.querySelectorAll('.remove-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const url = this.getAttribute('data-url');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won’t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#CA8787',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+});

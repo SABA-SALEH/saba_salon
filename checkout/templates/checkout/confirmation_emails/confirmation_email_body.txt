@@ -1,37 +1,50 @@
-Hello {{ order.full_name }}!
+Hello {{ order.full_name }},
 
-This is a confirmation of your booking at Saba Salon. Your booking information is below:
+Thank you for booking with Saba Salon! We're excited to confirm your appointment. Below are the details of your booking:
 
-BOOKING NUMBER: {{ order.order_number }}
+Booking Summary
+Booking Number: {{ order.order_number }}
+Booking Date: {{ order.date }}
 
-BOOKING DATE: {{ order.date }}
+Payment Summary
+Order Total: ${{ order.order_total }}
+Grand Total: ${{ order.grand_total }}
 
-ORDER TOTAL: ${{ order.order_total }}
-
-GRAND TOTAL: ${{ order.grand_total }}
-
-Your booking includes the following items:
-
+Your Booking Details:
 {% for booking in order.bookings.all %}
-    {% if booking.service %}
-        - **Service:** {{ booking.service.name }}
-        - **Description:** {{ booking.service.description }}
-        - **Date:** {{ booking.date }}
-        - **Time:** {{ booking.time }}
-        - **Price:** ${{ booking.get_total_cost }}
-    {% elif booking.package %}
-        - **Package:** {{ booking.package.name }}
-        - **Description:** {{ booking.package.description }}
-        - **Price:** ${{ booking.get_total_cost }}
-    {% endif %}
+{% if booking.service %}
+Service: {{ booking.service.name }}
+Description: {{ booking.service.description }}
+Date: {{ booking.date }}
+Time: {{ booking.time }}
+Price: ${{ booking.get_total_cost }}
+{% elif booking.package %}
+Package: {{ booking.package.name }}
+Description: {{ booking.package.description }}
+Price: ${{ booking.get_total_cost }}
+{% endif %}
 {% endfor %}
 
-We've got your phone number on file as {{ order.phone_number }}.
+{% if order.user_profile %}
+As a valued registered user, we've saved your contact information:
+{% else %}
+Since you booked as a guest, we haven't saved any additional information.
+{% endif %}
 
-If you have any questions or need to make changes to your booking, feel free to contact us at {{ contact_email }}.
+Contact Information:
+We've saved your phone number as {{ order.phone_number }}. 
+{% if order.user_profile %}
+If you need to update your information or have any questions about your booking, feel free to update your profile or reach out to us.
+{% else %}
+If you have any questions about your booking, feel free to reach out to us.
+{% endif %}
 
-Thank you for choosing Saba Salon!
+Need Assistance?
+You can contact us anytime at {{ contact_email }} for support or to make changes to your booking.
+
+Thank you for choosing Saba Salon! We look forward to seeing you.
 
 Sincerely,
-
 The Saba Salon Team
+
+Note: If this email was sent to you in error, please disregard it.

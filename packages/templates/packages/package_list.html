@@ -63,19 +63,18 @@
                     <!-- Display package name -->
                     <h2 class="card-title">{{ package_info.package.name }}</h2>
                     <hr>
-                    
+
                     <!-- Display package rating if available -->
                     {% if package_info.average_rating %}
                     {% with package_info.average_rating|floatformat:0 as rounded_rating %}
                     <p>
                         <!-- Display stars for rating -->
                         {% for i in "12345" %}
-                        {% if forloop.counter <= rounded_rating|add:"0" %}
-                            <span class="star filled">★</span>
-                        {% else %}
+                        {% if forloop.counter <= rounded_rating|add:"0" %} <span class="star filled">★</span>
+                            {% else %}
                             <span class="star empty">☆</span>
-                        {% endif %}
-                        {% endfor %}
+                            {% endif %}
+                            {% endfor %}
                     </p>
                     {% endwith %}
                     {% else %}
@@ -112,7 +111,8 @@
                     <br>
                     <small class="ml-3">
                         <a href="{% url 'packages:edit_package' package_info.package.id %}">Edit</a> |
-                        <a href="#" class="text-danger delete-link" data-url="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
+                        <a href="#" class="text-danger delete-link"
+                            data-url="{% url 'packages:delete_package' package_info.package.id %}">Delete</a>
                     </small>
                     {% endif %}
 
@@ -137,29 +137,6 @@
 {{ block.super }}
 <!-- Include SweetAlert2 JavaScript for stylish alert dialogs -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Add click event listener to delete links
-        document.querySelectorAll('.delete-link').forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent default link action
-                const url = this.getAttribute('data-url'); // Get URL from data attribute
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this package!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#CA8787',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = url; // Redirect to the delete URL
-                    }
-                });
-            });
-        });
-    });
-</script>
+<!-- Link to external JavaScript file -->
+<script src="{% static 'packages/js/packages.js' %}"></script>
 {% endblock %}

@@ -156,13 +156,5 @@
 <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
 
 <!-- JavaScript to synchronize the save_info checkbox value -->
-<script>
-    const saveInfoCheckbox = document.querySelector('#id-save-info');
-
-    if (saveInfoCheckbox) {
-        saveInfoCheckbox.addEventListener('change', function () {
-            document.querySelector('#id_save_info').value = this.checked ? 'true' : 'false';
-        });
-    }
-</script>
+<script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

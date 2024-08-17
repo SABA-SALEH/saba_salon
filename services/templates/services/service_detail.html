@@ -194,28 +194,4 @@
 <!-- Include additional JavaScript files for the page -->
 <script src="{% static 'services/js/services.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.delete-link').forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                const url = this.getAttribute('data-url');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You won’t be able to revert this!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#CA8787',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = url;  // Redirect to the URL for deletion
-                    }
-                });
-            });
-        });
-    });
-</script>
 {% endblock %}

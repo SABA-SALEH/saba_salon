@@ -96,31 +96,6 @@
     {{ block.super }}
     <!-- Include SweetAlert2 for custom alert dialogs -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Add event listeners to all delete forms
-            document.querySelectorAll('.delete-form').forEach(form => {
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const form = this;
-                    // Show confirmation dialog before deleting
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'You won’t be able to revert this!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#CA8787',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+    <script src="{% static 'team/js/team.js' %}"></script>
     {% endblock %}
 {% endblock %}

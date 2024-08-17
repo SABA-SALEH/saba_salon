@@ -50,7 +50,7 @@ class Service(models.Model):
         
         
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
     package = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField(null=True, blank=True)
@@ -58,13 +58,18 @@ class Booking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='bookings', null=True, blank=True)
 
+
     def __str__(self):
+        # Check if the user exists before accessing the username
+        user_display = self.user.username if self.user else "Anonymous"
+
         if self.service:
-            return f'Booking for Service: {self.service.name} by {self.user.username} on {self.date} at {self.time}'
+            return f'Booking for Service: {self.service.name} by {user_display} on {self.date} at {self.time}'
         elif self.package:
-            return f'Booking for Package: {self.package.name} by {self.user.username}'
+            return f'Booking for Package: {self.package.name} by {user_display}'
         else:
             return f'Invalid Booking'
+
 
     def get_total_cost(self):
         if self.service:

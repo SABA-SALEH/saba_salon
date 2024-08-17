@@ -43,7 +43,6 @@ def cache_checkout_data(request):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-@login_required
 def checkout(request):
     """
     Handle the checkout process: validate the cart, create an order, and initiate payment.
@@ -129,24 +128,14 @@ def checkout(request):
 
             # Create booking records for each item in the cart
             for item in booking_items:
-                if request.user.is_authenticated:
-                    if item['type'] == 'service':
-                        booking = Booking(
-                            user=request.user,
-                            service=item['service'],
-                            date=item['date'],
-                            time=item['time'],
-                            order=order
-                        )
-                    elif item['type'] == 'package':
-                        booking = Booking(
-                            user=request.user,
-                            package=item['package'],
-                            order=order
-                        )
-                else:
-                    continue
-
+                booking = Booking(
+                    user=request.user if request.user.is_authenticated else None,
+                    service=item['service'] if item['type'] == 'service' else None,
+                    package=item['package'] if item['type'] == 'package' else None,
+                    date=item.get('date', None),
+                    time=item.get('time', None),
+                    order=order
+                )
                 try:
                     booking.save()
                 except ValidationError as e:

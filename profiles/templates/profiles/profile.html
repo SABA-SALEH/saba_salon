@@ -24,8 +24,7 @@
                     <p><strong>Email:</strong> <span>{{ email }}</span></p>
 
                     <!-- Form to update phone number -->
-                    <form class="d-flex align-items-center" action="{% url 'profiles:profile' %}" method="POST"
-                        id="profile-update-form">
+                    <form class="d-flex align-items-center" action="{% url 'profiles:profile' %}" method="POST" id="profile-update-form">
                         {% csrf_token %}
                         <div class="form-group rounded mb-0 flex-grow-1">
                             <div class="d-flex align-items-center">
@@ -35,7 +34,7 @@
                                 </div>
                             </div>
                             <!-- Submit button for phone number update -->
-                            <button type="submit" class="btn btn-black ml-2">Update Phone Number</button>
+                            <button type="submit" name="update_profile" class="btn btn-black ml-2">Update Phone Number</button>
                         </div>
                     </form>
                 </div>
@@ -120,10 +119,11 @@
                     <form method="POST" class="d-inline" action="{% url 'profiles:profile' %}">
                         {% csrf_token %}
                         <input type="hidden" name="review_id" value="{{ review.id }}">
-                        <button type="submit" name="delete_review"
-                            class="btn btn-danger btn-sm rounded-pill shadow-sm delete-link">
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill shadow-sm delete-link"
+                            data-delete-url="{% url 'profiles:profile' %}" onclick="confirmDelete('{{ review.id }}')">
                             Delete
                         </button>
+
                     </form>
 
                     <!-- Button to edit a review (triggers modal) -->
@@ -167,20 +167,8 @@
 
 {% block postloadjs %}
 {{ block.super }}
-<!-- JavaScript for handling modal data -->
-<script>
-    $('#editReviewModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var reviewId = button.data('review-id');
-        var rating = button.data('rating');
-        var comment = button.data('comment') || '';
-
-        var modal = $(this);
-        modal.find('#review_id').val(reviewId);
-        modal.find('select[name="rating"]').val(rating);
-        modal.find('textarea[name="comment"]').val(comment);
-    });
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Link to external JavaScript file -->
+<script src="{% static 'profiles/js/profile.js' %}"></script>
 {% endblock %}
 {% endblock %}
