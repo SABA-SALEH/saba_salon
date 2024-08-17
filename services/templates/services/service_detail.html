@@ -194,6 +194,7 @@
 {% block postloadjs %}
 {{ block.super }}
 <!-- Include additional JavaScript files for the page -->
+<script src="{% static 'services/js/services.js' %}"></script>
 <script src="{% static 'services/js/all_services.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 {% endblock %}
