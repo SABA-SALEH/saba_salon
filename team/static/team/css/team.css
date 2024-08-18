@@ -1,3 +1,4 @@
+/* Styling for staff photo: circular shape, centered, with border and shadow */
 .staff-photo {
     border-radius: 50%;
     width: 150px;
@@ -9,6 +10,7 @@
     margin-top: 10px;
 }
 
+/* Card styling: rounded corners, no border, and transition effects */
 .card {
     border: none;
     border-radius: 15px;
@@ -16,65 +18,76 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Padding inside card body */
 .card-body {
     padding: 1.5rem;
 }
 
+/* Card title styling: large and bold text */
 .card-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: #333;
 }
 
+/* Card subtitle styling: medium size and weight */
 .card-subtitle {
     font-size: 1.1rem;
     font-weight: 500;
     color: #666;
 }
 
+/* Card text styling: standard text color and line spacing */
 .card-text {
     color: #555;
     line-height: 1.6;
 }
 
+/* Margin between buttons in a group */
 .btn-group .btn {
     margin: 0 5px;
 }
 
+/* Primary button styling: custom background color */
 .btn-primary {
     background-color: #CA8787;
     border: none;
 }
 
+/* Hover state for primary button: darker background color */
 .btn-primary:hover {
     background-color: #A87676;
 }
 
+/* Danger button styling: custom background color */
 .btn-danger {
     background-color: #dc3545;
     border: none;
 }
 
+/* Hover state for danger button: darker background color */
 .btn-danger:hover {
     background-color: #c82333;
 }
 
+/* Link styling: custom color */
 a {
     color: #CA8787;
 }
 
+/* Hover state for links: darker color and underline */
 a:hover {
     color: #A87676;
     text-decoration: underline;
 }
 
-
+/* Card hover effect: lift and scale with shadow */
 .card-hover:hover {
     transform: translateY(-10px) scale(1.03);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-
+/* Keyframe animation for fade-in effect */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -87,6 +100,7 @@ a:hover {
     }
 }
 
+/* Apply fade-in animation to card */
 .card {
     animation: fadeIn 0.6s ease-out;
 }

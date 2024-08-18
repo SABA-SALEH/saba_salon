@@ -1,3 +1,4 @@
+/* Background styling for section with image */
 .section-bg {
     background-image: url('/static/contact/images/package.jpg');
     background-size: cover;
@@ -9,6 +10,7 @@
     overflow: hidden;
 }
 
+/* Overlay styling for the section */
 .overlay {
     background: #ffd0d0d4;
     width: 100%;
@@ -18,32 +20,38 @@
     padding: 110px 0;
 }
 
+/* Padding for the contact info section */
 .contact-info {
     padding: 0 25px;
 }
 
+/* Title styling for the contact section */
 .contact-title {
     font-size: 30px;
     margin-bottom: 30px;
     text-transform: uppercase;
 }
 
+/* Styling for the contact information list */
 .contact-info-list {
     margin-top: 30px;
     list-style: none;
     padding: 0;
 }
 
+/* List item styling within the contact information list */
 .contact-info-list li {
     margin-bottom: 22px;
     display: flex;
     align-items: center;
 }
 
+/* Styling for the left part of the contact info (e.g., icons) */
 .info-left {
     width: 10%;
 }
 
+/* Icon styling within the left part of contact info */
 .info-left i {
     width: 30px;
     height: 30px;
@@ -51,24 +59,29 @@
     font-size: 30px;
 }
 
+/* Styling for opening hours text */
 .opening-hours {
     font-size: 18px;
     font-weight: bold;
 }
 
+/* Styling for header text in the right part of contact info */
 .info-right h4 {
     font-size: 18px;
 }
 
+/* Link styling within the right part of contact info */
 .info-right h4 a {
     text-decoration: none;
     color: #000;
 }
 
+/* Hover effect for links in the right part of contact info */
 .info-right h4 a:hover {
     text-decoration: underline;
 }
 
+/* Subtitle styling within the contact section */
 .contact-subtitle {
     font-size: 24px;
     font-weight: 600;
@@ -76,17 +89,20 @@
     margin-bottom: 20px;
 }
 
+/* Styling for social media links list */
 .social-links {
     margin-top: 20px;
     padding: 0;
     list-style: none;
 }
 
+/* List item styling within the social media links list */
 .social-links li {
     display: inline-block;
     margin-right: 15px;
 }
 
+/* Link styling within the social media links list */
 .social-links li a {
     font-size: 18px;
     text-decoration: none;
@@ -94,10 +110,12 @@
     color: #000;
 }
 
+/* Hover effect for social media links */
 .social-links li a:hover {
     color: #A87676;
 }
 
+/* Container styling for the map section */
 .map-container {
     position: relative;
     height: 100%;
@@ -105,6 +123,7 @@
     overflow: hidden;
 }
 
+/* Styling for the embedded map */
 .map-container iframe {
     width: 100%;
     height: 450px;
@@ -113,6 +132,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Media query for screen widths 1199px and below */
 @media only screen and (max-width: 1199px) {
     .contact-title {
         font-size: 28px;
@@ -127,6 +147,7 @@
     }
 }
 
+/* Media query for screen widths 991px and below */
 @media only screen and (max-width: 991px) {
     .contact-info {
         padding: 0 15px;
@@ -157,6 +178,7 @@
     }
 }
 
+/* Media query for screen widths 767px and below */
 @media only screen and (max-width: 767px) {
     .contact-title {
         font-size: 24px;
@@ -187,6 +209,7 @@
     }
 }
 
+/* Media query for screen widths 575px and below */
 @media only screen and (max-width: 575px) {
     .contact-title {
         font-size: 22px;
@@ -217,6 +240,7 @@
     }
 }
 
+/* General styling for h3 and h2 headers */
 h3,
 h2 {
     position: relative;
@@ -225,6 +249,7 @@ h2 {
     color: #000;
 }
 
+/* Styling for the decorative line before h3 and h2 headers */
 h3::before,
 h2::before {
     content: '';

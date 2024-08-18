@@ -1,24 +1,29 @@
+/* Styling for the package card with transition effects */
 .package-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
     overflow: hidden;
 }
 
+/* Hover effect for package card - lift and shadow */
 .package-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* Image styling for the package card */
 .package-card .card-img-top {
     height: 100px;
     object-fit: cover;
 }
 
+/* Styling for the body of the package card */
 .package-card .card-body {
     background: linear-gradient(135deg, #ffd0d0da, #e1acac71);
     padding: 20px;
 }
 
+/* Header styling for the package card */
 .package-card h2 {
     font-size: 1.5rem;
     color: #333;
@@ -27,12 +32,14 @@
     font-weight: bold;
 }
 
+/* Paragraph text styling within the package card */
 .package-card p {
     margin-bottom: 10px;
     font-size: 1rem;
     color: #555;
 }
 
+/* Sub-header styling within the package card */
 .package-card h3 {
     font-size: 1.25rem;
     margin-top: 20px;
@@ -40,17 +47,20 @@
     font-weight: bold;
 }
 
+/* Styling for the primary button in the package card */
 .package-card .btn-primary {
     background-color: #CA8787;
     border-color: #CA8787;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Hover effect for the primary button */
 .package-card .btn-primary:hover {
     background-color: #A87676;
     border-color: #A87676;
 }
 
+/* Styling for list group items */
 .list-group-item {
     background-color: #f9f9f9;
     border: none;
@@ -58,11 +68,12 @@
     margin-bottom: 10px;
 }
 
+/* Styling for lead text (bold text) */
 .lead {
     font-weight: bold;
 }
 
-
+/* Styling for the best deal tag */
 .best-deal-tag {
     position: absolute;
     top: 10px;
@@ -76,21 +87,20 @@
     font-size: 1rem;
 }
 
+/* Base styling for card elements */
 .card {
     position: relative;
 }
 
-
-
+/* Styling for outline black button with text underline */
 .btn-outline-black {
-  
     color: #CA8787;
-   
     text-decoration: underline;
     margin-top: 1rem;
-   text-align: center;
+    text-align: center;
 }
 
+/* Hover, active, and focus effects for the outline black button */
 .btn-outline-black:hover,
 .btn-outline-black:active,
 .btn-outline-black:focus {
@@ -98,13 +108,14 @@
     outline: none;
 }
 
-
+/* Styling for the login prompt text */
 .login-prompt {
     font-size: 1rem;
     margin-top: 1rem;
     text-align: center;
 }
 
+/* Styling for the login link */
 .login-link {
     color: #CA8787;
     font-weight: 600;
@@ -112,13 +123,14 @@
     transition: color 0.3s ease;
 }
 
+/* Hover and focus effects for the login link */
 .login-link:hover,
 .login-link:focus {
     color: #A87676;
     text-decoration: underline;
 }
 
-
+/* Styling for star icons (ratings) */
 .star {
     color: gold;
     font-size: 1.5em;
@@ -126,10 +138,12 @@
     margin-right: 2px;
 }
 
+/* Styling for filled stars in the rating */
 .star.filled {
     color: rgb(220, 187, 0);
 }
 
+/* Styling for empty stars in the rating */
 .star.empty {
     color: rgb(246, 244, 244);
 }

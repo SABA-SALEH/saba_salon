@@ -1,13 +1,16 @@
+/* Set background color with transparency */
 body {
     background-color: #ffd0d080;
 }
 
+/* Container for the checkout section */
 .checkout-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
+/* Styling for order summary and form sections */
 .order-summary,
 .order-form {
     border: 1px solid #ddd;
@@ -17,6 +20,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header styling for order summary and form */
 .order-summary h2,
 .order-form h2 {
     font-size: 24px;
@@ -26,10 +30,12 @@ body {
     font-weight: bold;
 }
 
+/* Remove default padding for unordered list */
 .order-summary ul {
     padding-left: 0;
 }
 
+/* List item styling within order summary */
 .order-summary ul li {
     list-style: none;
     border-bottom: 1px solid #ddd;
@@ -39,10 +45,12 @@ body {
     flex-direction: column;
 }
 
+/* Remove bottom border for the last list item */
 .order-summary ul li:last-child {
     border-bottom: none;
 }
 
+/* Subheader styling within order summary */
 .order-summary h3 {
     font-size: 20px;
     margin-top: 20px;
@@ -51,41 +59,49 @@ body {
     font-weight: bold;
 }
 
+/* Form styling within order form */
 .order-form form {
     margin-top: 20px;
     border-radius: 5px;
 }
 
+/* Paragraph styling within order form */
 .order-form p {
     font-size: 14px;
     color: #CA8787;
 }
 
+/* Form group styling within order form */
 .order-form .form-group {
     margin-bottom: 1rem;
     border-radius: 5px;
 }
 
+/* Light background color */
 .bg-light {
     background-color: #ffffff !important;
 }
 
+/* Hover effect for outlined button in submit section */
 .submit-button .btn-outline-black:hover {
     background-color: #000;
     color: #fff;
 }
 
+/* Default styling for black button in submit section */
 .submit-button .btn-black {
     background-color: #000;
     color: #fff;
     border: #000;
 }
 
+/* Hover effect for black button in submit section */
 .submit-button .btn-black:hover {
     background-color: #333;
     color: #fff;
 }
 
+/* Styling for item detail section */
 .item-detail {
     padding: 10px;
     background-color: #ffd0d029;
@@ -93,6 +109,7 @@ body {
     flex: 1;
 }
 
+/* Styling for item price section */
 .item-price {
     padding: 10px;
     background-color: #ffd0d080;
@@ -103,6 +120,7 @@ body {
     margin-top: 10px;
 }
 
+/* Fieldset styling */
 fieldset {
     border: 1px solid #ddd;
     padding: 10px;
@@ -110,20 +128,24 @@ fieldset {
     margin-top: 20px;
 }
 
+/* Legend styling */
 legend {
     font-size: 14px;
     padding: 0 10px;
 }
 
+/* Styling for card element in payment form */
 #card-element {
     border: 1px solid #FFD0D0;
     padding: 10px;
 }
 
+/* Styling for error messages in payment form */
 #card-errors {
     margin-top: 10px;
 }
 
+/* Stripe input styling */
 .StripeElement,
 .stripe-style-input {
     box-sizing: border-box;
@@ -137,26 +159,31 @@ legend {
     transition: box-shadow 150ms ease;
 }
 
+/* Focus and active state styling for Stripe input */
 .StripeElement--focus,
 .stripe-style-input:focus,
 .stripe-style-input:active {
     box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
+/* Autofill background styling for Stripe input */
 .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
 }
 
+/* Placeholder text styling for Stripe input */
 .stripe-style-input::placeholder {
     color: #aab7c4;
 }
 
+/* Styling for form control and card element in payment form */
 #payment-form .form-control,
 #card-element {
     color: #000;
     border: 1px solid #CA8787;
 }
 
+/* Overlay for loading spinner */
 #loading-overlay {
     display: none;
     position: fixed;
@@ -168,6 +195,7 @@ legend {
     z-index: 9999;
 }
 
+/* Styling for loading spinner */
 .loading-spinner {
     display: flex;
     align-items: center;
@@ -176,6 +204,7 @@ legend {
     height: 100%;
 }
 
+/* Container for order confirmation section */
 .confirmation-container {
     max-width: 800px;
     margin: 4rem auto;
@@ -185,11 +214,13 @@ legend {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Header styling for order confirmation section */
 .confirmation-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
+/* Styling for success alert message */
 .alert-success {
     background-color: #FFD0D0;
     border-color: #FFD0D0;
@@ -199,6 +230,7 @@ legend {
     margin-bottom: 2rem;
 }
 
+/* Custom button styling */
 .btn-custom {
     background-color: #CA8787;
     color: white;
@@ -209,23 +241,28 @@ legend {
     text-decoration: none;
 }
 
+/* Hover effect for custom button */
 .btn-custom:hover {
     background-color: #FFD0D0;
 }
 
+/* Heading styling for alert message */
 .alert-heading {
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
+/* Styling for booking details text */
 .booking-details {
     font-size: 1rem;
 }
 
+/* Margin and padding adjustments for summary section */
 .summary {
     margin-top: 2rem;
 }
 
+/* Heading styling for summary section */
 .summary h3 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -234,16 +271,19 @@ legend {
     color: #CA8787;
 }
 
+/* Styling for individual summary items */
 .summary-item {
     margin-bottom: 1rem;
     padding: 1rem;
     border-bottom: 1px solid #eee;
 }
 
+/* Paragraph styling within summary items */
 .summary-item p {
     margin: 0.25rem 0;
 }
 
+/* Total section styling within summary */
 .summary-total {
     margin-top: 1rem;
     padding-top: 1rem;
@@ -253,114 +293,142 @@ legend {
     color: #CA8787;
 }
 
+/* Label styling for save info checkbox */
 .save-info-label {
     display: inline-block;
     font-size: 12px;
     margin-bottom: 5px;
 }
 
+/* Checkbox styling for save info option */
 .save-info-checkbox {
     margin-left: 10px;
     vertical-align: middle;
 }
 
+/* Responsive styling for screens with max width 992px */
 @media (max-width: 992px) {
+
+    /* Container padding adjustment */
     .checkout-container {
         padding: 15px;
     }
 
+    /* Padding adjustment for order summary and form */
     .order-summary,
     .order-form {
         padding: 30px;
     }
 
+    /* Font size adjustment for headers in order summary and form */
     .order-summary h2,
     .order-form h2 {
         font-size: 20px;
     }
 
+    /* Padding adjustment for item detail and price sections */
     .item-detail,
     .item-price {
         padding: 8px;
     }
 
+    /* Font size adjustment for summary header */
     .summary h3 {
         font-size: 1.25rem;
     }
 }
 
+/* Responsive styling for screens with max width 768px */
 @media (max-width: 768px) {
+
+    /* Container padding adjustment */
     .checkout-container {
         padding: 10px;
     }
 
+    /* Padding adjustment for order summary and form */
     .order-summary,
     .order-form {
         padding: 20px;
     }
 
+    /* Font size adjustment for headers in order summary and form */
     .order-summary h2,
     .order-form h2 {
         font-size: 18px;
     }
 
+    /* Padding adjustment for item detail and price sections */
     .item-detail,
     .item-price {
         padding: 6px;
     }
 
+    /* Font size adjustment for summary header */
     .summary h3 {
         font-size: 1.125rem;
     }
 
+    /* Full width adjustment for custom button */
     .btn-custom {
         width: 100%;
     }
 
+    /* Font size adjustment for booking details text */
     .booking-details {
         font-size: 0.9rem;
     }
 
+    /* Font size adjustment for order number text */
     .order-number {
         font-size: 0.8rem;
     }
 }
 
+/* Responsive styling for screens with max width 480px */
 @media (max-width: 480px) {
+
+    /* Container padding adjustment */
     .checkout-container {
         padding: 5px;
     }
 
+    /* Padding adjustment for order summary and form */
     .order-summary,
     .order-form {
         padding: 15px;
     }
 
+    /* Font size adjustment for headers in order summary and form */
     .order-summary h2,
     .order-form h2 {
         font-size: 16px;
     }
 
+    /* Padding adjustment for item detail and price sections */
     .item-detail,
     .item-price {
         padding: 5px;
     }
 
+    /* Font size adjustment for summary header */
     .summary h3 {
         font-size: 1rem;
     }
 
+    /* Padding and font size adjustment for custom button */
     .btn-custom {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
 
+    /* Font size adjustment for booking details text */
     .booking-details {
         font-size: 0.85rem;
     }
 
+    /* Font size adjustment for order number text */
     .order-number {
         font-size: 0.8rem;
     }
 }
-

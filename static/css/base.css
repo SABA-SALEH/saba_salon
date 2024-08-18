@@ -1,28 +1,33 @@
+/* Importing the Poltawski Nowy font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap');
 
+/* Ensures the HTML element fills the entire height */
 .header-containerhtml {
     height: 100%;
 }
 
+/* Sets the background color and font properties for the body */
 body {
     background-color: #ffd0d050;
     font-family: "Poltawski Nowy", serif;
     font-optical-sizing: auto;
     font-style: normal;
-
 }
 
+/* Styles for navbar links, including transition effects */
 .navbar-nav .nav-item .nav-link {
     transition: color 0.3s ease, background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
     padding: 8px 12px;
 }
 
+/* Hover effects for navbar links */
 .navbar-nav .nav-item .nav-link:hover {
     background-color: #E1ACAC;
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Initial state for dropdown menus */
 .navbar-nav .nav-item .dropdown-menu {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     opacity: 0;
@@ -30,25 +35,27 @@ body {
     padding: 0.5rem 0;
 }
 
+/* Makes dropdown menu visible on hover */
 .navbar-nav .nav-item:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
 }
 
+/* Hover effect for dropdown items */
 .navbar-nav .nav-item .dropdown-menu .dropdown-item:hover {
     background-color: #E1ACAC;
     color: #ffffff;
     border-radius: 4px;
 }
 
+/* General hover effect for dropdown items */
 .dropdown-item:hover {
     background-color: #E1ACAC;
     color: #ffffff;
     border-radius: 4px;
 }
 
-
-
+/* Styles for icons inside the navbar */
 .icon {
     align-items: center;
     display: inline-flex;
@@ -57,19 +64,23 @@ body {
     width: 1.5rem;
 }
 
+/* Uppercase transformation for logo text */
 .logo-font {
     text-transform: uppercase;
 }
 
+/* Ensures the main logo link takes minimal space */
 .main-logo-link {
     width: fit-content;
 }
 
+/* Custom button styles */
 .btn-black {
     background: #CA8787;
     color: white;
 }
 
+/* Hover, active, and focus states for custom buttons */
 .btn-black:hover,
 .btn-black:active,
 .btn-black:focus {
@@ -77,20 +88,24 @@ body {
     color: white;
 }
 
+/* Sets text color to black */
 .text-black {
     color: #000 !important;
 }
 
+/* Custom border color */
 .border-black {
     border: 1px solid #CA8787 !important;
 }
 
+/* Media query for larger screens, adjusting container width */
 @media (min-width: 1200px) {
     .container {
         max-width: 80%;
     }
 }
 
+/* Media query for medium screens, fixing header position */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
         position: fixed;
@@ -100,37 +115,44 @@ body {
         z-index: 1030;
     }
 
+    /* Adds padding to the header container */
     .header-container {
         padding-top: 164px;
     }
 }
 
+/* Styles for service box images */
 .service-box img {
     width: 100%;
     height: auto;
     object-fit: cover;
 }
 
+/* Adds margin to service box headings */
 .service-box h3 {
     margin-top: 20px;
 }
 
+/* Styles for service box links */
 .service-box a {
     margin-top: 10px;
     text-decoration: none;
     font-weight: bold;
 }
 
+/* Padding for service descriptions */
 .service-description {
     padding: 10px;
 }
 
+/* Line height and margin for paragraphs inside service descriptions */
 .service-description p {
     margin-bottom: 10px;
     line-height: 1.6;
     font-size: medium;
 }
 
+/* Styles for the "Book Now" button */
 .btn-book-now {
     display: inline-block;
     padding: 10px 20px;
@@ -140,126 +162,127 @@ body {
     transition: background-color 0.3s ease;
 }
 
+/* Hover effect for the "Book Now" button */
 .btn-book-now:hover {
     background-color: #A87676;
     color: #fff;
 }
 
+/* Custom card background with hover effect */
 .custom-card-bg {
     border-radius: 10px;
     transition: transform 0.3s ease;
 }
 
+/* Lifts the card slightly on hover */
 .custom-card-bg:hover {
     transform: translateY(-5px);
 }
 
+/* Rounds the corners of the card image */
 .custom-card-bg .card-img-top {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
+/* Padding for card body */
 .card-body {
     padding: 1.5rem;
 }
 
+/* Background color for card footer */
 .card-footer {
     border-top: none;
     background-color: #FFD0D0 !important;
 }
 
+/* Font size and margin for card titles */
 .card-title {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
+/* Font size and color for card text */
 .card-text {
     font-size: 1rem;
     color: #777;
 }
 
-
+/* Color of horizontal rules */
 hr {
     border-color: #CA8787;
 }
 
+/* Shadow effect for medium-sized elements */
 .shadow-m {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Spacer height */
 .spacer {
     height: 100px;
 }
 
+/* Styles for details section background and padding */
 .details {
     background-color: hwb(0 82% 0% / 0.97);
     padding: 10px;
     border-radius: 5px;
 }
 
+/* Center alignment for service images */
 .service-image {
     text-align: center;
 }
 
+/* Padding for service details */
 .service-details {
     padding: 0 30px;
 }
 
+/* Primary button styles */
 .btn-primary {
     background-color: #CA8787;
     border-color: #CA8787;
 }
 
+/* Hover effect for primary buttons */
 .btn-primary:hover {
     background-color: #A87676;
     border-color: #A87676;
 }
 
+/* Margin and line height for service meta paragraphs */
 .service-meta p {
     margin-bottom: 5px;
 }
 
+/* Bold font weight for all h2 headings */
 h2 {
     font-weight: bold;
 }
 
+/* Shopping bag icon color */
 .fa-shopping-bag {
     color: #CA8787;
 }
 
-
+/* Text color for informational text */
 .text-info {
     color: #CA8787 !important;
 }
 
-
+/* Bold font weight for lead text */
 .lead {
     font-weight: bold;
 }
 
+/* Logo font color for strong text */
 .logo-font strong {
     color: #CA8787;
 }
 
-.hero-image {
-    background-image: url("../images/hero.jpg");
-    background-size: cover;
-    background-position: center;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-    font-size: 2rem;
-    margin-bottom: 40px;
-}
-
-.hero-text {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.627);
-}
-
-
+/* Service card border, background, and shadow effects */
 .service-card {
     border: 1px solid #e9ecef;
     border-radius: 8px;
@@ -269,10 +292,12 @@ h2 {
     transition: box-shadow 0.3s;
 }
 
+/* Increases shadow on service card hover */
 .service-card:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Image properties for service card */
 .service-image {
     width: 100%;
     height: 15rem;
@@ -280,16 +305,19 @@ h2 {
     border-radius: 8px 0 0 8px;
 }
 
+/* Padding for service details inside the card */
 .service-details {
     padding: 20px;
 }
 
+/* Font size, margin, and color for service titles */
 .service-details h3 {
     font-size: 1.8rem;
     margin-bottom: 10px;
     color: #CA8787;
 }
 
+/* Font size, line height, and margin for service details text */
 .service-details p {
     font-size: 1.1rem;
     line-height: 1.6;
@@ -297,7 +325,7 @@ h2 {
     color: #495057;
 }
 
-
+/* Media query for small screens, adjusting column width and text alignment */
 @media (max-width: 768px) {
     .col-md-6 {
         width: 100%;
@@ -308,14 +336,8 @@ h2 {
     }
 }
 
-.hero-text {
-    background-color: #ca8787ad;
-    width: 80%;
-    margin-top: 100px;
-    font-weight: bold;
-}
 
-
+/* Positioning and z-index for message container */
 .message-container {
     position: fixed;
     top: 90px;
@@ -323,47 +345,53 @@ h2 {
     z-index: 1050;
 }
 
+/* Custom toast overflow property */
 .custom-toast {
     overflow: visible;
 }
 
+/* Height for toast capper */
 .toast-capper {
     height: 5px;
 }
 
+/* Styles for the allauth form content */
 .allauth-form-inner-content {
     background: #ffffff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 150px;
-
 }
 
-
+/* Margin and color for paragraphs inside allauth form */
 .allauth-form-inner-content p {
     margin-top: 1.5rem;
     color: #6c757d;
 }
 
+/* Center alignment for allauth form headings */
 .allauth-form-inner-content h2 {
     text-align: center;
 }
 
-
+/* Border and radius for allauth form inputs */
 .allauth-form-inner-content input {
     border-color: #000;
     border-radius: 0;
 }
 
+/* Hides labels in allauth form except for remember checkbox */
 .allauth-form-inner-content label:not([for='id_remember']) {
     display: none;
 }
 
+/* Placeholder text color for allauth form inputs */
 .allauth-form-inner-content input::placeholder {
     color: #aab7c4;
 }
 
+/* Button styles for allauth form */
 .allauth-form-inner-content button,
 .allauth-form-inner-content input[type='submit'] {
     display: inline-block;
@@ -384,6 +412,7 @@ h2 {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+/* Hover effect for buttons in allauth form */
 .allauth-form-inner-content button:hover,
 .allauth-form-inner-content input[type='submit']:hover {
     color: #fff;
@@ -391,17 +420,18 @@ h2 {
     border-color: #FFD0D0;
 }
 
+/* Link color inside the allauth form */
 .allauth-form-inner-content a {
     color: #CA8787;
 }
 
-
+/* Button file input positioning */
 .btn-file {
     position: relative;
     overflow: hidden;
-
 }
 
+/* File input styling and positioning */
 .btn-file input[type="file"] {
     position: absolute;
     top: 0;
@@ -413,24 +443,26 @@ h2 {
     border-radius: 5px;
 }
 
+/* Custom checkbox styling */
 .custom-checkbox .custom-control-label::before {
     border-radius: 5px;
     border-color: #CA8787;
 }
 
+/* Checked state for custom checkbox */
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
     background-color: #CA8787;
     border-color: #CA8787;
     border-radius: 0;
 }
 
-
+/* Button outline styling */
 .btn-outline-black {
     color: #CA8787;
     text-decoration: underline;
-
 }
 
+/* Hover and focus states for outline button */
 .btn-outline-black:hover,
 .btn-outline-black:active,
 .btn-outline-black:focus {
@@ -438,12 +470,13 @@ h2 {
     outline: none;
 }
 
-
+/* Font size and margin for login prompt text */
 .login-prompt {
     font-size: 1rem;
     margin-top: 1rem;
 }
 
+/* Styling for login link */
 .login-link {
     color: #CA8787;
     font-weight: 600;
@@ -451,13 +484,14 @@ h2 {
     transition: color 0.3s ease;
 }
 
+/* Hover and focus states for login link */
 .login-link:hover,
 .login-link:focus {
     color: #A87676;
     text-decoration: underline;
 }
 
-
+/* Star rating icon styling */
 .star {
     color: gold;
     font-size: 1.5em;
@@ -465,14 +499,17 @@ h2 {
     margin-right: 2px;
 }
 
+/* Styling for filled star in rating */
 .star.filled {
     color: rgb(220, 187, 0);
 }
 
+/* Styling for empty star in rating */
 .star.empty {
     color: rgb(246, 244, 244);
 }
 
+/* Keyframe animation for fade-in effect */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -485,12 +522,12 @@ h2 {
     }
 }
 
+/* Card component with fade-in animation */
 .card {
     animation: fadeIn 0.6s ease-out;
 }
 
-
-
+/* Keyframe animation for fade-in-up effect */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -503,6 +540,7 @@ h2 {
     }
 }
 
+/* Keyframe animation for bounce-in effect */
 @keyframes bounceIn {
     0% {
         opacity: 0;
@@ -520,8 +558,7 @@ h2 {
     }
 }
 
-
-
+/* Header container styling and animations */
 .header-container {
     background-image: url("../images/pink.jpg");
     background-size: cover;
@@ -535,7 +572,7 @@ h2 {
     animation: fadeInUp 1s ease-out;
 }
 
-
+/* Styling for paragraphs inside header container */
 .header-container p {
     font-size: 2rem;
     max-width: 600px;
@@ -543,18 +580,18 @@ h2 {
     line-height: 1.6;
     text-shadow: 1px 1px 2px rgb(250, 250, 250);
     background-color: #000;
-
     animation: fadeInUp 1.2s ease-out;
 }
 
+/* Header container title styling */
 .header-container h1 {
-
     color: #000;
     text-shadow: 1px 1px 2px rgba(250, 250, 250, 0.825);
     animation: bounceIn 1s ease-out;
     background-color: #FFD0D0;
 }
 
+/* Responsive styles for header container on smaller screens */
 @media (max-width: 768px) {
 
     .header-container p.lead,
@@ -564,8 +601,7 @@ h2 {
     }
 }
 
-
-
+/* Hero image section styling */
 .hero-image {
     background-image: url("../images/hero.jpg");
     background-size: cover;
@@ -581,6 +617,7 @@ h2 {
     position: relative;
 }
 
+/* Hero text styling */
 .hero-text {
     background-color: #ca8787ad;
     width: 80%;
@@ -591,18 +628,19 @@ h2 {
     border-radius: 8px;
 }
 
-
-
+/* Styling for hero text title */
 .hero-text h1 {
     text-transform: uppercase;
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
+/* Styling for hero text paragraph */
 .hero-text p {
     font-size: 1.2rem;
 }
 
+/* Responsive styles for hero image on different screen sizes */
 @media (max-width: 1200px) {
     .hero-image {
         margin-top: 100px;
@@ -674,29 +712,26 @@ h2 {
     }
 }
 
-
+/* Button outline styling for different screen sizes */
 @media (max-width: 992px) {
-
-
     .btn-outline-secondary {
         font-size: 0.9rem;
     }
 }
 
 @media (max-width: 768px) {
-
     .btn-outline-secondary {
         font-size: 0.85rem;
     }
 }
 
 @media (max-width: 576px) {
-
     .btn-outline-secondary {
         font-size: 0.8rem;
     }
 }
 
+/* Logo image styling */
 .logo-img {
     height: 120px;
     width: auto;
@@ -706,6 +741,7 @@ h2 {
     transform: translate(-50%, -50%);
 }
 
+/* Main logo link styling */
 .main-logo-link {
     position: relative;
     display: flex;
@@ -713,12 +749,14 @@ h2 {
     height: 100%;
 }
 
+/* Why us section styling */
 .why-us-section {
     background-color: #E1ACAC;
     padding: 60px 0;
     border-bottom: 1px solid #ddd;
 }
 
+/* Why us section title styling */
 .why-us-section h2 {
     font-size: 2.5rem;
     color: #333;
@@ -726,6 +764,7 @@ h2 {
     text-align: center;
 }
 
+/* Card styling in why us section */
 .why-us-card {
     background-color: #fff;
     border-radius: 12px;
@@ -737,11 +776,13 @@ h2 {
     margin: 0 auto;
 }
 
+/* Hover effect for why us card */
 .why-us-card:hover {
     transform: scale(1.05);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
+/* Image styling inside why us card */
 .why-us-card img {
     width: 120px;
     height: 120px;
@@ -754,17 +795,20 @@ h2 {
     margin-right: auto;
 }
 
+/* Title styling in why us card */
 .why-us-card h4 {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 15px;
 }
 
+/* Paragraph styling in why us card */
 .why-us-card p {
     color: #666;
     line-height: 1.6;
 }
 
+/* Responsive styles for why us card */
 @media (max-width: 992px) {
     .why-us-card {
         padding: 20px;
@@ -786,7 +830,7 @@ h2 {
     }
 }
 
-
+/* Review component styling */
 .review {
     position: relative;
     padding-left: 15px;
@@ -794,6 +838,7 @@ h2 {
     color: #000;
 }
 
+/* Left border for review component */
 .review::before {
     content: '';
     position: absolute;
@@ -805,7 +850,7 @@ h2 {
     z-index: -1;
 }
 
-
+/* General section styling */
 section {
     display: flex;
     align-items: center;
@@ -813,7 +858,7 @@ section {
     flex-wrap: wrap;
 }
 
-
+/* Header title styling */
 h6 {
     margin-right: 1rem;
     margin-bottom: 0;
@@ -821,20 +866,20 @@ h6 {
     color: #CA8787;
 }
 
-
+/* Social icons styling */
 .social-icons {
     display: flex;
     flex-wrap: wrap;
 }
 
-
-
+/* Dropdown menu styling */
 .dropdown-menu {
     max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+/* Responsive styles for dropdown menu on smaller screens */
 @media (max-width: 576px) {
     .dropdown-menu {
         padding: 1rem;
@@ -845,8 +890,7 @@ h6 {
     }
 }
 
-
-/* pad the top a bit when navbar is collapsed on mobile */
+/* Responsive styles for navbar and body when collapsed */
 @media (max-width: 991px) {
     .header-container {
         padding-top: 116px;
@@ -872,7 +916,4 @@ h6 {
         padding: .6rem .6rem;
         font-size: 1rem;
     }
-
-
-
 }

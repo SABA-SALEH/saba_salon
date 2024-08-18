@@ -1,12 +1,15 @@
+/* Styling for form control elements in the profile update form */
 #profile-update-form .form-control {
     color: #000;
     border-radius: 5px;
 }
 
+/* Placeholder color styling for input fields in the profile update form */
 #profile-update-form input::placeholder {
     color: #aab7c4;
 }
 
+/* Styling for card headers with a background color and bold text */
 .card-header {
     background-color: #ffd0d068;
     color: #CA8787;
@@ -14,6 +17,7 @@
     text-align: center;
 }
 
+/* Styling for the profile information section with background, borders, and padding */
 .profile-info {
     background-color: #f8f9fa;
     border: 1px solid #e0e0e0;
@@ -23,7 +27,7 @@
     width: 80%;
 }
 
-
+/* Styling for paragraphs and labels within the profile information section */
 .profile-info p,
 label {
     font-size: 1.2rem;
@@ -31,33 +35,40 @@ label {
     line-height: 1.5;
 }
 
-
+/* Styling for strong text within the profile information section */
 .profile-info strong {
     color: #CA8787;
     font-weight: 600;
 }
 
+/* Responsive adjustments for screens with a max-width of 768px */
 @media (max-width: 768px) {
+
+    /* Adjust form group layout to be columnar and align items to the start */
     .form-group {
         flex-direction: column;
         align-items: flex-start;
     }
 
+    /* Set buttons to full width and adjust margins in form groups */
     .form-group .btn {
         width: 100%;
         margin-left: 0;
         margin-top: 10px;
     }
 
+    /* Remove right margin for form controls in form groups */
     .form-group .form-control {
         margin-right: 0;
     }
 }
 
+/* Styling for muted text with a slightly larger font size */
 .text-muted {
     font-size: 1.1rem;
 }
 
+/* Styling for order history table with margin, background color, and rounded corners */
 .order-history table {
     margin-top: 1rem;
     background-color: #f8f9fa;
@@ -65,56 +76,67 @@ label {
     overflow: hidden;
 }
 
+/* Styling for table headers in the order history section */
 .order-history th {
     background-color: #CA8787;
     color: #fff;
 }
 
+/* Styling for table cells and headers in the order history section */
 .order-history td,
 .order-history th {
     padding: 1rem;
     vertical-align: middle;
 }
 
+/* Styling for links in the order history section */
 .order-history a {
     color: #CA8787;
     text-decoration: none;
 }
 
+/* Hover effect for links in the order history section */
 .order-history a:hover {
     text-decoration: underline;
 }
 
+/* Remove bottom margin for unordered lists in the order history section */
 .order-history ul {
     margin-bottom: 0;
 }
 
+/* Spacer class for adding top margin */
 .spacer {
     margin-top: 2rem;
 }
 
-
+/* Responsive adjustments for screens with a max-width of 768px */
 @media (max-width: 768px) {
+
+    /* Padding and margin adjustments for containers */
     .container {
         padding: 1rem;
         margin-top: 15px;
     }
 
+    /* Font size adjustments for h2 headers within card headers */
     .card-header h2 {
         font-size: 1.5rem;
     }
 
+    /* Set buttons to full width and adjust margins */
     .btn-black {
         width: 100%;
         margin-top: 10px;
     }
 
+    /* Font size adjustments for order history tables */
     .order-history table {
         font-size: 0.8rem;
     }
 }
 
-
+/* Styling for h2 headers with padding, color, and a left bar */
 h2 {
     position: relative;
     padding-left: 15px;
@@ -122,6 +144,7 @@ h2 {
     color: #000;
 }
 
+/* Styling for the pseudo-element of h2 headers to add a colored bar */
 h2::before {
     content: '';
     position: absolute;
@@ -133,6 +156,7 @@ h2::before {
     z-index: -1;
 }
 
+/* Styling for h3 headers with padding, color, and a left bar */
 h3 {
     position: relative;
     padding-left: 15px;
@@ -140,6 +164,7 @@ h3 {
     color: #000;
 }
 
+/* Styling for the pseudo-element of h3 headers to add a colored bar */
 h3::before {
     content: '';
     position: absolute;

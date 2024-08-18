@@ -1,4 +1,4 @@
-
+/* Container for message display, fixed position on the screen */
 .message-container {
     position: fixed;
     top: 90px;
@@ -6,22 +6,24 @@
     z-index: 1050;
 }
 
-
+/* Custom styling for toast notifications */
 .custom-toast {
     overflow: visible;
 }
 
+/* Adjusts the height of the toast capper */
 .toast-capper {
     height: 5px;
 }
 
-
+/* Basic table styling */
 .table {
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
 }
 
+/* Table header styling */
 .table th {
     background-color: #E1ACAC;
     color: #fff;
@@ -31,6 +33,7 @@
     text-align: center;
 }
 
+/* Shared styling for table headers and cells */
 .table th,
 .table td {
     padding: 0.75rem;
@@ -38,11 +41,13 @@
     border: 1px solid #FFD0D0;
 }
 
+/* Additional padding and alignment for table cells */
 .table td {
     padding: 10px;
     vertical-align: middle;
 }
 
+/* Styling for buttons and links inside the table */
 .table button,
 .table a {
     background-color: #CA8787;
@@ -50,35 +55,39 @@
     color: #fff;
 }
 
+/* Hover effect for buttons and links inside the table */
 .table button:hover,
 .table a:hover {
     background-color: #A87676;
     color: #fff;
 }
 
-
+/* Card component styling */
 .card {
     border: none;
     border-radius: 0.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Card header and footer background color */
 .card-header,
 .card-footer {
     background-color: #f8f9fa;
 }
 
-
+/* Custom button styling */
 .btn-custom {
     background-color: #CA8787;
     color: #fff;
 }
 
+/* Hover effect for custom buttons */
 .btn-custom:hover {
     background-color: #A87676;
     color: #fff;
 }
 
+/* Styling for the total price text */
 .total-price {
     font-size: 1.5rem;
     color: #A87676;
@@ -86,41 +95,50 @@
     text-align: right;
 }
 
+/* Alert styling for empty cart notification */
 .empty-cart-alert {
     background-color: #A87676;
     color: #fff;
     border-color: #E1ACAC;
 }
 
+/* Button transition effects */
 .btn {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Header (h4) styling */
 h4 {
     color: #CA8787;
 }
 
-
+/* Responsive styling for screens with max width 768px */
 @media (max-width: 768px) {
+
+    /* Container padding adjustment */
     .container {
         padding: 0 15px;
     }
 
+    /* Smaller font size for table headers and cells */
     .table th,
     .table td {
         font-size: 0.875rem;
     }
 
+    /* Adjust button and alert font sizes and alignment */
     .btn-custom,
     .empty-cart-alert {
         font-size: 1.25rem;
         text-align: center;
     }
 
+    /* Center-align text */
     .text-right {
         text-align: center;
     }
 
+    /* Full-width buttons and links in the table, with margin adjustments */
     .table button,
     .table a {
         width: 100%;
@@ -128,27 +146,33 @@ h4 {
     }
 }
 
-
+/* Responsive styling for screens with max width 480px */
 @media (max-width: 480px) {
+
+    /* Container padding adjustment */
     .container {
         padding: 0 10px;
     }
 
+    /* Smaller font size for table headers and cells */
     .table th,
     .table td {
         font-size: 0.75rem;
     }
 
+    /* Further adjustments to button, price, and alert font sizes */
     .btn-custom,
     .total-price,
     .empty-cart-alert {
         font-size: 1rem;
     }
 
+    /* Smaller font size for card header text */
     .card-header h4 {
         font-size: 1rem;
     }
 
+    /* Adjust message container position for smaller screens */
     .message-container {
         top: 60px;
         right: 10px;
