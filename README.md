@@ -117,6 +117,16 @@ These user stories illustrate the various ways in which different types of users
 
 ## Features
 
+### **User Account Management**
+- **User Registration:** New users can easily create an account by providing their email, password, and other necessary details. The registration process includes validation to ensure that all required fields are filled out correctly.
+- **Email Confirmation:** After registering, users receive a confirmation email to verify their account. This step helps to ensure that the email provided is valid and that the account is secure. The user must confirm their email before they can access full account features.
+- **Sign In:** Registered users can sign in to their account using their email and password. Upon successful login, users gain access to their account dashboard, where they can manage bookings, view past appointments, and edit personal information.
+- **Sign Out:** Users can sign out from their account at any time, ensuring that their session is securely closed, especially when using shared or public devices.
+- **Password Recovery:** If a user forgets their password, they can easily reset it by requesting a password recovery email. This email contains a secure link that allows the user to set a new password.
+
+![Account](static/images/documentation/screenshots/account.png)
+![Account](static/images/documentation/screenshots/account1.png)
+
 ### **Home**
 - **Introduction**: Provides an overview of Saba Salon, including highlights of our services.
 - **Quick Links**: Easy navigation to other important sections such as Services, Packages, Reviews, and Contact.
@@ -135,13 +145,16 @@ These user stories illustrate the various ways in which different types of users
  - **Service Reviews**: Read all reviews related to a specific service to gauge client satisfaction and experiences. Reviews are available on the All Reviews page and can be filtered by rating.
 - **Sort Services**: Organize services by popularity, price, or alphabetical order to simplify your search.
 - **Search for a Service by Name:** Users can easily search for a service by name, enabling them to quickly find and book the specific service they are looking for.
- 
+- **Time Slot Management:** Each service has a predefined duration, which determines the available time slots. When a service is booked for a specific time slot, that slot becomes unavailable for booking by other clients, ensuring that no double bookings occur. 
+- **Real-Time Availability:** The booking system updates in real-time, showing only available time slots based on the duration of the selected service. This ensures that clients have accurate information on when they can book their appointments.
+
  ![services](static/images/documentation/screenshots/services.png)
  ![services](static/images/documentation/screenshots/services1.png)
  ![services](static/images/documentation/screenshots/services2.png)
  ![services](static/images/documentation/screenshots/services3.png)
  ![services](static/images/documentation/screenshots/services4.png)
  ![services](static/images/documentation/screenshots/services5.png)
+ ![services](static/images/documentation/screenshots/service6.png)
 
 ### **Packages**
 - **Package Listings**: Explore various packages designed to offer the best value and experience.
