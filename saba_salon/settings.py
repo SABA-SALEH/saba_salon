@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'w8s@5z0*=nw=v!@ycq%9wkbzfr%8z7+8x(%_g
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['saba-salon-2875b1e9e4e8.herokuapp.com', '8000-sabasaleh-sabasalon-fm3b1vbv2b4.ws.codeinstitute-ide.net']
+ALLOWED_HOSTS = ['saba-salon-2875b1e9e4e8.herokuapp.com', '8000-sabasaleh-sabasalon-zjcw88yvw7h.ws.codeinstitute-ide.net']
 
 
 # Application definition

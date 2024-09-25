@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block extra_css %}
-<!-- Link to custom CSS for service management -->
 <link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
 {% endblock %}
 
 {% block content %}
+
 <!-- Spacer to separate the header from the content -->
 <div class="spacer"></div>
+
 
 <!-- Title and separator for the page -->
 <div class="col text-center">
@@ -16,20 +17,16 @@
     <hr class="w-50 mx-auto mb-5">
 </div>
 
-<!-- Container for the form to add a new service -->
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
-            <!-- Heading for the add service section -->
-            <div class="col-12 col-md-8 col-lg-6">
-                <h3 class="section-heading">Add a Service</h3>
-            </div>
+            <h3 class="section-heading">Add a Service</h3>
 
-            <!-- Card containing the form to add a new service -->
             <div class="card mb-4">
-                <form method="POST" action="{% url 'services:add_service' %}" class="form mb-2" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'services:add_service' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    
+
                     <!-- Render form fields -->
                     {% for field in form %}
                     {% if field.name != 'image' %}
@@ -38,7 +35,11 @@
                     {{ field }}
                     {% endif %}
                     {% endfor %}
-                    
+
+                    <div id="id_available_times">
+                        <!-- Checkbox for available times will be dynamically populated here -->
+                    </div>
+
                     <!-- Buttons for cancelling or submitting the form -->
                     <div class="text-right mt-4">
                         <a class="btn btn-outline-black mr-2" href="{% url 'services:all_services' %}">Cancel</a>
@@ -49,10 +50,44 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
+
 {% block postloadjs %}
-    {{ block.super }}
-    <!-- Include jQuery from CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'services/js/edit_services.js' %}"></script>
+{{ block.super }}
+<!-- Include jQuery from CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Event listener for changes in the duration dropdown
+        $('#id_duration').on('change', function () {
+            var duration = $(this).val();
+
+            // Make AJAX request to dynamically update available times
+            $.ajax({
+                url: '{% url "services:generate_time_slots" %}',
+                method: 'GET',
+                data: {
+                    'duration': duration
+                },
+                success: function (response) {
+                    var time_slots = response.time_slots;
+                    var checkboxes = '';
+
+                    // Rebuild the available_times checkboxes
+                    for (var i = 0; i < time_slots.length; i++) {
+                        checkboxes += '<div class="form-check">';
+                        checkboxes += '<input type="checkbox" class="form-check-input" id="id_available_times_' + i + '" name="available_times" value="' + time_slots[i] + '">';
+                        checkboxes += '<label class="form-check-label" for="id_available_times_' + i + '">' + time_slots[i] + '</label>';
+                        checkboxes += '</div>';
+                    }
+
+                    // Replace the available_times field with the new checkboxes
+                    $('#id_available_times').html(checkboxes);  // Clear existing checkboxes and add new ones
+                }
+            });
+        });
+    });
+</script>
+<script src="{% static 'services/js/edit_services.js' %}"></script>
 {% endblock %}

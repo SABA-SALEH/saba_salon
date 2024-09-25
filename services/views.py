@@ -10,6 +10,7 @@ from django.utils import timezone
 from .forms import ServiceForm
 from reviews.models import Review
 from django.db.models import Avg
+from datetime import timedelta, datetime
 
 
 def all_services(request):
@@ -194,6 +195,39 @@ def get_booked_times(request, service_id):
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
+# Utility function to create time slots between start and end time
+def create_time_slots(start_time, end_time, duration):
+    """
+    Utility function to create time slots between start and end time.
+    """
+    slots = []
+    current_time = start_time
+    while current_time + duration <= end_time:
+        slots.append(current_time.strftime('%H:%M'))
+        current_time += duration
+    return slots
+
+
+# This function handles AJAX requests for dynamically generating time slots
+def generate_time_slots(request):
+    if request.method == 'GET' and 'duration' in request.GET:
+        duration_str = request.GET['duration']
+        
+        # Adjust parsing for HH:MM:SS format
+        hours, minutes, seconds = map(int, duration_str.split(':'))
+        duration = timedelta(hours=hours, minutes=minutes, seconds=seconds)
+
+        start_time = datetime.strptime('09:00', '%H:%M')
+        end_time = datetime.strptime('18:00', '%H:%M')
+
+        # Use the utility function to generate time slots
+        time_slots = create_time_slots(start_time, end_time, duration)
+
+        return JsonResponse({'time_slots': time_slots})
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
 @login_required
 def add_service(request):
     """
@@ -203,6 +237,8 @@ def add_service(request):
         messages.error(request, 'Sorry, only salon owners can do that.')
         return redirect(reverse('services:all_services'))
 
+    available_times = []
+    
     if request.method == 'POST':
         form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
@@ -213,9 +249,22 @@ def add_service(request):
             messages.error(request, 'Failed to add service. Please ensure the form is valid.')
     else:
         form = ServiceForm()
+
+    # Calculate available time slots if a duration is specified in the form
+    if request.method == 'POST' and form.is_valid():
+        duration = request.POST.get('duration', '01:00')  # Default duration
+        hours, minutes = map(int, duration.split(':'))
+        duration_timedelta = timedelta(hours=hours, minutes=minutes)
+
+        # Assume the start time is 09:00 and end time is 18:00
+        start_time = datetime.strptime('09:00', '%H:%M')
+        end_time = datetime.strptime('18:00', '%H:%M')
+        available_times = create_time_slots(start_time, end_time, duration_timedelta)
+
     template = 'services/add_service.html'
     context = {
         'form': form,
+        'available_times': available_times, 
     }
 
     return render(request, template, context)
@@ -231,10 +280,11 @@ def edit_service(request, service_id):
         return redirect(reverse('home:index'))
 
     service = get_object_or_404(Service, pk=service_id)
+
     if request.method == 'POST':
         form = ServiceForm(request.POST, request.FILES, instance=service)
         if form.is_valid():
-            form.save()
+            service = form.save()
             messages.success(request, 'Successfully updated service!')
             return redirect(reverse('services:service_detail', args=[service.id]))
         else:
@@ -243,10 +293,29 @@ def edit_service(request, service_id):
         form = ServiceForm(instance=service)
         messages.info(request, f'You are editing {service.name}')
 
+    # Convert duration (timedelta) to string in HH:MM:SS format
+    if isinstance(service.duration, timedelta):
+        hours, remainder = divmod(service.duration.total_seconds(), 3600)
+        minutes = remainder // 60
+        service_duration_str = f"{int(hours):02}:{int(minutes):02}:00"
+    else:
+        service_duration_str = "01:00:00"  
+
+    # Get the available time slots using `create_time_slots`
+    start_time = datetime.strptime('09:00', '%H:%M')
+    end_time = datetime.strptime('18:00', '%H:%M')
+    duration_timedelta = timedelta(hours=int(service_duration_str.split(":")[0]), minutes=int(service_duration_str.split(":")[1]))
+    available_times = create_time_slots(start_time, end_time, duration_timedelta)
+
+    selected_times = service.available_times or [] 
+
     template = 'services/edit_service.html'
     context = {
         'form': form,
         'service': service,
+        'service_duration': service_duration_str, 
+        'available_times': available_times, 
+        'selected_times': selected_times,  
     }
 
     return render(request, template, context)

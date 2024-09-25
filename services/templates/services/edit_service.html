@@ -2,44 +2,74 @@
 {% load static %}
 
 {% block extra_css %}
-<!-- Link to custom CSS for service management -->
 <link rel="stylesheet" href="{% static 'services/css/service_management.css' %}">
 {% endblock %}
 
 {% block content %}
-<!-- Spacer to separate header from the content -->
+<!-- Spacer to separate the header from the content -->
 <div class="spacer"></div>
+
 
 <!-- Title and separator for the page -->
 <div class="col text-center">
-    <h2 class="logo-font mt-4 mb-4">Service Management</h2>
+    <h2 class="text-center mb-2 mt-4 logo-font">Service Management</h2>
     <hr class="w-50 mx-auto mb-5">
 </div>
 
-<!-- Container for the form to edit a service -->
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
-            <!-- Heading for the edit section -->
-            <div class="col-12">
-                <h3 class="section-heading">Edit a Service</h3>
-            </div>
+            <h3 class="section-heading">Edit Service </h3>
 
-            <!-- Card containing the form to edit service details -->
             <div class="card mb-4">
-                <form method="POST" action="{% url 'services:edit_service' service.id %}" class="form mb-2" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'services:edit_service' service.id %}" enctype="multipart/form-data">
                     {% csrf_token %}
 
-                    <!-- Render form fields, except for the 'image' field -->
                     {% for field in form %}
-                    {% if field.name != 'image' %}
-                    {{ field|as_crispy_field }}
+                    {% if field.name != 'available_times' %}
+                    <!-- Custom rendering for the duration dropdown -->
+                    {% if field.name == 'duration' %}
+                    <div class="form-group">
+                        <label for="id_duration">Service Duration</label>
+                        <select name="duration" id="id_duration" class="form-control border-black">
+                            <option value="">Select duration</option>
+                            <!-- Single equals sign for comparisons -->
+                            <option value="00:15:00" {% if service_duration=="00:15:00" %} selected {% endif %}>15
+                                minutes</option>
+                            <option value="00:30:00" {% if service_duration=="00:30:00" %} selected {% endif %}>30
+                                minutes</option>
+                            <option value="01:00:00" {% if service_duration=="01:00:00" %} selected {% endif %}>1 hour
+                            </option>
+                            <option value="01:15:00" {% if service_duration=="01:15:00" %} selected {% endif %}>1 hour
+                                15 minutes</option>
+                            <option value="01:30:00" {% if service_duration=="01:30:00" %} selected {% endif %}>1 hour
+                                30 minutes</option>
+                            <option value="02:00:00" {% if service_duration=="02:00:00" %} selected {% endif %}>2 hours
+                            </option>
+                            <option value="02:30:00" {% if service_duration=="02:30:00" %} selected {% endif %}>2 hours
+                                30 minutes</option>
+                        </select>
+                    </div>
+
                     {% else %}
-                    {{ field }}
+                    {{ field|as_crispy_field }}
+                    {% endif %}
                     {% endif %}
                     {% endfor %}
 
-                    <!-- Buttons for cancelling or submitting the form -->
+                    <!-- Render available time slots here -->
+                    <div id="id_available_times">
+                        {% for time in available_times %}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input"
+                                id="id_available_times_{{ forloop.counter }}" name="available_times" value="{{ time }}"
+                                {% if time in selected_times %} checked {% endif %}>
+                            <label class="form-check-label" for="id_available_times_{{ forloop.counter }}">{{ time
+                                }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
                     <div class="text-right mt-4">
                         <a class="btn btn-outline-black mr-2" href="{% url 'services:all_services' %}">Cancel</a>
                         <button class="btn btn-black" type="submit">Update Service</button>
@@ -52,8 +82,34 @@
 {% endblock %}
 
 {% block postloadjs %}
-    {{ block.super }}
-    <!-- Include jQuery from CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'services/js/edit_services.js' %}"></script>
+{{ block.super }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'services/js/edit_services.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_duration').on('change', function () {
+            var duration = $(this).val();
+            $.ajax({
+                url: '{% url "services:generate_time_slots" %}',
+                method: 'GET',
+                data: {
+                    'duration': duration
+                },
+                success: function (response) {
+                    var time_slots = response.time_slots;
+                    var checkboxes = '';
+
+                    for (var i = 0; i < time_slots.length; i++) {
+                        checkboxes += '<div class="form-check">';
+                        checkboxes += '<input type="checkbox" class="form-check-input" id="id_available_times_' + i + '" name="available_times" value="' + time_slots[i] + '">';
+                        checkboxes += '<label class="form-check-label" for="id_available_times_' + i + '">' + time_slots[i] + '</label>';
+                        checkboxes += '</div>';
+                    }
+
+                    $('#id_available_times').html(checkboxes);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

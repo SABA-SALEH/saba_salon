@@ -76,7 +76,7 @@
                     <!-- Display service description, price, and duration -->
                     <p class="card-text text-muted">{{ service.description }}</p>
                     <p><strong>Price:</strong> ${{ service.price }}</p>
-                    <p><strong>Duration:</strong> {{ service.duration }} minutes</p>
+                    <p><strong>Duration:</strong> {{ service.duration }} </p>
 
                     <!-- Booking form with date and time selection, and an option to add another service -->
                     <form id="bookingForm" method="POST" action="{% url 'cart:add_to_cart' service.id %}">
