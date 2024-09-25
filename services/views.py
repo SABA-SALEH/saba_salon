@@ -281,6 +281,16 @@ def edit_service(request, service_id):
 
     service = get_object_or_404(Service, pk=service_id)
 
+    service_durations = {
+        "00:15:00": "15 minutes",
+        "00:30:00": "30 minutes",
+        "01:00:00": "1 hour",
+        "01:15:00": "1 hour 15 minutes",
+        "01:30:00": "1 hour 30 minutes",
+        "02:00:00": "2 hours",
+        "02:30:00": "2 hours 30 minutes",
+    }
+
     if request.method == 'POST':
         form = ServiceForm(request.POST, request.FILES, instance=service)
         if form.is_valid():
@@ -299,26 +309,30 @@ def edit_service(request, service_id):
         minutes = remainder // 60
         service_duration_str = f"{int(hours):02}:{int(minutes):02}:00"
     else:
-        service_duration_str = "01:00:00"  
+        service_duration_str = "01:00:00"  # Default duration if not a timedelta
 
     # Get the available time slots using `create_time_slots`
     start_time = datetime.strptime('09:00', '%H:%M')
     end_time = datetime.strptime('18:00', '%H:%M')
-    duration_timedelta = timedelta(hours=int(service_duration_str.split(":")[0]), minutes=int(service_duration_str.split(":")[1]))
+    
+    # Convert the service duration string back to timedelta for generating time slots
+    hours, minutes = map(int, service_duration_str.split(":")[:2])
+    duration_timedelta = timedelta(hours=hours, minutes=minutes)
     available_times = create_time_slots(start_time, end_time, duration_timedelta)
 
-    selected_times = service.available_times or [] 
+    selected_times = service.available_times or []  
 
-    template = 'services/edit_service.html'
     context = {
         'form': form,
         'service': service,
-        'service_duration': service_duration_str, 
+        'service_durations': service_durations,
+        'service_duration': service_duration_str,  
         'available_times': available_times, 
         'selected_times': selected_times,  
+        'duration': service_duration_str, 
     }
 
-    return render(request, template, context)
+    return render(request, 'services/edit_service.html', context)
 
 
 @login_required
