@@ -122,3 +122,19 @@ class ServiceForm(forms.ModelForm):
         if price < 0:  # Check for negative price
             raise ValidationError("Price must be a positive number.")
         return price
+
+    def clean_available_times(self):
+        """
+        Ensure at least one available time slot is selected.
+        """
+        available_times = self.cleaned_data.get('available_times')
+        if not available_times:
+            raise ValidationError('You must select at least one available time slot.')
+        return available_times
+
+    def clean(self):
+        """
+        Form-wide validation.
+        """
+        cleaned_data = super().clean()
+        return cleaned_data
