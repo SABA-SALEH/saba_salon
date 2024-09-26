@@ -243,6 +243,22 @@ These user stories illustrate the various ways in which different types of users
 ![Responsive Design](static/images/documentation/screenshots/responsive.png)
 ![Responsive Design](static/images/documentation/screenshots/responsive1.png)
 
+### **Form Validation** 
+- **Field Validation**: All forms ensure that mandatory fields are filled out before submission. This includes checks for:
+  - **Email Format**: Valid email format must be used during registration and order processing.
+  - **Phone Number Format**: Phone numbers must be validated to ensure they conform to accepted formats, preventing invalid entries.
+  - **Name Validation**: Names must contain only letters and must not include numbers or special characters.
+  - **At Least One Option Selected**: For fields with multiple choice options, at least one option must be selected to proceed.
+  - **Confirmation Matches**: Ensure that password confirmation fields match during account creation and password recovery.
+  - **Unique Values**: Fields like service names, package names, and staff member names must be unique, with checks to avoid conflicts during editing.
+  - **Non-Empty Fields**: All required fields, such as name and description, must not be empty and must meet minimum character requirements.
+  - **Positive Values**: Numeric fields, like prices, must be greater than zero and not negative.
+- **Error Messages**: Clear, user-friendly error messages are displayed when validation fails, guiding users on how to correct their input.
+- **Accessibility**: Forms are designed to be accessible, ensuring that all users, including those using assistive technologies, can successfully navigate and submit forms. Each field has appropriate labels, placeholders, and validation feedback.
+
+![alt text](<static/images/documentation/screenshots/Form Validation .png>)
+![alt text](<static/images/documentation/screenshots/Form Validation 2.png>)
+
 These features are designed to provide a seamless and enjoyable experience for all users of the Saba Salon website, whether they are clients, potential clients, or administrators managing the site.
 
 
@@ -457,6 +473,180 @@ The application is structured around the following key components:
 |           | `photo`          | Image of the staff member.                      |
 |           | `email`          | Contact email.                                  |
 |           | `phone_number`   | Contact phone number.                           |
+
+
+
+
+## Entity-Relationship Diagram
+```bash
++-----------------+      +---------------------+
+|   UserProfile   |      |     StaffMember     |
+|-----------------|      |---------------------|
+| user_id (PK)    |      | staff_id (PK)       |
+| default_phone   |      | name                |
+| ...             |      | position            |
++-----------------+      | bio                 |
+         | 1             | photo               |
+         |               | email               |
+         | N             | phone_number        |
+         |               +---------------------+
++-----------------+               |
+|      Review     |               |
+|-----------------|               |
+| review_id (PK)  |               |
+| rating          |               |
+| comment         |               |
+| created_at      |               |
+| user_id (FK)    |               |
+| service_id (FK) |               |
+| package_id (FK) |               |
++-----------------+               |
+         | N                      |
+         | 1                      |
+         |                        |
++-----------------+      +---------------------+
+|      Order      |      |       Package       |
+|-----------------|      |---------------------|
+| order_number (PK)|      | package_id (PK)     |
+| user_profile_id  |      | name                |
+| user_id (FK)     |      | description         |
+| full_name        |      | price               |
+| email            |      | saving_price        |
+| phone_number     |      +---------------------+
+| date             |
+| order_total      |       +-----------------+
+| grand_total      |       |     Service      |
+| original_cart    |       |-----------------|
+| stripe_pid       |       | service_id (PK)  |
++-----------------+       | category_id (FK)  |
+         | 1              | name              |
+         |                | description       |
+         | N              | price             |
+         |                | duration          |
+         |                | image             |
++-----------------+       | available_times   |
+|     Booking     |       +-----------------+
+|-----------------|
+| booking_id (PK) |
+| user_id (FK)    |
+| service_id (FK) |
+| package_id (FK) |
+| date            |
+| time            |
+| created_at      |
+| order_id (FK)   |
++-----------------+
+```
+
+## Entities and Attributes
+
+### 1. Order
+| Field              | Description                                    |
+|--------------------|------------------------------------------------|
+| `order_number (PK)`| Unique identifier for the order.               |
+| `user_profile_id (FK)` | Linked user profile.                     |
+| `user_id (FK)`     | Linked user.                                   |
+| `full_name`        | Customer’s full name.                          |
+| `email`            | Customer’s email address.                      |
+| `phone_number`     | Customer’s phone number.                       |
+| `date`             | Date and time when the order was created.     |
+| `order_total`      | Total cost of the order before taxes.         |
+| `grand_total`      | Final amount including any taxes or discounts. |
+| `original_cart`    | JSON field storing original cart data.        |
+| `stripe_pid`       | Payment identifier from Stripe.                |
+
+### 2. Package
+| Field                   | Description                                  |
+|-------------------------|----------------------------------------------|
+| `package_id (PK)`      | Unique identifier for the package.          |
+| `name`                  | Name of the package.                        |
+| `description`           | Detailed description of the package.        |
+| `price`                 | Regular price of the package.               |
+| `saving_price`          | Discounted price if applicable.             |
+| `services`              | Many-to-many relationship with `Service`, indicating that multiple services can be associated with a single package, and vice versa. |
+
+
+### 3. UserProfile
+| Field                | Description                                   |
+|----------------------|-----------------------------------------------|
+| `user_id (PK)`       | Unique identifier for the user profile.     |
+| `default_phone_number`| Default phone number for the user.          |
+
+### 4. Review
+| Field               | Description                                   |
+|---------------------|-----------------------------------------------|
+| `review_id (PK)`    | Unique identifier for the review.            |
+| `service_id (FK)`   | Foreign key linking to Service.               |
+| `package_id (FK)`   | Foreign key linking to Package.               |
+| `user_id (FK)`      | User who left the review.                     |
+| `rating`            | Rating given by the user (1-5).              |
+| `comment`           | Review comment.                               |
+| `created_at`        | Timestamp when the review was created.       |
+
+### 5. Service
+| Field               | Description                                   |
+|---------------------|-----------------------------------------------|
+| `service_id (PK)`   | Unique identifier for the service.           |
+| `category_id (FK)`  | Foreign key linking to Category.             |
+| `name`              | Name of the service.                         |
+| `description`       | Description of the service.                  |
+| `price`             | Cost of the service.                         |
+| `duration`          | Duration of the service.                     |
+| `image`             | Image related to the service.                |
+| `available_times`    | JSON field for storing available time slots. |
+
+### 6. Booking
+| Field               | Description                                   |
+|---------------------|-----------------------------------------------|
+| `booking_id (PK)`   | Unique identifier for the booking.           |
+| `user_id (FK)`      | Foreign key linking to UserProfile.          |
+| `service_id (FK)`   | Foreign key linking to Service.              |
+| `package_id (FK)`   | Foreign key linking to Package.              |
+| `date`              | Date of the booking.                         |
+| `time`              | Time of the booking.                         |
+| `created_at`        | Timestamp when the booking was created.     |
+| `order_id (FK)`     | Foreign key linking to Order.                |
+
+### 7. StaffMember
+| Field               | Description                                   |
+|---------------------|-----------------------------------------------|
+| `staff_id (PK)`     | Unique identifier for the staff member.      |
+| `name`              | Name of the staff member.                    |
+| `position`          | Position or role of the staff member.       |
+| `bio`               | Short biography.                              |
+| `photo`             | Image of the staff member.                   |
+| `email`             | Contact email.                               |
+| `phone_number`      | Contact phone number.                        |
+
+## Relationships
+
+- **Order**:
+  - **1-to-1** with **UserProfile** (`user_profile_id`)
+  - **1-to-many** with **Booking** (`order_id`)
+
+- **Package**:
+  - **Many-to-many** with **Service** (through a join table)
+  - **1-to-many** with **Review** (`package_id`)
+
+- **UserProfile**:
+  - **1-to-many** with **Review** (`user_id`)
+  - **1-to-many** with **Booking** (`user_id`)
+  - **1-to-1** with **User** 
+
+- **Review**:
+  - **Many-to-1** with **Service** (`service_id`)
+  - **Many-to-1** with **Package** (`package_id`)
+
+- **Service**:
+  - **1-to-many** with **Booking** (`service_id`)
+  - **Many-to-1** with **Category** (`category_id`)
+  - **Many-to-many** with **Package** (through the join table)
+
+- **Booking**:
+  - **Many-to-1** with **UserProfile** (`user_id`)
+  - **Many-to-1** with **Service** (`service_id`)
+  - **Many-to-1** with **Package** (`package_id`)
+  - **1-to-1** with **Order** (`order_id`)
 
 
 ## Getting Started
