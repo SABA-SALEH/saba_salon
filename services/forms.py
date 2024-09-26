@@ -92,13 +92,30 @@ class ServiceForm(forms.ModelForm):
                 self.fields['available_times'].choices = [(time, time) for time in time_slots]
 
     def clean_name(self):
+        """
+        Ensure the service name contains only letters, no numbers, is at least 3 characters long, 
+        and is unique, except for the current instance when editing.
+        """
         name = self.cleaned_data.get('name')
-        print(f"Validating name: {name}")  
+        
         if not name:
             raise ValidationError("Service name cannot be empty.")
-        if any(char.isdigit() for char in name):  # Check for numbers in name
+        
+        # Check that the name has at least 3 characters
+        if len(name) < 3:
+            raise ValidationError("Name must be at least 3 characters long.")
+        
+        # Check for any numbers in the name
+        if any(char.isdigit() for char in name):
             raise ValidationError("Service name cannot contain numbers.")
+        
+        # Check for uniqueness, excluding the current instance
+        if Service.objects.filter(name=name).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("A service with this name already exists.")
+        
         return name
+
+
 
     def clean_description(self):
         description = self.cleaned_data.get('description')

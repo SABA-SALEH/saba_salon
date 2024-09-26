@@ -14,17 +14,24 @@ class StaffMemberForm(forms.ModelForm):
 
     def clean_name(self):
         """
-        Validate that the name contains only letters and spaces.
+        Validate that the name contains only letters and spaces and is unique,
+        except for the current instance when editing.
         """
         name = self.cleaned_data.get('name')
+
         if not name:
             raise ValidationError("Name cannot be empty.")
         
-        if not re.match(r'^[A-Za-z\s]+$', name):  # Only allow letters and spaces
+        # Only allow letters and spaces
+        if not re.match(r'^[A-Za-z\s]+$', name):
             raise ValidationError("Name must contain only letters and spaces.")
         
         if len(name) < 3:
             raise ValidationError("Name must be at least 3 characters long.")
+        
+        # Check for uniqueness, excluding the current instance
+        if StaffMember.objects.filter(name=name).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("A team member with this name already exists.")
         
         return name
 
